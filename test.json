@@ -1,0 +1,16 @@
+{
+    "Testclass":{
+        "thisIsABool": true,
+        "thisIsAnInt": 10,
+        "thisIsAFloat": 1.0,
+        "thisIsADouble": 2.0,
+        "thisIsAString": "A",
+        "thisIsAnIntArray":[
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    }
+}
