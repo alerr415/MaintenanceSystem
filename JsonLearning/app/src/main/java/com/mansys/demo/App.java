@@ -1,11 +1,14 @@
 package com.mansys.demo;
 
 import com.google.gson.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.CallableStatement;
+import java.sql.Types;
 
 public class App {
 
@@ -30,17 +33,24 @@ public class App {
         connection = null;
 
         try {
-            System.out.println("A kapcsolatfelvetel az alienekkel kezdetet vette!");
             connection = DriverManager.getConnection(url, "root", "");
-            System.out.println("It just works!");
 
-            Statement stm = connection.createStatement();
-            ResultSet rst = stm.executeQuery("select * from users");
-            rst.next();
-            System.out.println(rst.getString(1));
+            String trans = "{CALL sp_AuthenticateUser(?, ?, ?)}";
+            CallableStatement stmt = connection.prepareCall(trans);
+
+            stmt.setString("uname", "asd");
+            stmt.setString("passw", "asd");
+            stmt.registerOutParameter("res", Types.INTEGER);
+            
+            System.out.println(stmt.toString());
+
+            boolean succ = stmt.execute();
+            System.out.println("Tran status: " + succ);
+            System.out.println("Result: " + stmt.getInt("res"));
         } 
         catch (Exception e) {
             throw new Error("You fucked up: ", e);
+            //throw new Error(e.getMessage());
         } 
         finally {
             try {
