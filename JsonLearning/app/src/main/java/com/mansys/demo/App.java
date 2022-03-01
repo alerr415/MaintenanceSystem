@@ -18,6 +18,7 @@ public class App {
             throw new Error("CLASS_LOADER_ERROR: " + ex.getMessage() + "\n" + ex);
         }
 
+        //gsonReader();
         createConn();
     }
 
@@ -29,6 +30,7 @@ public class App {
         connection = null;
 
         try {
+            System.out.println("A kapcsolatfelvetel az alienekkel kezdetet vette!");
             connection = DriverManager.getConnection(url, "root", "");
             System.out.println("It just works!");
 
@@ -54,7 +56,7 @@ public class App {
 
 
     public static void gsonReader(){
-        String jsonString = "{\"name\":\"Kálmán\", \"age\":21}"; 
+        String jsonString = "{\"name\":\"Biggus Dickus\", \"age\":21}"; 
       
         GsonBuilder builder = new GsonBuilder(); 
         builder.setPrettyPrinting(); 
