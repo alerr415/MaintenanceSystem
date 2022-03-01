@@ -39,7 +39,7 @@ public class App {
             CallableStatement callableStatement = connection.prepareCall(sendProcedure);
 
             callableStatement.setString("uname", "ferenc");
-            callableStatement.setString("passw", "asd");
+            callableStatement.setString("passw", "asd123");
             callableStatement.registerOutParameter("res", Types.INTEGER);
             
             System.out.println(callableStatement.toString());
