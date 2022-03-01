@@ -27,26 +27,26 @@ public class App {
 
     public static void createConn()
     {
-        Connection connection;
-        String url = "jdbc:mysql://192.168.8.101:3306/test";
-
-        connection = null;
+        Connection connection = null;
+        final String URL = "jdbc:mysql://192.168.8.101:3306/test";
+        final String USERNAME = "root";
+        final String PASSWORD = "";
 
         try {
-            connection = DriverManager.getConnection(url, "root", "");
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
-            String trans = "{CALL sp_AuthenticateUser(?, ?, ?)}";
-            CallableStatement stmt = connection.prepareCall(trans);
+            String sendProcedure = "{CALL sp_AuthenticateUser(?, ?, ?)}";
+            CallableStatement callableStatement = connection.prepareCall(sendProcedure);
 
-            stmt.setString("uname", "asd");
-            stmt.setString("passw", "asd");
-            stmt.registerOutParameter("res", Types.INTEGER);
+            callableStatement.setString("uname", "ferenc");
+            callableStatement.setString("passw", "asd");
+            callableStatement.registerOutParameter("res", Types.INTEGER);
             
-            System.out.println(stmt.toString());
+            System.out.println(callableStatement.toString());
 
-            boolean succ = stmt.execute();
-            System.out.println("Tran status: " + succ);
-            System.out.println("Result: " + stmt.getInt("res"));
+            boolean isSucceeded = callableStatement.execute();
+            System.out.println("Transaction status: " + isSucceeded);
+            System.out.println("Result: " + callableStatement.getInt("res"));
         } 
         catch (Exception e) {
             throw new Error("You fucked up: ", e);
