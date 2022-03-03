@@ -10,6 +10,7 @@ public class ServerApplication {
 		SpringApplication.run(ServerApplication.class, args);
 		DatabaseManager dbm = DatabaseManager.getInstance();
 		System.out.println("asd");
+		dbm.testProcedure();
 	}
 
 }

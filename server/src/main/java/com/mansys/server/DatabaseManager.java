@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.sql.CallableStatement;
 import java.sql.Types;
 
-import javax.print.DocFlavor.STRING;
 
 /**
  * Singleton class for the database connection and functions for the transactions.
@@ -35,7 +34,6 @@ public class DatabaseManager {
     private DatabaseManager(){
         connection = null;
         connectionIsActive = false;
-        System.out.println("Constructor of DBM");
     }
  
     public static DatabaseManager getInstance(){
@@ -52,7 +50,6 @@ public class DatabaseManager {
     static {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("after forName");
         }
         catch(Exception ex){
             System.err.println("[ERROR]: Failed to load driver class: " + ex + "\nStack trace: ");
@@ -86,5 +83,40 @@ public class DatabaseManager {
         }   
     }
 
+
+    public void testProcedure()
+    {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+            String sendProcedure = "{CALL sp_AuthenticateUser(?, ?, ?)}";
+            CallableStatement callableStatement = connection.prepareCall(sendProcedure);
+
+            callableStatement.setString("uname", "ferenc");
+            callableStatement.setString("passw", "asd123");
+            callableStatement.registerOutParameter("res", Types.INTEGER);
+            
+            System.out.println(callableStatement.toString());
+
+            boolean isSucceeded = callableStatement.execute();
+            System.out.println("Transaction status: " + isSucceeded);
+            System.out.println("Result: " + callableStatement.getInt("res"));
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function TEMPLATE: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function TEMPLATE when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+    }
     //------------------------------------------------------------------------------------------------
 }
