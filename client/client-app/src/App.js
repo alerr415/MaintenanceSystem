@@ -1,9 +1,12 @@
-import * as React from 'react';
-import ReactDOM from 'react-dom';
-import Button from '@mui/material/Button';
+import Login from './Login.js';
 
 function App() {
-  return <Button variant="contained">Hello World</Button>;
+  return (
+    <>
+      <Login />
+    </>
+  );
+
 }
 
 export default App;
