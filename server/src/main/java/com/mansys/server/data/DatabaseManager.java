@@ -1,10 +1,8 @@
-package com.mansys.server;
+package com.mansys.server.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.CallableStatement;
 import java.sql.Types;
 
@@ -16,7 +14,7 @@ import java.sql.Types;
  * @category Database
  */
 
-public class DatabaseManager {
+public class DatabaseManager implements DatabaseManagerInterface {
 
     //-----------------------------------------[ VARIABLES ]------------------------------------------
 

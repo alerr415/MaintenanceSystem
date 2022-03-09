@@ -1,4 +1,4 @@
-package com.mansys.server;
+package com.mansys.server.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

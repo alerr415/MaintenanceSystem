@@ -1,11 +1,12 @@
-package com.mansys.server;
+package com.mansys.server.backend;
 
 /**
  * The server class handles all the functionallity of the conceptual server.
  * It follows the singleton design pattern, as we want to have only one instance of the server to exists.
  * @author Tóth Bálint
+ * @author Tálas Martin
  */
-public class Server {
+public class Server implements ServerInterface {
 
     // singleton instance
     private static Server instance = null;
@@ -27,10 +28,10 @@ public class Server {
     }
 
     /**
-     * Authentication backend.
-     * can possibly return a response
+     * Authenticate handling.
+     * implemented from ServerInterface
      */
-    public void authenticateClientLogin(AuthenticateRequest req) {
-        // access the database here
+    public Authenticate.Response handleAuthenticate(Authenticate.Request req){
+        throw new UnsupportedOperationException("This function is not implemented yet!");//dummy return
     }
 }
