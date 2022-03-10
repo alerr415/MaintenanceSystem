@@ -1,8 +1,5 @@
 package com.mansys.server.backend;
 
-import javax.servlet.http.Cookie;
-
-import org.springframework.web.util.CookieGenerator;
 /**
  * @author Tóth Bálint
  * @author Tálas Martin
@@ -43,12 +40,12 @@ public class Authenticate {
     /**
      * This is a Response POJO, and it will be used for standard replies to the client
      */
-    public class Response {
+    public static class Response {
         
         private String role;
         private String errorMessage;
         private int errorCode;
-        private Cookie cookie;
+        //private Cookie cookie;
 
         public Response(){
 
@@ -69,9 +66,9 @@ public class Authenticate {
             return this.errorCode;
         }
 
-        public Cookie getCookie(){
-            return this.cookie;
-        }
+        // public Cookie getCookie(){
+        //     return this.cookie;
+        // }
 
         //SETTERS
         public void setRole(String value){
@@ -86,8 +83,8 @@ public class Authenticate {
             this.errorCode = value;
         }
 
-        public void setCookie(Cookie value){
-            this.cookie = value;
-        }
+        // public void setCookie(Cookie value){
+        //     this.cookie = value;
+        // }
     }
 }
