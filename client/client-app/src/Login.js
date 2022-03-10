@@ -8,7 +8,12 @@ import TextField from '@mui/material/TextField';
 import {serveraddress} from './Server.js';
 
 function submit() {
-  const data = { username: 'example' };
+  const data = {
+  "username": document.getElementById("username").value,
+  "password": document.getElementById("password").value
+};
+
+  console.log(data);
 
   fetch(serveraddress + '/login', {
     method: 'POST', // or 'PUT'
@@ -31,21 +36,30 @@ function Login() {
   return (
     <>
     <Grid container spacing={2}>
-      <Grid item xs={2} md={4}></Grid>
-      <Grid item xs={8} md={4}>
-        <Card sx={{ mt : 8 , mx : "auto"}}>
+      <Grid item xs={0} sm={2} lg={4}></Grid>
+      <Grid item xs={12} sm={8} lg={4}>
+        <Card sx={{ mt : 16 , mx : "auto", p : 2, textAlign: 'center'}}>
+
+
           <CardContent>
-            <h1>Maintenance System</h1>
-            <h5>Please fill the fields to login.</h5>
-            <TextField id="username" label="Username" variant="outlined" /><br />
-            <TextField id="password" label="Password" type="password"/>
+
+
+            <h1 variant="h1">Maintenance System</h1>
+            <h5 variant="h5">Please fill the fields to login.</h5>
+            <TextField id="username" label="Username" variant="outlined" fullWidth/><br />
+            <TextField id="password" label="Password" type="password"  sx={{ mt : 4 }} fullWidth/>
+
+
           </CardContent>
+
           <CardActions>
-            <Button size="large" variant="contained" color="success" onClick={submit}>Log me in!</Button>
+            <Button size="large" variant="contained" color="success" fullWidth onClick={submit}>Log me in!</Button>
           </CardActions>
+
+
         </Card>
       </Grid>
-      <Grid item xs={2} md={4}></Grid>
+      <Grid item xs={0} sm={2} lg={4}></Grid>
     </Grid>
     </>
   );
