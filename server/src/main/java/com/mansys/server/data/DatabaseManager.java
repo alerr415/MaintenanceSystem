@@ -117,4 +117,40 @@ public class DatabaseManager implements DatabaseManagerInterface {
         }   
     }
     //------------------------------------------------------------------------------------------------
+
+    public int authenticateUser(String username, String password) {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String sendProcedure = "{? = CALL Bejelentkezes(? ?)}";
+            CallableStatement callableStatement = connection.prepareCall(sendProcedure);
+
+            callableStatement.registerOutParameter(1,java.sql.Types.INTEGER);
+            callableStatement.setString(2,username);
+            callableStatement.setString(3,password);
+
+            callableStatement.execute();
+
+            int res_code = callableStatement.getInt(1);
+            System.out.println("[database]: called Bejelentkezes, result: " + res_code);
+
+            return res_code;
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function TEMPLATE: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function TEMPLATE when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+
+        return -1;
+    }
 }
