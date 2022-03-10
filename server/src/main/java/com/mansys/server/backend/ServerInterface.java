@@ -7,6 +7,7 @@ package com.mansys.server.backend;
 
 public interface ServerInterface {
     public Authenticate.Response handleAuthenticate(Authenticate.Request req);
-    
-
+    public Device.Response handleDevice(Device.Request req);
+    public Category.Response handleCategory(Category.Request req);
+    public Qualification.Response handleQualification(Qualification.Request req);
 }

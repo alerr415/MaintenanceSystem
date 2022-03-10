@@ -60,4 +60,22 @@ public class Server implements ServerInterface {
         }
         return res;
     }
+
+    @Override
+    public com.mansys.server.backend.Device.Response handleDevice(com.mansys.server.backend.Device.Request req) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public com.mansys.server.backend.Category.Response handleCategory(com.mansys.server.backend.Category.Request req) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public com.mansys.server.backend.Qualification.Response handleQualification(com.mansys.server.backend.Qualification.Request req) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
