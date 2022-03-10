@@ -8,6 +8,9 @@ import TextField from '@mui/material/TextField';
 import {serveraddress} from './Server.js';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import LockIcon from '@mui/icons-material/Lock';
+
+
 
 function submit() {
   const data = {
@@ -50,7 +53,7 @@ function Login() {
             <h1 variant="h1">Maintenance System</h1>
             <h5 variant="h5">Sign in</h5>
             <TextField id="username" label="Username" InputProps={{startAdornment: (<InputAdornment position="start"><AccountCircle /></InputAdornment>),}} variant="outlined" fullWidth/><br />
-            <TextField id="password" label="Password" type="password"  sx={{ mt : 4 }} fullWidth/>
+            <TextField id="password" label="Password" InputProps={{startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>),}} type="password"  sx={{ mt : 4 }} fullWidth/>
 
 
           </CardContent>
