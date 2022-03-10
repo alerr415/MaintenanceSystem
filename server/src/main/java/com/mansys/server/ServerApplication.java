@@ -1,6 +1,9 @@
 package com.mansys.server;
 
 import com.mansys.server.backend.Authenticate;
+import com.mansys.server.backend.Category;
+import com.mansys.server.backend.Device;
+import com.mansys.server.backend.Qualification;
 import com.mansys.server.backend.Server;
 import com.mansys.server.data.DatabaseManager;
 
@@ -37,6 +40,24 @@ public class ServerApplication {
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> authenticate(@RequestBody Authenticate.Request request) {
 		Authenticate.Response response = Server.getInstance().handleAuthenticate(request);
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/device")
+	public ResponseEntity<?> addDevice(@RequestBody Device.Request request) {
+		Device.Response response = Server.getInstance().handleDevice(request);
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/category")
+	public ResponseEntity<?> addCategory(@RequestBody Category.Request request) {
+		Category.Response response = Server.getInstance().handleCategory(request);
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("qualification")
+	public ResponseEntity<?> addQualification(@RequestBody Qualification.Request request) {
+		Qualification.Response response = Server.getInstance().handleQualification(request);
 		return ResponseEntity.ok(response);
 	}
 
