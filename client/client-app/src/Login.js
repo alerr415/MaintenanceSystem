@@ -6,6 +6,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import {serveraddress} from './Server.js';
+import InputAdornment from '@mui/material/InputAdornment';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 function submit() {
   const data = {
@@ -14,6 +16,7 @@ function submit() {
 };
 
   console.log(data);
+  console.log(serveraddress+'/login');
 
   fetch(serveraddress + '/login', {
     method: 'POST', // or 'PUT'
@@ -45,15 +48,15 @@ function Login() {
 
 
             <h1 variant="h1">Maintenance System</h1>
-            <h5 variant="h5">Please fill the fields to login.</h5>
-            <TextField id="username" label="Username" variant="outlined" fullWidth/><br />
+            <h5 variant="h5">Sign in</h5>
+            <TextField id="username" label="Username" InputProps={{startAdornment: (<InputAdornment position="start"><AccountCircle /></InputAdornment>),}} variant="outlined" fullWidth/><br />
             <TextField id="password" label="Password" type="password"  sx={{ mt : 4 }} fullWidth/>
 
 
           </CardContent>
 
           <CardActions>
-            <Button size="large" variant="contained" color="success" fullWidth onClick={submit}>Log me in!</Button>
+            <Button size="large" variant="contained" color="success" fullWidth onClick={submit}>Sign in</Button>
           </CardActions>
 
 
