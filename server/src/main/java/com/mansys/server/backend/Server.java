@@ -63,8 +63,12 @@ public class Server implements ServerInterface {
 
     @Override
     public com.mansys.server.backend.Device.Response handleDevice(com.mansys.server.backend.Device.Request req) {
-        // TODO Auto-generated method stub
-        return null;
+        // get the device data from the database
+        //int res_code = DatabaseManager.getInstance().addDevice();
+        // create and decode the return value into a response type
+        Device.Response res = new Device.Response();
+        
+        return res;
     }
 
     @Override

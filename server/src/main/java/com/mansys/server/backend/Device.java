@@ -7,7 +7,7 @@ package com.mansys.server.backend;
 
 public class Device {
 
-    public class Request {
+    public static class Request {
 
         int deviceID;
         int deviceCategoryID;
@@ -20,7 +20,7 @@ public class Device {
         }
     }
 
-    public class Response {
+    public static class Response {
 
         private String errorMessage;
         private int errorCode;

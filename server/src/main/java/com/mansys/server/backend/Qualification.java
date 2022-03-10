@@ -6,7 +6,8 @@ package com.mansys.server.backend;
  */
 
 public class Qualification {
-    public class Request {
+    
+    public static class Request {
 
         int qualificationID;
         String qualificationName;
@@ -16,7 +17,7 @@ public class Qualification {
         }
     }
 
-    public class Response {
+    public static class Response {
 
         private String errorMessage;
         private int errorCode;

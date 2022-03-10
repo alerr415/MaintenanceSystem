@@ -7,7 +7,7 @@ package com.mansys.server.backend;
 
 public class Category {
 
-    public class Request {
+    public static class Request {
 
         int categoryID;
         int qualificationID;
@@ -21,7 +21,7 @@ public class Category {
         }
     }
 
-    public class Response {
+    public static class Response {
 
         private String errorMessage;
         private int errorCode;
