@@ -175,4 +175,48 @@ public class DatabaseManager implements DatabaseManagerInterface {
             }
         }   
     }
+
+    public void addCategory(int categoryID, int qualificationID, String categoryName, String categoryPeriod, String categoryNormalTime, String specification)
+    {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addCategory: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addCategory when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+    }
+
+    public void addQualication(int qualificationID,  String qualificationName)
+    {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addQualication: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addQualication when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+    }
 }
