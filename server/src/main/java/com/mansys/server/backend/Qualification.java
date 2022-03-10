@@ -5,15 +5,11 @@ package com.mansys.server.backend;
  * @author Tálas Martin
  */
 
-public class Device {
-
+public class Qualification {
     public class Request {
 
-        int deviceID;
-        int deviceCategoryID;
-        String devicePosition;
-        String deviceName;
-        String deviceDescription;
+        int qualificationID;
+        String qualificationName;
 
         public Request(){
                      

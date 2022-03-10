@@ -5,15 +5,16 @@ package com.mansys.server.backend;
  * @author Tálas Martin
  */
 
-public class Device {
+public class Category {
 
     public class Request {
 
-        int deviceID;
-        int deviceCategoryID;
-        String devicePosition;
-        String deviceName;
-        String deviceDescription;
+        int categoryID;
+        int qualificationID;
+        String categoryName;
+        String categoryPeriod;
+        String categoryNormalTime; //cast to datetime
+        String specification;
 
         public Request(){
                      
@@ -28,5 +29,5 @@ public class Device {
         public Response(){
 
         }
-    }
+    } 
 }
