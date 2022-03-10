@@ -153,4 +153,26 @@ public class DatabaseManager implements DatabaseManagerInterface {
 
         return -1;
     }
+
+    public void addDevice(int devID, int devCatID, String devName, String devDesc, String devPos)
+    {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addDevice: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+    }
 }
