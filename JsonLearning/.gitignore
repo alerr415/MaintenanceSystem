@@ -1,0 +1,32 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build/
+
+# Ignore Binary
+bin
+
+# Ignore compiled files
+*.class
+
+# Ignore packaged stuff
+*.jar
+*.war
+*.ear
+
+# This is kinda important in theory
+!gradle-wrapper.jar
+
+# Cache
+.gradletasknamecache
+
+*.bak
+*.tmp
+*.swp
+
+local.properties
+
+.classpath
+.settings/
+.loadpath
