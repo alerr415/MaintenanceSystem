@@ -35,7 +35,7 @@ public class Server implements ServerInterface {
      */
     @Override
     public Authenticate.Response handleAuthenticate(Authenticate.Request req){
-        //throw new UnsupportedOperationException("This function is not implemented yet!");//dummy return
+        
 		System.out.println("[SERVER]: Handle login request username: " + req.getUsername() + " password: " + req.getPassword());
         // get the authentication data from the database
         int res_code = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
@@ -62,24 +62,77 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public com.mansys.server.backend.Device.Response handleDevice(com.mansys.server.backend.Device.Request req) {
+    public Device.Response handleDevice(Device.Request req) {
+
+        System.out.println("[SERVER]: Handle device request:\nDeviceID: "  + req.getDeviceID()
+                                                                            + "\nCategoryID: " + req.getDeviceCategoryID() 
+                                                                            + "\nDeviceName: " + req.getDeviceName()
+                                                                            + "\nDeviceDescription: " + req.getDeviceDescription()
+                                                                            + "\nDevicePosition: " + req.getDevicePosition());
         // get the device data from the database
-        //int res_code = DatabaseManager.getInstance().addDevice();
+        //int res_code = DatabaseManager.getInstance().addDevice(1, 1, "Kávéfőző","létfenntartó","I409");
         // create and decode the return value into a response type
         Device.Response res = new Device.Response();
         
+         // NOT THE FINAL 
+         /*switch (res_code) {
+            case 0: // good
+            {
+                res.setErrorCode(0);
+                res.setErrorMessage("Success");
+            }
+            default:
+            {
+                res.setErrorCode(1);
+                res.setErrorMessage("Unknown Device");
+            }
+        }*/
         return res;
     }
 
     @Override
-    public com.mansys.server.backend.Category.Response handleCategory(com.mansys.server.backend.Category.Request req) {
-        // TODO Auto-generated method stub
-        return null;
+    public Category.Response handleCategory(Category.Request req) {
+        
+        Category.Response res = new Category.Response();
+
+        // NOT THE FINAL 
+         /*switch (res_code) {
+            case 0: // good
+            {
+                res.setErrorCode(0);
+                res.setErrorMessage("Success");
+                res.setRole("@dummy_role@");
+            }
+            default:
+            {
+                res.setErrorCode(1);
+                res.setErrorMessage("Unknown Login");
+                res.setRole("@dummy_role@");
+            }
+        }*/
+        return res;
     }
 
     @Override
-    public com.mansys.server.backend.Qualification.Response handleQualification(com.mansys.server.backend.Qualification.Request req) {
-        // TODO Auto-generated method stub
-        return null;
+    public Qualification.Response handleQualification(Qualification.Request req) {
+         
+        Qualification.Response res = new Qualification.Response();
+
+        // NOT THE FINAL 
+         /*switch (res_code) {
+            case 0: // good
+            {
+                res.setErrorCode(0);
+                res.setErrorMessage("Success");
+                res.setRole("@dummy_role@");
+            }
+            default:
+            {
+                res.setErrorCode(1);
+                res.setErrorMessage("Unknown Login");
+                res.setRole("@dummy_role@");
+            }
+        }*/
+        return res;
     }
 }
