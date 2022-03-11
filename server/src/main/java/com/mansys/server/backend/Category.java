@@ -28,7 +28,7 @@ public class Category {
             return this.qualificationID;
         }
 
-        public String getGategoryName(){
+        public String getCategoryName(){
             return this.categoryName;
         }
 
@@ -52,7 +52,7 @@ public class Category {
             this.qualificationID = value;
         }
 
-        public void setGategoryName(String value){
+        public void setCategoryName(String value){
             this.categoryName = value;
         }
 

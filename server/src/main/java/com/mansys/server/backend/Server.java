@@ -64,18 +64,23 @@ public class Server implements ServerInterface {
     @Override
     public Device.Response handleDevice(Device.Request req) {
 
-        System.out.println("[SERVER]: Handle device request:\nDeviceID: "  + req.getDeviceID()
+        System.out.println("[SERVER]: Handle device request:\nDeviceID: "   + req.getDeviceID()
                                                                             + "\nCategoryID: " + req.getDeviceCategoryID() 
                                                                             + "\nDeviceName: " + req.getDeviceName()
                                                                             + "\nDeviceDescription: " + req.getDeviceDescription()
                                                                             + "\nDevicePosition: " + req.getDevicePosition());
         // get the device data from the database
-        //int res_code = DatabaseManager.getInstance().addDevice(1, 1, "Kávéfőző","létfenntartó","I409");
+        int res_code = DatabaseManager.getInstance().addDevice( req.getDeviceID(), 
+                                                                req.getDeviceCategoryID(), 
+                                                                req.getDeviceName(), 
+                                                                req.getDeviceDescription(), 
+                                                                req.getDevicePosition());
+
         // create and decode the return value into a response type
         Device.Response res = new Device.Response();
         
          // NOT THE FINAL 
-         /*switch (res_code) {
+         switch (res_code) {
             case 0: // good
             {
                 res.setErrorCode(0);
@@ -86,17 +91,32 @@ public class Server implements ServerInterface {
                 res.setErrorCode(1);
                 res.setErrorMessage("Unknown Device");
             }
-        }*/
+        }
         return res;
     }
 
     @Override
     public Category.Response handleCategory(Category.Request req) {
         
+        System.out.println("[SERVER]: Handle category request:\nCategoryID: "   + req.getCategoryID()
+                                                                                + "\nCategoryID: " + req.getQualificationID() 
+                                                                                + "\nCategoryName: " + req.getCategoryName()
+                                                                                + "\nPeriod: " + req.getCategoryPeriod()
+                                                                                + "\nNormal time: " + req.getCategoryNormalTime()
+                                                                                + "\nSpecification: " + req.getSpecification());
+        // get the device data from the database
+        int res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryID(), 
+                                                                    req.getQualificationID(), 
+                                                                    req.getCategoryName(), 
+                                                                    req.getCategoryPeriod(), 
+                                                                    req.getCategoryNormalTime(),
+                                                                    req.getSpecification());
+
+
         Category.Response res = new Category.Response();
 
         // NOT THE FINAL 
-         /*switch (res_code) {
+        switch (res_code) {
             case 0: // good
             {
                 res.setErrorCode(0);
@@ -107,17 +127,22 @@ public class Server implements ServerInterface {
                 res.setErrorCode(1);
                 res.setErrorMessage("Unknown Device Category");
             }
-        }*/
+        }
         return res;
     }
 
     @Override
     public Qualification.Response handleQualification(Qualification.Request req) {
          
+        System.out.println("[SERVER]: Handle category request:\nQualificationID: " + req.getQualificationID() 
+                                                         + "\nQualificationName: " + req.getQualificationName());
+        // get the device data from the database
+        int res_code = DatabaseManager.getInstance().addQualication(req.getQualificationID(), req.getQualificationName());
+
         Qualification.Response res = new Qualification.Response();
 
         // NOT THE FINAL 
-         /*switch (res_code) {
+        switch (res_code) {
             case 0: // good
             {
                 res.setErrorCode(0);
@@ -128,7 +153,7 @@ public class Server implements ServerInterface {
                 res.setErrorCode(1);
                 res.setErrorMessage("Unknown Qualification");
             }
-        }*/
+        }
         return res;
     }
 }
