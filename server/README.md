@@ -33,7 +33,7 @@ The qualificationID can be used to assign a specified qualification for the cate
 - String errorMessage
 - int errorCode
 
-## Device
+## Device (POST /device)
 Used for creating new devices.
 
 ### Request
@@ -47,7 +47,7 @@ Used for creating new devices.
 - String errorMessage
 - int errorCode
 
-## Qualification
+## Qualification (POST /qualification)
 Used for qualification creation. 
 
 ### Request
