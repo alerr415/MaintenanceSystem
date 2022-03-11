@@ -101,13 +101,11 @@ public class Server implements ServerInterface {
             {
                 res.setErrorCode(0);
                 res.setErrorMessage("Success");
-                res.setRole("@dummy_role@");
             }
             default:
             {
                 res.setErrorCode(1);
-                res.setErrorMessage("Unknown Login");
-                res.setRole("@dummy_role@");
+                res.setErrorMessage("Unknown Device Category");
             }
         }*/
         return res;
@@ -124,13 +122,11 @@ public class Server implements ServerInterface {
             {
                 res.setErrorCode(0);
                 res.setErrorMessage("Success");
-                res.setRole("@dummy_role@");
             }
             default:
             {
                 res.setErrorCode(1);
-                res.setErrorMessage("Unknown Login");
-                res.setRole("@dummy_role@");
+                res.setErrorMessage("Unknown Qualification");
             }
         }*/
         return res;
