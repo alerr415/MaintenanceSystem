@@ -154,7 +154,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
         return -1;
     }
 
-    public void addDevice(int devID, int devCatID, String devName, String devDesc, String devPos)
+    public int addDevice(int devID, int devCatID, String devName, String devDesc, String devPos)
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -173,10 +173,12 @@ public class DatabaseManager implements DatabaseManagerInterface {
                 System.err.println("[ERROR]: Error occured in function addDevice when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
             }
-        }   
+        }  
+        
+        return 0;
     }
 
-    public void addCategory(int categoryID, int qualificationID, String categoryName, String categoryPeriod, String categoryNormalTime, String specification)
+    public int addCategory(int categoryID, int qualificationID, String categoryName, String categoryPeriod, String categoryNormalTime, String specification)
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -196,9 +198,11 @@ public class DatabaseManager implements DatabaseManagerInterface {
                 ex.printStackTrace();
             }
         }   
+
+        return 0;
     }
 
-    public void addQualication(int qualificationID,  String qualificationName)
+    public int addQualication(int qualificationID,  String qualificationName)
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -218,5 +222,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
                 ex.printStackTrace();
             }
         }   
+
+        return 0;
     }
 }
