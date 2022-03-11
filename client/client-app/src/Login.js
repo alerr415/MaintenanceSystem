@@ -48,8 +48,8 @@ function Login() {
       <Grid item xs={12} sm={8} lg={4}>
         <Card sx={{ mt : 8 , mx : "auto", p : 2, textAlign: 'center'}}>
 
-          <CardMedia sx={{ backgroundColor : blue }}>
-            <Typography variant="h3">Maintenance<br />System</Typography>
+          <CardMedia>
+              <Typography variant="h3">Maintenance<br />System</Typography>
           </CardMedia>
 
           <CardContent>
