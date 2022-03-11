@@ -38,7 +38,8 @@ public class Server implements ServerInterface {
         
 		System.out.println("[SERVER]: Handle login request username: " + req.getUsername() + " password: " + req.getPassword());
         // get the authentication data from the database
-        int res_code = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
+        int res_code = 0;
+        //res_code = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
 
         // create and decode the return value into a response type
         Authenticate.Response res = new Authenticate.Response();
@@ -50,12 +51,14 @@ public class Server implements ServerInterface {
                 res.setErrorCode(0);
                 res.setErrorMessage("Success");
                 res.setRole("@dummy_role@");
+                break;
             }
             default:
             {
                 res.setErrorCode(1);
                 res.setErrorMessage("Unknown Login");
                 res.setRole("@dummy_role@");
+                break;
             }
         }
         return res;
@@ -68,13 +71,14 @@ public class Server implements ServerInterface {
                                                                             + "\nCategoryID: " + req.getDeviceCategoryID() 
                                                                             + "\nDeviceName: " + req.getDeviceName()
                                                                             + "\nDeviceDescription: " + req.getDeviceDescription()
-                                                                            + "\nDevicePosition: " + req.getDevicePosition());
+                                                                            + "\nDevicePosition: " + req.getDeviceLocation());
         // get the device data from the database
-        int res_code = DatabaseManager.getInstance().addDevice( req.getDeviceID(), 
-                                                                req.getDeviceCategoryID(), 
-                                                                req.getDeviceName(), 
-                                                                req.getDeviceDescription(), 
-                                                                req.getDevicePosition());
+        int res_code = 0;
+        // res_code = DatabaseManager.getInstance().addDevice( req.getDeviceID(), 
+        //                                                         req.getDeviceCategoryID(), 
+        //                                                         req.getDeviceName(), 
+        //                                                         req.getDeviceDescription(), 
+        //                                                         req.getDeviceLocation());
 
         // create and decode the return value into a response type
         Device.Response res = new Device.Response();
@@ -85,11 +89,13 @@ public class Server implements ServerInterface {
             {
                 res.setErrorCode(0);
                 res.setErrorMessage("Success");
+                break;
             }
             default:
             {
                 res.setErrorCode(1);
                 res.setErrorMessage("Unknown Device");
+                break;
             }
         }
         return res;
@@ -105,12 +111,13 @@ public class Server implements ServerInterface {
                                                                                 + "\nNormal time: " + req.getCategoryNormalTime()
                                                                                 + "\nSpecification: " + req.getSpecification());
         // get the device data from the database
-        int res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryID(), 
-                                                                    req.getQualificationID(), 
-                                                                    req.getCategoryName(), 
-                                                                    req.getCategoryPeriod(), 
-                                                                    req.getCategoryNormalTime(),
-                                                                    req.getSpecification());
+        int res_code = 0;
+        // res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryID(), 
+        //                                                             req.getQualificationID(), 
+        //                                                             req.getCategoryName(), 
+        //                                                             req.getCategoryPeriod(), 
+        //                                                             req.getCategoryNormalTime(),
+        //                                                             req.getSpecification());
 
 
         Category.Response res = new Category.Response();
@@ -121,11 +128,13 @@ public class Server implements ServerInterface {
             {
                 res.setErrorCode(0);
                 res.setErrorMessage("Success");
+                break;
             }
             default:
             {
                 res.setErrorCode(1);
                 res.setErrorMessage("Unknown Device Category");
+                break;
             }
         }
         return res;
@@ -137,7 +146,8 @@ public class Server implements ServerInterface {
         System.out.println("[SERVER]: Handle category request:\nQualificationID: " + req.getQualificationID() 
                                                          + "\nQualificationName: " + req.getQualificationName());
         // get the device data from the database
-        int res_code = DatabaseManager.getInstance().addQualication(req.getQualificationID(), req.getQualificationName());
+        int res_code = 0;
+        // res_code = DatabaseManager.getInstance().addQualication(req.getQualificationID(), req.getQualificationName());
 
         Qualification.Response res = new Qualification.Response();
 
@@ -147,11 +157,13 @@ public class Server implements ServerInterface {
             {
                 res.setErrorCode(0);
                 res.setErrorMessage("Success");
+                break;
             }
             default:
             {
                 res.setErrorCode(1);
                 res.setErrorMessage("Unknown Qualification");
+                break;
             }
         }
         return res;

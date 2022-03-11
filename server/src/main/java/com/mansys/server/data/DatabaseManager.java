@@ -11,6 +11,7 @@ import java.sql.Types;
  * Singleton class for the database connection and functions for the transactions.
  * 
  * @author Tálas Martin
+ * @author Tóth Bálint
  * @category Database
  */
 

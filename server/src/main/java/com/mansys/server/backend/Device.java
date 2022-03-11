@@ -13,7 +13,7 @@ public class Device {
         int deviceCategoryID;
         String deviceName;
         String deviceDescription;
-        String devicePosition;
+        String deviceLocation;
 
         public Request(){
                      
@@ -36,8 +36,8 @@ public class Device {
             return this.deviceDescription;
         }
 
-        public String getDevicePosition(){
-            return this.devicePosition;
+        public String getDeviceLocation(){
+            return this.deviceLocation;
         }
 
         public void setDeviceID(int value){
@@ -55,8 +55,8 @@ public class Device {
         public void setDeviceDescription(String value){
             this.deviceDescription = value;
         }
-        public void setDevicePosition(String value){
-            this.devicePosition = value;
+        public void setDeviceLocation(String value){
+            this.deviceLocation = value;
         }
     }
 

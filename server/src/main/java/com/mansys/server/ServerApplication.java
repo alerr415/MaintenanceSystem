@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Main resource controller for the server backand. Uses a Server Interface implementation to handle
+ * requests from the clients and sends back HTTP responses.
+ * @author Tálas Martin
+ * @author Tóth Bálint
+ */
+
 @RestController
 @SpringBootApplication
 public class ServerApplication {
@@ -22,8 +29,8 @@ public class ServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
 		
-		DatabaseManager dbm = DatabaseManager.getInstance();
-		dbm.testProcedure();
+		// DatabaseManager dbm = DatabaseManager.getInstance();
+		// dbm.testProcedure();
 	}
 
 	@GetMapping("/hello")
