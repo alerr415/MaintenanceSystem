@@ -1,0 +1,68 @@
+A
+1. Download Microsoft SQL Server Express
+2. Run SQL Server Configuration Manager
+3. Under SQL Server Network Configuration
+4. Open Protocols for SQLEXPRESS
+5. Enable TCP/IP protocol
+6. Right click on TCP/IP protocol
+7. Open properties
+8. Open IP Addresses
+9. Set all TCP Ports to 1433
+10. Go back to SQL Server Services
+11. Right click on SQL Server Browser
+12. Click Properties
+13. Click Service
+14. Set Start Mode to automatic
+15. Do the same with SQL Server Agent
+16. Start these two services
+17. Restart SQL Server (SQLEXPRESS) service	
+
+B		
+1. Download Microsoft JDBC Driver 10.2.0 for SQL Server (zip)
+2. Unzip
+3. On VSCode!
+   1. Download Extension Pack for Java
+   2. Create Java Project
+   3. On the right side panel open JAVA PROJECTS
+   4. Search for Referenced Libraries and click the + symbol
+   5. Add the JRE file in the downloaded JDBC folder according
+	to the Java version you are using
+	(in my case I have java version 16 and with jre11 worked)
+   6. Go to the unzipped JDBC Driver folder
+   7. Auth -> x64 -> copy that dll file
+   8. Paste it to C:\ProgramFiles\Java\jdkfolderyouhavethere\bin
+
+C
+Use the following java code to establish connection:
+
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class App {
+
+    public static void main(String[] args) throws Exception {
+		String connectionString =
+    "jdbc:sqlserver://localhost:1433;" +
+     "databaseName=MaintenanceSystem2;integratedSecurity=true;" +
+     "encrypt=true;trustServerCertificate=true";
+        try{
+			try (Connection connection = DriverManager.getConnection(connectionString)) {
+				System.out.println("Connection successful!");
+			}
+		} catch (SQLException e) {
+			System.out.println("Connection failed!");
+			e.printStackTrace();
+		}
+    }
+
+}
+
+References:
+https://docs.microsoft.com/en-us/sql/connect/jdbc/release-notes-for-the-jdbc-driver?view=sql-server-ver15
+https://code.visualstudio.com/docs/java/java-tutorial
+https://www.youtube.com/watch?v=3Qm54znQX2E
+https://www.youtube.com/watch?v=GJTnJ_EBFY8
+https://docs.microsoft.com/en-us/sql/connect/jdbc/connecting-with-ssl-encryption?view=sql-server-ver15
+https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+   
