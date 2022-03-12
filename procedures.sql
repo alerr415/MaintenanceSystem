@@ -5,7 +5,7 @@ GO
 CREATE PROCEDURE Bejelentkezes 
     @username VARCHAR(50), 
     @password VARCHAR(20), 
-    @feleloseg VARCHAR(50) OUTPUT 
+    @szerepkor VARCHAR(50) OUTPUT 
 AS
 SET NOCOUNT ON
         
@@ -15,7 +15,7 @@ SET NOCOUNT ON
     SELECT @felhasznalo_nev = Felhasznalonev, @jelszo = Jelszo
         FROM Felhasznalo
         WHERE Felhasznalonev = @username AND Jelszo = @password
-    SELECT @feleloseg = Szerepkor
+    SELECT @szerepkor = Szerepkor
         FROM Felhasznalo
         WHERE Felhasznalonev = @username AND Jelszo = @password
     IF @felhasznalo_nev IS NULL OR @jelszo IS NULL
