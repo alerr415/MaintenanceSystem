@@ -4,7 +4,7 @@ import Layout from './Layout.js';
 function App() {
   return (
     <>
-      <Login />
+      <Layout />
     </>
   );
 
