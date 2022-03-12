@@ -1,2 +1,0 @@
-# MaintenanceSystem
-Rendszerfejlesztes projekt
