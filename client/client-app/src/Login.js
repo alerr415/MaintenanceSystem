@@ -49,7 +49,7 @@ function Login() {
         <Card sx={{ mt : 8 , mx : "auto", p : 2, textAlign: 'center'}}>
 
           <CardMedia>
-              <Typography variant="h3">Maintenance<br />System</Typography>
+              <Typography variant="h3">Karbantartási<br />Rendszer</Typography>
           </CardMedia>
 
           <CardContent>

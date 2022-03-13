@@ -19,12 +19,38 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Toolbar from '@mui/material/Toolbar';
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+//import CardMedia from '@mui/material/CardMedia';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+
+
 
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const [loc, setLoc] = React.useState('');
+
+  const locChange = (event) => {
+    setLoc(event.target.value);
+  };
+
+  const [type, setType] = React.useState('');
+
+  const typeChange = (event) => {
+    setType(event.target.value);
+  };
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -96,7 +122,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Karbantartási rendszer
+            Karbantartási Rendszer
           </Typography>
         </Toolbar>
       </AppBar>
@@ -141,7 +167,77 @@ function ResponsiveDrawer(props) {
               width: { sm: `calc(100% - ${drawerWidth}px)` }}}
       >
         <Toolbar />
-        <Typography paragraph>
+
+        <Grid container spacing={2}>
+          <Grid item xs={0} sm={0} lg={3}></Grid>
+
+          <Grid item xs={12} sm={12} lg={6}>
+            <Card >
+              <CardContent>
+
+                <Typography variant="h5">Eszköz hozzáadása</Typography>
+                <Divider />
+
+                <Grid container spacing={2} sx={{ mt : 2 }}>
+                  <Grid item xs={12} sm={12} md={6}>
+                    <Typography variant="h6" sx={{ mt : 2 }}>Eszköz neve:</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6}>
+                    {/*  Eszköz neve */}
+                    <TextField id="deviceName" label="Név" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={6}>
+                    <Typography variant="h6" sx={{ mt : 2 }}>Eszköz helye:</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6}>
+                    {/*  Eszköz helye */}
+                    <FormControl sx={{ mx : 'auto' , width : 1 }}>
+                      <InputLabel id="locLabel">Helyszín</InputLabel>
+                      <Select labelId="locLabel" id="locSelect" value={loc} onChange={locChange} label="Helyszín">
+                        <MenuItem value={10}>Mosdó</MenuItem>
+                        <MenuItem value={20}>Iroda</MenuItem>
+                        <MenuItem value={30}>Folyosó</MenuItem>
+                      </Select>
+                    </FormControl><br />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={6}>
+                    <Typography variant="h6" sx={{ mt : 2 }}>Eszköz kategóriája:</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6}>
+                    {/*  Eszköz kategóriája */}
+                    <FormControl sx={{ mx : 'auto' ,  width : 1 }}>
+                      <InputLabel id="typeLabel">Kategória</InputLabel>
+                      <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Kategória">
+                        <MenuItem value={10}>Tűzvédelem</MenuItem>
+                        <MenuItem value={20}>Világítás</MenuItem>
+                        <MenuItem value={30}>Szaniter</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                </Grid>
+              </CardContent>
+
+              <CardActions>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={12} md={6}>
+                    {/*<Button size="large" variant="outlined" color="warning" fullWidth>Mégsem</Button>*/}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6}>
+                    <Button size="large" variant="contained" color="success" fullWidth>Hozzáadás</Button>
+                  </Grid>
+                </Grid>
+              </CardActions>
+
+            </Card>
+          </Grid>
+
+          <Grid item xs={0} sm={0} lg={3}></Grid>
+        </Grid>
+
+        <Typography paragraph sx={{ mt : 2 }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
           enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
