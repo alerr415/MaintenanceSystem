@@ -132,7 +132,7 @@ public class Server implements ServerInterface {
      * @return
      */
     public ResponseCookie deleteSession(int sessId) {
-        validSessions.remove(sessId);
+        validSessions.remove(validSessions.indexOf(sessId));
         return ResponseCookie.from(COOKIE_ID,Integer.toString(sessId))
             .httpOnly(true)
             .maxAge(0)
