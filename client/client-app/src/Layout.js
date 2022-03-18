@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useContext } from "react";
 //import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -30,7 +31,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-
+import { UserContext } from "./User.js";
 
 
 const drawerWidth = 240;
@@ -38,6 +39,8 @@ const drawerWidth = 240;
 function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const {user, setUser} = useContext(UserContext);
+
 
   const [loc, setLoc] = React.useState('');
 
