@@ -26,6 +26,17 @@ public class Server implements ServerInterface {
     private final int RESCODE_OK = 0;
 
     /**
+     * The lifetime of a cookie at generation.
+     */
+    private final int COOKIE_LIFETIME = 60 * 15; // 15 minutes
+
+    /**
+     * The name of the cookie that will represent the session.
+     * IMPORTANT: in the REST controller, the "session-id" string must be specified at compile time
+     */
+    private final String COOKIE_ID = "session-id";
+
+    /**
      * Container to store the valid sessions.
      * Basic session: <br>
      *  - during successful authentication the server generates a (big) random number, that will be the id<br>
@@ -68,9 +79,22 @@ public class Server implements ServerInterface {
     // ------------------------------------------------------------------------------------------
     // [SESSION] --------------------------------------------------------------------------------
 
+    private ResponseCookie generateCookie(int sessId) {
+        return ResponseCookie.from(COOKIE_ID,Integer.toString(sessId))
+            .httpOnly(true)
+            .maxAge(COOKIE_LIFETIME)
+            .secure(true)
+            .build();
+    }
+
     // generate
-    public ResponseCookie generateSession() {
-        return null;
+    public ResponseCookie generateSession(String username) {
+        int sessId = new StringBuilder(username)
+            .append(Integer.toString((int)(Math.random()*1000)))
+            .toString()
+            .hashCode();
+        validSessions.add(sessId);
+        return generateCookie(sessId);
     }
 
     // check
