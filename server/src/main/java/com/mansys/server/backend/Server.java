@@ -57,6 +57,10 @@ public class Server implements ServerInterface {
         return instance;
     }
 
+    /**
+     * For the spring app to get the result from a standard response class.
+     * @return the result code integer representing success (0 for most of the times)
+     */
     public final int getRescodeOK() {
         return RESCODE_OK;
     }
@@ -106,7 +110,7 @@ public class Server implements ServerInterface {
         switch (res_code) {
             case 0: // good
             {
-                res.setErrorCode(0);
+                res.setErrorCode(RESCODE_OK);
                 res.setErrorMessage("Success");
                 res.setRole("@dummy_role@");
                 break;
@@ -145,7 +149,7 @@ public class Server implements ServerInterface {
          switch (res_code) {
             case 0: // good
             {
-                res.setErrorCode(0);
+                res.setErrorCode(RESCODE_OK);
                 res.setErrorMessage("Success");
                 break;
             }
@@ -184,7 +188,7 @@ public class Server implements ServerInterface {
         switch (res_code) {
             case 0: // good
             {
-                res.setErrorCode(0);
+                res.setErrorCode(RESCODE_OK);
                 res.setErrorMessage("Success");
                 break;
             }
@@ -213,7 +217,7 @@ public class Server implements ServerInterface {
         switch (res_code) {
             case 0: // good
             {
-                res.setErrorCode(0);
+                res.setErrorCode(RESCODE_OK);
                 res.setErrorMessage("Success");
                 break;
             }
