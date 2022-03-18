@@ -79,6 +79,11 @@ public class Server implements ServerInterface {
     // ------------------------------------------------------------------------------------------
     // [SESSION] --------------------------------------------------------------------------------
 
+    /**
+     * Configurable cookie generation. 
+     * @param sessId the session id (from the generation or the list)
+     * @return a freshly baked http ResponseCookie with the session id set.
+     */
     private ResponseCookie generateCookie(int sessId) {
         return ResponseCookie.from(COOKIE_ID,Integer.toString(sessId))
             .httpOnly(true)
@@ -87,7 +92,11 @@ public class Server implements ServerInterface {
             .build();
     }
 
-    // generate
+    /**
+     * Generates the initial cookie and inserts it into the valid sessions list.
+     * @param username the username so the session id can be generated
+     * @return the initial http ResponseCookie to the client's browser
+     */
     public ResponseCookie generateSession(String username) {
         int sessId = new StringBuilder(username)
             .append(Integer.toString((int)(Math.random()*1000)))
@@ -97,19 +106,38 @@ public class Server implements ServerInterface {
         return generateCookie(sessId);
     }
 
-    // check
+    /**
+     * Checks if the given session id is in the valid sessions list. (aka. the session is valid)
+     * @param sessId session id from the client's cookie
+     * @return boolean representing the validness of the request
+     */
     public boolean isSessionValid(int sessId) {
-        return false;
+        return validSessions.contains(sessId);
     }
 
-    // refresh
+    /**
+     * Refreshes the session cookie: takes the session id and gives back a new cookie with 15 mins.
+     * @param sessId session id from the client's cookie
+     * @return fresh cookie
+     */
     public ResponseCookie refreshSession(int sessId) {
-        return null;
+        return generateCookie(sessId);
     }
 
-    // delete
+    /**
+     * Deletes the session: 
+     * Deletes the session id from the list and gives a zero second lifetime cooke to the client.
+     * That will make the client's browser instantly forget the cookie and the session id.
+     * @param sessId
+     * @return
+     */
     public ResponseCookie deleteSession(int sessId) {
-        return null;
+        validSessions.remove(sessId);
+        return ResponseCookie.from(COOKIE_ID,Integer.toString(sessId))
+            .httpOnly(true)
+            .maxAge(0)
+            .secure(true)
+            .build();
     }
 
     // ------------------------------------------------------------------------------------------
