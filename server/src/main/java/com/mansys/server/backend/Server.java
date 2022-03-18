@@ -1,6 +1,11 @@
 package com.mansys.server.backend;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.mansys.server.data.DatabaseManager;
+
+import org.springframework.http.ResponseCookie;
 
 /**
  * The server class handles all the functionallity of the conceptual server.
@@ -10,13 +15,36 @@ import com.mansys.server.data.DatabaseManager;
  */
 public class Server implements ServerInterface {
 
+    // ------------------------------------------------------------------------------------------
+    // [FIELDS] ---------------------------------------------------------------------------------
     // singleton instance
     private static Server instance = null;
+
+    /**
+     * Just for ease to standardise the success code.
+     */
+    private final int RESCODE_OK = 0;
+
+    /**
+     * Container to store the valid sessions.
+     * Basic session: <br>
+     *  - during successful authentication the server generates a (big) random number, that will be the id<br>
+     *  - the session id-s will be stored in a list<br>
+     *  - also the session id will be sent to the client web browser as a cookie
+     *  - during every request-response, the cookie is renewed and resent to the client
+     *  - during logout, the cookie is deleted from the client
+     */
+    public List<Integer> validSessions;
+
+    // ------------------------------------------------------------------------------------------
+    // [SINGLETON & CONSTRUCTION] ---------------------------------------------------------------
     
     /**
-     * Unimplemented for the singleton.
+     * Initializing sessions
      */
-    private Server() {}
+    private Server() {
+        validSessions = new LinkedList<>();
+    }
 
     /**
      * Standard instance query.
@@ -28,6 +56,36 @@ public class Server implements ServerInterface {
         }
         return instance;
     }
+
+    public final int getRescodeOK() {
+        return RESCODE_OK;
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // [SESSION] --------------------------------------------------------------------------------
+
+    // generate
+    public ResponseCookie generateSession() {
+        return null;
+    }
+
+    // check
+    public boolean isSessionValid(int sessId) {
+        return false;
+    }
+
+    // refresh
+    public ResponseCookie refreshSession(int sessId) {
+        return null;
+    }
+
+    // delete
+    public ResponseCookie deleteSession(int sessId) {
+        return null;
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // [INTERFACE METHODS] ----------------------------------------------------------------------
 
     /**
      * Authenticate handling.
