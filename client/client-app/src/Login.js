@@ -18,14 +18,11 @@ function Login() {
 
   const {user, setUser} = useContext(UserContext);
 
-
   function submit() {
     const tosend = {
     "username": document.getElementById("username").value,
     "password": document.getElementById("password").value
   };
-
-
 
     console.log(tosend);
     console.log(serveraddress+'/login');
