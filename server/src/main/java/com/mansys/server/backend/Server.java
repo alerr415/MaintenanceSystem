@@ -7,6 +7,8 @@ import com.mansys.server.data.DatabaseManager;
 
 import org.springframework.http.ResponseCookie;
 
+import javafx.util.Pair;
+
 /**
  * The server class handles all the functionallity of the conceptual server.
  * It follows the singleton design pattern, as we want to have only one instance of the server to exists.
@@ -152,8 +154,8 @@ public class Server implements ServerInterface {
         
 		System.out.println("[SERVER]: Handle login request username: " + req.getUsername() + " password: " + req.getPassword());
         // get the authentication data from the database
-        int res_code = 0;
-        //res_code = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
+        Pair<Integer,String> dataResult = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
+        int res_code = dataResult.getKey();
 
         // create and decode the return value into a response type
         Authenticate.Response res = new Authenticate.Response();
@@ -164,14 +166,14 @@ public class Server implements ServerInterface {
             {
                 res.setErrorCode(RESCODE_OK);
                 res.setErrorMessage("Success");
-                res.setRole("@dummy_role@");
+                res.setRole(dataResult.getValue());
                 break;
             }
             default:
             {
                 res.setErrorCode(1);
-                res.setErrorMessage("Unknown Login");
-                res.setRole("@dummy_role@");
+                res.setErrorMessage("Login failed: invalid username or password.");
+                res.setRole(null);
                 break;
             }
         }
