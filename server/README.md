@@ -17,17 +17,26 @@ Used for login authentication of the users. The username and password should be 
 - String errorMessage  
 - int errorCode  
 
-## Category (POST /category)
+## Query categories (GET /category)
+Used to get all the categories in a list.
+
+### Request params
+(None for now)
+
+### Response
+- \[String\] categories
+
+## Add category (POST /category)
 Used for category management (creating and organizing categories).
 The qualificationID can be used to assign a specified qualification for the category.
 
 ### Request
-- int categoryID
-- int qualificationID
 - String categoryName
+- String qualification
 - String categoryPeriod
 - String categoryNormalTime
 - String specification
+- String parent
 
 ### Response
 - String errorMessage
@@ -37,22 +46,10 @@ The qualificationID can be used to assign a specified qualification for the cate
 Used for creating new devices.
 
 ### Request
-- int deviceID
-- int deviceCategoryID
 - String deviceName
+- String deviceCategoryName
 - String deviceDescription
 - String deviceLocation
-
-### Response
-- String errorMessage
-- int errorCode
-
-## Qualification (POST /qualification)
-Used for qualification creation. 
-
-### Request
-- int qualificationID
-- String qualificationName
 
 ### Response
 - String errorMessage
