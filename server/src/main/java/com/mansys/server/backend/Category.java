@@ -9,27 +9,24 @@ public class Category {
 
     public static class Request {
 
-        int categoryID;
-        int qualificationID;
         String categoryName;
+        String  qualification;
         String categoryPeriod;
         String categoryNormalTime; //cast to datetime
         String specification;
+        String parent;
 
         public Request(){
                      
         }
 
-        public int getCategoryID(){
-            return this.categoryID;
-        }
-
-        public int getQualificationID(){
-            return this.qualificationID;
-        }
 
         public String getCategoryName(){
             return this.categoryName;
+        }
+
+        public String getQualification() {
+            return this.qualification;
         }
 
         public String getCategoryPeriod(){
@@ -44,16 +41,16 @@ public class Category {
             return this.specification;
         }
 
-        public void setCategoryID(int value){
-            this.categoryID = value;
-        }
-
-        public void setQualificationID(int value){
-            this.qualificationID = value;
+        public String getParent() {
+            return parent;
         }
 
         public void setCategoryName(String value){
             this.categoryName = value;
+        }
+
+        public void setQualification(String value){
+            this.qualification = value;
         }
 
         public void setCategoryPeriod(String value){
@@ -66,6 +63,10 @@ public class Category {
 
         public void setSpecification(String value){
             this.specification = value;
+        }
+
+        public void setParent(String value) {
+            this.parent = value;
         }
     }
 

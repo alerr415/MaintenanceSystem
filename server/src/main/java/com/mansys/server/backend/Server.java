@@ -220,12 +220,12 @@ public class Server implements ServerInterface {
     @Override
     public Category.Response handleCategory(Category.Request req) {
         
-        System.out.println("[SERVER]: Handle category request:\nCategoryID: "   + req.getCategoryID()
-                                                                                + "\nCategoryID: " + req.getQualificationID() 
-                                                                                + "\nCategoryName: " + req.getCategoryName()
+        System.out.println("[SERVER]: Handle category request:\nCategoryName: "   + req.getCategoryName()
+                                                                                + "\nQualification: " + req.getQualification()
                                                                                 + "\nPeriod: " + req.getCategoryPeriod()
                                                                                 + "\nNormal time: " + req.getCategoryNormalTime()
-                                                                                + "\nSpecification: " + req.getSpecification());
+                                                                                + "\nSpecification: " + req.getSpecification()
+                                                                                + "\nParent: " + req.getParent());
         // get the device data from the database
         int res_code = 0;
         // res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryID(), 

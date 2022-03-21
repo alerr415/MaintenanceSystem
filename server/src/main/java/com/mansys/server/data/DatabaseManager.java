@@ -183,7 +183,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
         return 0;
     }
 
-    public int addCategory(int categoryID, int qualificationID, String categoryName, String categoryPeriod, String categoryNormalTime, String specification)
+    public int addCategory(String categoryName, String qualification, String categoryPeriod, String categoryNormalTime, String specification, String parent)
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
