@@ -5,6 +5,7 @@ package com.mansys.server.backend;
  * @author Tálas Martin
  */
 
+ @Deprecated
 public class Qualification {
     
     public static class Request {

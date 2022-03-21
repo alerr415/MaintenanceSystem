@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.CallableStatement;
 import java.sql.Types;
 
+import javafx.util.Pair;
+
 
 /**
  * Singleton class for the database connection and functions for the transactions.
@@ -19,7 +21,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
 
     //-----------------------------------------[ VARIABLES ]------------------------------------------
 
-    final String URL = "jdbc:mysql://192.168.8.101:3306/test";
+    final String URL = "jdbc:mysql://localhost:3306/maintenancesystem2";
     final String USERNAME = "root";
     final String PASSWORD = "";
 
@@ -119,22 +121,24 @@ public class DatabaseManager implements DatabaseManagerInterface {
     }
     //------------------------------------------------------------------------------------------------
 
-    public int authenticateUser(String username, String password) {
+    public Pair<Integer,String> authenticateUser(String username, String password) {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            String sendProcedure = "{? = CALL Bejelentkezes(? ?)}";
+            String sendProcedure = "{CALL Bejelentkezes(?, ?, ?, ?)}";
             CallableStatement callableStatement = connection.prepareCall(sendProcedure);
 
-            callableStatement.registerOutParameter(1,java.sql.Types.INTEGER);
-            callableStatement.setString(2,username);
-            callableStatement.setString(3,password);
+            callableStatement.setString("username",username);
+            callableStatement.setString("pass",password);
+            callableStatement.registerOutParameter("qualification",java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter("resultcode",java.sql.Types.INTEGER);
 
             callableStatement.execute();
 
-            int res_code = callableStatement.getInt(1);
-            System.out.println("[database]: called Bejelentkezes, result: " + res_code);
+            int resCode = callableStatement.getInt("resultcode");
+            String role = callableStatement.getString("qualification");
+            System.out.println("[DATABASE]: Called Bejelentkezes, result: " + resCode + ", role: " + role);
 
-            return res_code;
+            return new Pair<>(resCode,role);
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function TEMPLATE: " + ex + "\nStack trace: ");
@@ -152,13 +156,28 @@ public class DatabaseManager implements DatabaseManagerInterface {
             }
         }   
 
-        return -1;
+        return new Pair<>(-1,"Internal error");
     }
 
-    public int addDevice(int devID, int devCatID, String devName, String devDesc, String devPos)
+    public int addDevice(String deviceName, String deviceCategoryName, String deviceDescription, String devPosition)
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL Eszkoz_hozzaadasa(?, ?, ?, ?, ?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("device_name",deviceName);
+            callableStatement.setString("device_category_name",deviceCategoryName);
+            callableStatement.setString("descrip",deviceDescription);
+            callableStatement.setString("location",devPosition);
+
+            callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+
+            int resCode = callableStatement.getInt("resultCode");
+            System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
+            return resCode;
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addDevice: " + ex + "\nStack trace: ");
@@ -176,13 +195,30 @@ public class DatabaseManager implements DatabaseManagerInterface {
             }
         }  
         
-        return 0;
+        return -1;
     }
 
-    public int addCategory(int categoryID, int qualificationID, String categoryName, String categoryPeriod, String categoryNormalTime, String specification)
+    public int addCategory(String categoryName, String qualification, String categoryPeriod, String categoryNormalTime, String specification, String parent)
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL EszkozKategoria_hozzaadasa(?, ?, ?, ?, ?, ?, ?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("device_category_name",categoryName);
+            callableStatement.setString("qualification",qualification);
+            callableStatement.setString("period",categoryPeriod);
+            callableStatement.setString("deadline",categoryNormalTime);
+            callableStatement.setString("descrip",specification);
+            callableStatement.setString("parent",parent);
+
+            callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+
+            int resCode = callableStatement.getInt("resultCode");
+            System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
+            return resCode;
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addCategory: " + ex + "\nStack trace: ");
@@ -203,6 +239,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
         return 0;
     }
 
+    @Deprecated
     public int addQualication(int qualificationID,  String qualificationName)
     {
         try {

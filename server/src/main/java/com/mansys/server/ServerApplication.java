@@ -9,7 +9,10 @@ import com.mansys.server.data.DatabaseManager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,25 +50,72 @@ public class ServerApplication {
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> authenticate(@RequestBody Authenticate.Request request) {
 		Authenticate.Response response = Server.getInstance().handleAuthenticate(request);
-		return ResponseEntity.ok(response);
+		// get the result so the cookiefication can be determined
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			// in this case we request a cookie
+			ResponseCookie cookie = Server.getInstance().generateSession(request.getUsername());
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
 	}
 
+// {"deviceID":69, "deviceCategoryID":420, "deviceName":"vibrator", "deviceDescription":"not found", "deviceLocation":"yo mama"}
+
 	@PostMapping("/device")
-	public ResponseEntity<?> addDevice(@RequestBody Device.Request request) {
+	public ResponseEntity<?> addDevice(@RequestBody Device.Request request
+									 , @CookieValue(name="session-id",defaultValue="0") String sessId) {
+		// check if the session is valid -> we can handle the request
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / Device] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			//TODO: implement response for invalid sessions
+		}
+
 		Device.Response response = Server.getInstance().handleDevice(request);
-		return ResponseEntity.ok(response);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
 	}
 
 	@PostMapping("/category")
-	public ResponseEntity<?> addCategory(@RequestBody Category.Request request) {
+	public ResponseEntity<?> addCategory(@RequestBody Category.Request request
+									   , @CookieValue(name="session-id",defaultValue="default") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+		}
+
 		Category.Response response = Server.getInstance().handleCategory(request);
-		return ResponseEntity.ok(response);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
 	}
 
-	@PostMapping("qualification")
-	public ResponseEntity<?> addQualification(@RequestBody Qualification.Request request) {
+	@Deprecated
+	@PostMapping("/qualification")
+	public ResponseEntity<?> addQualification(@RequestBody Qualification.Request request
+											, @CookieValue(name="session-id",defaultValue="default") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+		}
+
 		Qualification.Response response = Server.getInstance().handleQualification(request);
-		return ResponseEntity.ok(response);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
 	}
 
 }
