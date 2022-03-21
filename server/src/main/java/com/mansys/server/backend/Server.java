@@ -183,9 +183,8 @@ public class Server implements ServerInterface {
     @Override
     public Device.Response handleDevice(Device.Request req) {
 
-        System.out.println("[SERVER]: Handle device request:\nDeviceID: "   + req.getDeviceID()
-                                                                            + "\nCategoryID: " + req.getDeviceCategoryID() 
-                                                                            + "\nDeviceName: " + req.getDeviceName()
+        System.out.println("[SERVER]: Handle device request:\nDeviceName: "   + req.getDeviceName()
+                                                                            + "\nCategoryName: " + req.getDeviceCategoryName() 
                                                                             + "\nDeviceDescription: " + req.getDeviceDescription()
                                                                             + "\nDevicePosition: " + req.getDeviceLocation());
         // get the device data from the database

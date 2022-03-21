@@ -159,7 +159,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
         return new Pair<>(-1,"Internal error");
     }
 
-    public int addDevice(int devID, int devCatID, String devName, String devDesc, String devPos)
+    public int addDevice(String deviceName, String deviceCategoryName, String deviceDescription, String devPosition)
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);

@@ -9,9 +9,8 @@ public class Device {
 
     public static class Request {
 
-        int deviceID;
-        int deviceCategoryID;
         String deviceName;
+        String deviceCategoryName;
         String deviceDescription;
         String deviceLocation;
 
@@ -19,17 +18,12 @@ public class Device {
                      
         }
 
-
-        public int getDeviceID(){
-            return this.deviceID;
-        }
-
-        public int getDeviceCategoryID(){
-            return this.deviceCategoryID;
-        }
-
         public String getDeviceName(){
             return this.deviceName;
+        }
+
+        public String getDeviceCategoryName(){
+            return this.deviceCategoryName;
         }
 
         public String getDeviceDescription(){
@@ -40,16 +34,12 @@ public class Device {
             return this.deviceLocation;
         }
 
-        public void setDeviceID(int value){
-            this.deviceID = value;
-        }
-
-        public void setDeviceCategoryID(int value){
-            this.deviceCategoryID = value;
-        }
-
         public void setDeviceName(String value){
             this.deviceName = value;
+        }
+
+        public void setDeviceCategoryName(String value){
+            this.deviceCategoryName = value;
         }
 
         public void setDeviceDescription(String value){
