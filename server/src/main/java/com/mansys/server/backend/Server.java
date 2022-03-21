@@ -226,12 +226,12 @@ public class Server implements ServerInterface {
                                                                                 + "\nParent: " + req.getParent());
         // get the device data from the database
         int res_code = 0;
-        // res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryID(), 
-        //                                                             req.getQualificationID(), 
-        //                                                             req.getCategoryName(), 
-        //                                                             req.getCategoryPeriod(), 
-        //                                                             req.getCategoryNormalTime(),
-        //                                                             req.getSpecification());
+        res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryName(), 
+                                                                    req.getQualification(), 
+                                                                    req.getCategoryPeriod(), 
+                                                                    req.getCategoryNormalTime(),
+                                                                    req.getSpecification(),
+                                                                    req.getParent());
 
 
         Category.Response res = new Category.Response();
@@ -247,7 +247,7 @@ public class Server implements ServerInterface {
             default:
             {
                 res.setErrorCode(1);
-                res.setErrorMessage("Unknown Device Category");
+                res.setErrorMessage("Error during device addition: wrong parameter.");
                 break;
             }
         }

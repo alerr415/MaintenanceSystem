@@ -202,6 +202,23 @@ public class DatabaseManager implements DatabaseManagerInterface {
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL EszkozKategoria_hozzaadasa(?, ?, ?, ?, ?, ?, ?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("device_category_name",categoryName);
+            callableStatement.setString("qualification",qualification);
+            callableStatement.setString("period",categoryPeriod);
+            callableStatement.setString("deadline",categoryNormalTime);
+            callableStatement.setString("descrip",specification);
+            callableStatement.setString("parent",parent);
+
+            callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+
+            int resCode = callableStatement.getInt("resultCode");
+            System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
+            return resCode;
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addCategory: " + ex + "\nStack trace: ");
@@ -222,6 +239,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
         return 0;
     }
 
+    @Deprecated
     public int addQualication(int qualificationID,  String qualificationName)
     {
         try {
