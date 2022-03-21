@@ -100,6 +100,7 @@ public class ServerApplication {
 		}
 	}
 
+	@Deprecated
 	@PostMapping("/qualification")
 	public ResponseEntity<?> addQualification(@RequestBody Qualification.Request request
 											, @CookieValue(name="session-id",defaultValue="default") String sessId) {
