@@ -32,4 +32,12 @@ class DatabaseManagerTest {
         assertEquals(1, fail.getKey());
     }
 
+    @Test
+    void callAddDevice() {
+        int ok = DatabaseManager.getInstance().addDevice("lavalampa","lampak","kanócos olajlámpa","KK407B");
+        assertEquals(0,ok);
+        int fail = DatabaseManager.getInstance().addDevice("vibrator","sexual accessories","magic wand with a power on button","you know exactly where it is"); // nonexisting category
+        assertEquals(400,fail);
+    }
+
 }
