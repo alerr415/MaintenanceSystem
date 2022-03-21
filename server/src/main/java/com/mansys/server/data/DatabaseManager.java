@@ -21,7 +21,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
 
     //-----------------------------------------[ VARIABLES ]------------------------------------------
 
-    final String URL = "jdbc:mysql://192.168.8.101:3306/maintenancesystem2";
+    final String URL = "jdbc:mysql://localhost:3306/maintenancesystem2";
     final String USERNAME = "root";
     final String PASSWORD = "";
 
