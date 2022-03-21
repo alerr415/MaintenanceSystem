@@ -189,11 +189,10 @@ public class Server implements ServerInterface {
                                                                             + "\nDevicePosition: " + req.getDeviceLocation());
         // get the device data from the database
         int res_code = 0;
-        // res_code = DatabaseManager.getInstance().addDevice( req.getDeviceID(), 
-        //                                                         req.getDeviceCategoryID(), 
-        //                                                         req.getDeviceName(), 
-        //                                                         req.getDeviceDescription(), 
-        //                                                         req.getDeviceLocation());
+        res_code = DatabaseManager.getInstance().addDevice( req.getDeviceName(), 
+                                                                req.getDeviceCategoryName(), 
+                                                                req.getDeviceDescription(), 
+                                                                req.getDeviceLocation());
 
         // create and decode the return value into a response type
         Device.Response res = new Device.Response();
@@ -209,7 +208,7 @@ public class Server implements ServerInterface {
             default:
             {
                 res.setErrorCode(1);
-                res.setErrorMessage("Unknown Device");
+                res.setErrorMessage("Device creation failed. Wrong parameters.");
                 break;
             }
         }

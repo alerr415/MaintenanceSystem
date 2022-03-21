@@ -46,6 +46,7 @@ The qualificationID can be used to assign a specified qualification for the cate
 Used for creating new devices.
 
 ### Request
+- int deviceID
 - String deviceName
 - String deviceCategoryName
 - String deviceDescription

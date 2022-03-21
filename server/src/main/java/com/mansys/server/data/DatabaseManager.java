@@ -163,6 +163,21 @@ public class DatabaseManager implements DatabaseManagerInterface {
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL Eszkoz_hozzaadasa(?, ?, ?, ?, ?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("device_name",deviceName);
+            callableStatement.setString("device_category_name",deviceCategoryName);
+            callableStatement.setString("descrip",deviceDescription);
+            callableStatement.setString("location",devPosition);
+
+            callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+
+            int resCode = callableStatement.getInt("resultCode");
+            System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
+            return resCode;
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addDevice: " + ex + "\nStack trace: ");
@@ -180,7 +195,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
             }
         }  
         
-        return 0;
+        return -1;
     }
 
     public int addCategory(String categoryName, String qualification, String categoryPeriod, String categoryNormalTime, String specification, String parent)
