@@ -100,7 +100,7 @@ public class ServerApplication {
 		}
 	}
 
-	@PostMapping("qualification")
+	@PostMapping("/qualification")
 	public ResponseEntity<?> addQualification(@RequestBody Qualification.Request request
 											, @CookieValue(name="session-id",defaultValue="default") String sessId) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
