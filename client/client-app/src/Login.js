@@ -13,10 +13,17 @@ import LockIcon from '@mui/icons-material/Lock';
 import * as React from "react";
 import { useContext } from "react";
 import { UserContext } from "./User.js";
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
+
 
 function Login() {
 
   const {user, setUser} = useContext(UserContext);
+  const [error, hitError] = React.useState(false);
+  const [feedbackText, setFeedbackText] = React.useState(false);
 
   function submit() {
     const tosend = {
@@ -51,10 +58,15 @@ function Login() {
           role : data.role
         });
         console.log(user);
+      } else {
+        setFeedbackText("Hibás jelszó!");
+        hitError(true);
       }
     })
     .catch((error) => {
       console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
     });
   }
 
@@ -86,6 +98,20 @@ function Login() {
       </Grid>
       <Grid item xs={0} sm={2} lg={4}></Grid>
     </Grid>
+
+    <Snackbar open={error} autoHideDuration={6000} onClose={() => {hitError(false)}} action={() => (<IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={() => {hitError(false)}}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>)}>
+      <Alert onClose={() => {hitError(false)}} severity="error" variant="filled">
+        {feedbackText}
+      </Alert>
+    </Snackbar>
+
     </>
   );
 
