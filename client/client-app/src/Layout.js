@@ -34,15 +34,23 @@ import Button from '@mui/material/Button';
 import { UserContext } from "./User.js";
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import {serveraddress} from './Server.js';
+import Snackbar from '@mui/material/Snackbar';
+import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
+
 
 
 
 const drawerWidth = 240;
 
-function ResponsiveDrawer(props) {
+function Layout(props) {
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const {user, setUser} = useContext(UserContext);
+  const [error, hitError] = React.useState(false);
+  const [success, hitSuccess] = React.useState(false);
+  const [feedbackText, setFeedbackText] = React.useState(false);
 
 
   const addDevice = () => {
@@ -65,17 +73,20 @@ function ResponsiveDrawer(props) {
       console.log('Success:', data);
       if (data.errorCode === 0) {
         console.log("Sikeres Hozzáadás :D");
+        setFeedbackText("Az eszköz hozzáadása megtörtént!");
+        hitSuccess(true);
+
       } else {
         console.log("Sikertelen Hozzáadás! :(");
         console.log(data.errorMessage);
-        //setFeedbackText("Hibás jelszó!");
-        //hitError(true);
+        setFeedbackText("Az eszköz hozzáadása sikertelen!");
+        hitError(true);
       }
     })
     .catch((error) => {
       console.error('Error:', error);
-      //setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
-      //hitError(true);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
     });
   }
 
@@ -291,9 +302,37 @@ function ResponsiveDrawer(props) {
           <Grid item xs={0} sm={0} lg={3}></Grid>
         </Grid>
 
+        <Snackbar open={success} autoHideDuration={6000} onClose={() => {hitSuccess(false)}} action={() => (<IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => {hitSuccess(false)}}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>)}>
+          <Alert onClose={() => {hitSuccess(false)}} severity="success" variant="filled">
+            {feedbackText}
+          </Alert>
+        </Snackbar>
+
+        <Snackbar open={error} autoHideDuration={6000} onClose={() => {hitError(false)}} action={(<IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={() => {hitError(false)}}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>)}>
+          <Alert onClose={() => {hitError(false)}} severity="error" variant="filled">
+            {feedbackText}
+          </Alert>
+        </Snackbar>
+
+
+
       </Box>
     </Box>
   );
 }
 
-export default ResponsiveDrawer;
+export default Layout;

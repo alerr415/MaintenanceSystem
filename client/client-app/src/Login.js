@@ -100,7 +100,7 @@ function Login() {
       <Grid item xs={0} sm={2} lg={4}></Grid>
     </Grid>
 
-    <Snackbar open={error} autoHideDuration={6000} onClose={() => {hitError(false)}} action={() => (<IconButton
+    <Snackbar open={error} autoHideDuration={6000} onClose={() => {hitError(false)}} action={(<IconButton
         size="small"
         aria-label="close"
         color="inherit"
