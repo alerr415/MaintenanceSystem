@@ -26,39 +26,40 @@ function Login() {
   const [feedbackText, setFeedbackText] = React.useState(false);
 
   function submit() {
-    const tosend = {
+    const toSend = {
     "username": document.getElementById("username").value,
     "password": document.getElementById("password").value
   };
 
-    console.log(tosend);
-    console.log(serveraddress+'/login');
+    console.log(toSend);
+    console.log(serveraddress+'/authenticate');
     setUser('login');
     console.log(user);
 
-    fetch(serveraddress + '/login', {
-      method: 'POST', // or 'PUT'
+    fetch(serveraddress + '/authenticate', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(tosend),
+      body: JSON.stringify(toSend),
     })
     .then(response => response.json())
     .then(data => {
       console.log('Success:', data);
       if (data.errorCode === 0) {
         console.log("Helyes jelszó");
-        console.log("User:" + tosend.username);
-        console.log("Pw:" + tosend.password);
+        console.log("User:" + toSend.username);
+        console.log("Pw:" + toSend.password);
         console.log("Role:" + data.role);
 
         setUser({
-          username : tosend.username,
-          password : tosend.password,
+          username : toSend.username,
+          password : toSend.password,
           role : data.role
         });
         console.log(user);
       } else {
+        console.log("Hibás jelszó");
         setFeedbackText("Hibás jelszó!");
         hitError(true);
       }

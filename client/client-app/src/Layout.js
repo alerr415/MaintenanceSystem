@@ -32,6 +32,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import { UserContext } from "./User.js";
+import TextareaAutosize from '@mui/base/TextareaAutosize';
+import {serveraddress} from './Server.js';
+
 
 
 const drawerWidth = 240;
@@ -40,6 +43,41 @@ function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const {user, setUser} = useContext(UserContext);
+
+
+  const addDevice = () => {
+    let toSend  = {"deviceName" : document.getElementById("deviceName").value,
+                   "deviceCategoryName" : type,
+                   "deviceDescription" : document.getElementById("deviceDescription").value,
+                   "deviceLocation" : loc}
+
+    console.log(toSend);
+
+    fetch(serveraddress + '/device', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(toSend),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      if (data.errorCode === 0) {
+        console.log("Sikeres Hozzáadás :D");
+      } else {
+        console.log("Sikertelen Hozzáadás! :(");
+        console.log(data.errorMessage);
+        //setFeedbackText("Hibás jelszó!");
+        //hitError(true);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      //setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      //hitError(true);
+    });
+  }
 
 
   const [loc, setLoc] = React.useState('');
@@ -175,13 +213,13 @@ function ResponsiveDrawer(props) {
           <Grid item xs={0} sm={0} lg={3}></Grid>
 
           <Grid item xs={12} sm={12} lg={6}>
-            <Card >
+            <Card sx={{ mt: { xs : 0 , lg : 8 } }}>
               <CardContent>
 
                 <Typography variant="h5">Eszköz hozzáadása</Typography>
                 <Divider />
 
-                <Grid container spacing={2} sx={{ mt : 2 }}>
+                <Grid container spacing={2} sx={{ mt : 1 }}>
                   <Grid item xs={12} sm={12} md={6}>
                     <Typography variant="h6" sx={{ mt : 2 }}>Eszköz neve:</Typography>
                   </Grid>
@@ -198,9 +236,9 @@ function ResponsiveDrawer(props) {
                     <FormControl sx={{ mx : 'auto' , width : 1 }}>
                       <InputLabel id="locLabel">Helyszín</InputLabel>
                       <Select labelId="locLabel" id="locSelect" value={loc} onChange={locChange} label="Helyszín">
-                        <MenuItem value={10}>Mosdó</MenuItem>
-                        <MenuItem value={20}>Iroda</MenuItem>
-                        <MenuItem value={30}>Folyosó</MenuItem>
+                        <MenuItem value={'mosdo'}>Mosdó</MenuItem>
+                        <MenuItem value={'iroda'}>Iroda</MenuItem>
+                        <MenuItem value={'folyoso'}>Folyosó</MenuItem>
                       </Select>
                     </FormControl><br />
                   </Grid>
@@ -213,11 +251,24 @@ function ResponsiveDrawer(props) {
                     <FormControl sx={{ mx : 'auto' ,  width : 1 }}>
                       <InputLabel id="typeLabel">Kategória</InputLabel>
                       <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Kategória">
-                        <MenuItem value={10}>Tűzvédelem</MenuItem>
-                        <MenuItem value={20}>Világítás</MenuItem>
-                        <MenuItem value={30}>Szaniter</MenuItem>
+                        <MenuItem value={'tuzvedelem'}>Tűzvédelem</MenuItem>
+                        <MenuItem value={'vilagitas'}>Világítás</MenuItem>
+                        <MenuItem value={'szaniter'}>Szaniter</MenuItem>
                       </Select>
                     </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={6}>
+                    <Typography variant="h6" sx={{ mt : 2 }}>Leírás:</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={6}>
+                    {/*  Eszköz leírása */}
+                      <TextareaAutosize
+                        id="deviceDescription"
+                        minRows={3}
+                        placeholder="Az eszköz leírása"
+                        style={{ width: '100%' }}
+                      />
                   </Grid>
 
                 </Grid>
@@ -229,7 +280,7 @@ function ResponsiveDrawer(props) {
                     {/*<Button size="large" variant="outlined" color="warning" fullWidth>Mégsem</Button>*/}
                   </Grid>
                   <Grid item xs={12} sm={12} md={6}>
-                    <Button size="large" variant="contained" color="success" fullWidth>Hozzáadás</Button>
+                    <Button size="large" variant="contained" color="success" onClick={addDevice} fullWidth>Hozzáadás</Button>
                   </Grid>
                 </Grid>
               </CardActions>
@@ -240,33 +291,6 @@ function ResponsiveDrawer(props) {
           <Grid item xs={0} sm={0} lg={3}></Grid>
         </Grid>
 
-        <Typography paragraph sx={{ mt : 2 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
       </Box>
     </Box>
   );
