@@ -123,8 +123,7 @@ public class ServerApplication {
 
 	//GET
 	@GetMapping("/category")
-	public ResponseEntity<?> getCategories(@RequestBody Category.Request request
-									   , @CookieValue(name="session-id",defaultValue="default") String sessId) {
+	public ResponseEntity<?> getCategories(@CookieValue(name="session-id",defaultValue="default") String sessId) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
 			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
