@@ -11,14 +11,14 @@ function App() {
 
   return (
     <>
-    <UserContext.Provider value={{ user, setUser }}>
       <BrowserRouter>
-        <Routes>
-            <Route index element={<Login />} />
-            <Route path="/app" element={<Layout />} />
-        </Routes>
+          <UserContext.Provider value={{ user, setUser }}>
+            <Routes>
+              <Route index element={<Login />} />
+              <Route path="/app" element={<Layout />} />
+            </Routes>
+        </UserContext.Provider>
       </BrowserRouter>
-    </UserContext.Provider>
 
     <Outlet />
     </>

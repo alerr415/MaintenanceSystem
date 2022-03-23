@@ -47,47 +47,60 @@ function Layout(props) {
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
   const {user, setUser} = useContext(UserContext);
+
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
 
   const addDevice = () => {
-    let toSend  = {"deviceName" : document.getElementById("deviceName").value,
-                   "deviceCategoryName" : type,
-                   "deviceDescription" : document.getElementById("deviceDescription").value,
-                   "deviceLocation" : loc}
+    let deviceName = document.getElementById("deviceName").value;
+    let deviceDescription = document.getElementById("deviceDescription").value;
 
-    console.log(toSend);
+    if (deviceName !== "" && type!== "" && deviceDescription !== "" && loc !== "") {
+      let toSend  = {"deviceName" : deviceName,
+                     "deviceCategoryName" : type,
+                     "deviceDescription" : deviceDescription,
+                     "deviceLocation" : loc}
 
-    fetch(serveraddress + '/device', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(toSend),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-      if (data.errorCode === 0) {
-        console.log("Sikeres Hozzáadás :D");
-        setFeedbackText("Az eszköz hozzáadása megtörtént!");
-        hitSuccess(true);
+      console.log(toSend);
 
-      } else {
-        console.log("Sikertelen Hozzáadás! :(");
-        console.log(data.errorMessage);
-        setFeedbackText("Az eszköz hozzáadása sikertelen!");
+      fetch(serveraddress + '/device', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(toSend),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        if (data.errorCode === 0) {
+          console.log("Sikeres Hozzáadás :D");
+          setFeedbackText("Az eszköz hozzáadása megtörtént!");
+          hitSuccess(true);
+
+        } else {
+          console.log("Sikertelen Hozzáadás! :(");
+          console.log(data.errorMessage);
+          setFeedbackText("Az eszköz hozzáadása sikertelen!");
+          hitError(true);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
         hitError(true);
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      });
+
+    } else { // ha valamelyik adat hiányzik
+      console.log("Sikertelen Hozzáadás! :(");
+      console.log("valamelyik mező üresen maradt");
+      setFeedbackText("Az eszköz hozzáadása sikertelen! Töltse ki az összes mezőt!");
       hitError(true);
-    });
+    }
   }
 
 
@@ -174,7 +187,7 @@ function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Karbantartási Rendszer
+            Karbantartási Rendszer {JSON.stringify(user)}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -302,7 +315,7 @@ function Layout(props) {
           <Grid item xs={0} sm={0} lg={3}></Grid>
         </Grid>
 
-        <Snackbar open={success} autoHideDuration={6000} onClose={() => {hitSuccess(false)}} action={() => (<IconButton
+        <Snackbar open={success} autoHideDuration={6000} onClose={() => {hitSuccess(false)}} action={(<IconButton
             size="small"
             aria-label="close"
             color="inherit"

@@ -17,13 +17,17 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
+import { Link , useNavigate } from 'react-router-dom';
 
 
 function Login() {
 
   const {user, setUser} = useContext(UserContext);
+
   const [error, hitError] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
+
+  const navigate = useNavigate();
 
   function submit() {
     const toSend = {
@@ -57,7 +61,8 @@ function Login() {
           password : toSend.password,
           role : data.role
         });
-        console.log(user);
+
+        navigate("/app");
       } else {
         console.log("Hibás jelszó");
         setFeedbackText("Hibás jelszó!");
@@ -93,6 +98,7 @@ function Login() {
 
           <CardActions>
             <Button size="large" variant="contained" color="success" fullWidth onClick={submit}>Bejelentkezés</Button>
+            
           </CardActions>
 
         </Card>
