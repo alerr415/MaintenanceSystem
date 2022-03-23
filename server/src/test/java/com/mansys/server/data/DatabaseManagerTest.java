@@ -22,7 +22,7 @@ class DatabaseManagerTest {
         assertFalse(fail);
 
 	}
-
+/*
     @Test
     void callLogin() {
         Pair<Integer,String> ok = DatabaseManager.getInstance().authenticateUser("gonzalez","gonzalez321");
@@ -44,6 +44,6 @@ class DatabaseManagerTest {
     void callAddCategory() {
         int ok = DatabaseManager.getInstance().addCategory("ivhegesztok","gepesztechnikus","eves","2023-03-22 16:00:00","Ellenorizze a trafo szigeteleset","hegesztogepek");
         assertEquals(0,ok);
-    }
+    }*/
 
 }

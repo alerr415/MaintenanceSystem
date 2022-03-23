@@ -3,6 +3,7 @@ package com.mansys.server.backend;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mansys.server.backend.Category.GetResponse;
 import com.mansys.server.data.DatabaseManager;
 
 import org.springframework.http.ResponseCookie;
@@ -248,6 +249,39 @@ public class Server implements ServerInterface {
             {
                 res.setErrorCode(1);
                 res.setErrorMessage("Error during device addition: wrong parameter.");
+                break;
+            }
+        }
+        return res;
+    }
+
+
+    @Override
+    public Category.GetResponse handleCategoryList() {
+        System.out.println("[SERVER]: Handle category list request: NO PARAMETER\n[LISTING CATEGORIES...]");
+         
+        // get the device data from the database
+        int res_code = 0;
+        String[] data = DatabaseManager.getInstance().listCategory();
+        res_code = ((data.length == 0) ? 1 : 0);
+
+        Category.GetResponse res = new Category.GetResponse();
+
+        // NOT THE FINAL 
+        switch (res_code) {
+            case 0: // good
+            {
+                res.setResultCode(RESCODE_OK);
+                res.setResultMessage("Success");
+                res.setCategoryList(data);
+                break;
+            }
+            default:
+            {
+                String[] errList = {"NO DATA"};
+                res.setResultCode(1);
+                res.setResultMessage("Error during device addition: NO DATA."); // UNKNOWN ERROR or NO DATA (?)
+                res.setCategoryList(errList);
                 break;
             }
         }
