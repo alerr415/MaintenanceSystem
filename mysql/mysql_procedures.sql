@@ -120,5 +120,22 @@ SELECT * FROM EszkozKategoria;
 -- SELECT @resultcode AS Resultcode;
 -- CALL EszkozKategoria_hozzaadasa('szekek', 'valami', 'valami', 'valami', 'valami', 'valami', @resultcode);
 -- SELECT @resultcode AS Resultcode;
-CALL EszkozKategoria_hozzaadasa('garazslampak', 'villanyszerelo', NULL, '2023-03-20', 'Emelje az ajtot, nezze meg a kabeleket', 'lampak', @resultcode);
-SELECT @resultcode AS Resultcode;
+-- CALL EszkozKategoria_hozzaadasa('garazslampak', 'villanyszerelo', NULL, '2023-03-20', 'Emelje az ajtot, nezze meg a kabeleket', 'lampak', @resultcode);
+-- SELECT @resultcode AS Resultcode;
+
+-- ---------------------------------
+-- List categories procedure
+-- ---------------------------------
+DROP PROCEDURE IF EXISTS Kategoriak_listazasa;
+DELIMITER //
+
+CREATE PROCEDURE Kategoriak_listazasa()
+BEGIN
+	SELECT Eszkoz_kategoria_neve
+		FROM EszkozKategoria;
+END//
+DELIMITER ;
+
+-- Testing list categories procedures
+-- CALL Kategoriak_listazasa();
+
