@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-//import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 //import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,39 +19,23 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Toolbar from '@mui/material/Toolbar';
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-//import CardMedia from '@mui/material/CardMedia';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+//import Select from '@mui/material/Select';
+//import MenuItem from '@mui/material/MenuItem';
 import { UserContext } from "./User.js";
+import { Outlet , Link} from "react-router-dom"
+
+
 
 
 const drawerWidth = 240;
 
-function ResponsiveDrawer(props) {
+function Layout(props) {
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
   const {user, setUser} = useContext(UserContext);
 
-
-  const [loc, setLoc] = React.useState('');
-
-  const locChange = (event) => {
-    setLoc(event.target.value);
-  };
-
-  const [type, setType] = React.useState('');
-
-  const typeChange = (event) => {
-    setType(event.target.value);
-  };
 
 
   const handleDrawerToggle = () => {
@@ -64,7 +47,7 @@ function ResponsiveDrawer(props) {
       <Toolbar />
 
       <List>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/app/newDevice">
           <ListItemIcon><AddIcon /></ListItemIcon>
           <ListItemText>Eszköz hozzáadása</ListItemText>
         </ListItemButton>
@@ -102,7 +85,8 @@ function ResponsiveDrawer(props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
-  return (
+  return(
+
     <Box sx={{ display: 'flex' ,
                backgroundColor: '#f3f1f1' }}>
 
@@ -110,7 +94,7 @@ function ResponsiveDrawer(props) {
         position="fixed"
         sx={{
           width: { sm: `calc(100%)` },
-          ml: { sm: `${drawerWidth}px` },
+
           zIndex: (theme) => theme.zIndex.drawer + 1
         }}
       >
@@ -125,7 +109,7 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Karbantartási Rendszer
+            Karbantartási Rendszer {JSON.stringify(user)}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -136,7 +120,7 @@ function ResponsiveDrawer(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        {/* Mobile. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -152,6 +136,8 @@ function ResponsiveDrawer(props) {
         >
           {drawer}
         </Drawer>
+
+        {/* Desktop. */}
         <Drawer
           variant="permanent"
           sx={{
@@ -163,113 +149,11 @@ function ResponsiveDrawer(props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1,
-              p: 3,
-              width: { sm: `calc(100% - ${drawerWidth}px)` }}}
-      >
-        <Toolbar />
 
-        <Grid container spacing={2}>
-          <Grid item xs={0} sm={0} lg={3}></Grid>
+      <Outlet />
 
-          <Grid item xs={12} sm={12} lg={6}>
-            <Card >
-              <CardContent>
-
-                <Typography variant="h5">Eszköz hozzáadása</Typography>
-                <Divider />
-
-                <Grid container spacing={2} sx={{ mt : 2 }}>
-                  <Grid item xs={12} sm={12} md={6}>
-                    <Typography variant="h6" sx={{ mt : 2 }}>Eszköz neve:</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={6}>
-                    {/*  Eszköz neve */}
-                    <TextField id="deviceName" label="Név" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={6}>
-                    <Typography variant="h6" sx={{ mt : 2 }}>Eszköz helye:</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={6}>
-                    {/*  Eszköz helye */}
-                    <FormControl sx={{ mx : 'auto' , width : 1 }}>
-                      <InputLabel id="locLabel">Helyszín</InputLabel>
-                      <Select labelId="locLabel" id="locSelect" value={loc} onChange={locChange} label="Helyszín">
-                        <MenuItem value={10}>Mosdó</MenuItem>
-                        <MenuItem value={20}>Iroda</MenuItem>
-                        <MenuItem value={30}>Folyosó</MenuItem>
-                      </Select>
-                    </FormControl><br />
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={6}>
-                    <Typography variant="h6" sx={{ mt : 2 }}>Eszköz kategóriája:</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={6}>
-                    {/*  Eszköz kategóriája */}
-                    <FormControl sx={{ mx : 'auto' ,  width : 1 }}>
-                      <InputLabel id="typeLabel">Kategória</InputLabel>
-                      <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Kategória">
-                        <MenuItem value={10}>Tűzvédelem</MenuItem>
-                        <MenuItem value={20}>Világítás</MenuItem>
-                        <MenuItem value={30}>Szaniter</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                </Grid>
-              </CardContent>
-
-              <CardActions>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12} md={6}>
-                    {/*<Button size="large" variant="outlined" color="warning" fullWidth>Mégsem</Button>*/}
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={6}>
-                    <Button size="large" variant="contained" color="success" fullWidth>Hozzáadás</Button>
-                  </Grid>
-                </Grid>
-              </CardActions>
-
-            </Card>
-          </Grid>
-
-          <Grid item xs={0} sm={0} lg={3}></Grid>
-        </Grid>
-
-        <Typography paragraph sx={{ mt : 2 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </Box>
     </Box>
   );
 }
 
-export default ResponsiveDrawer;
+export default Layout;
