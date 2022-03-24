@@ -62,7 +62,7 @@ function Login() {
           role : data.role
         });
 
-        navigate("/app");
+        navigate("/app/welcome");
       } else {
         console.log("Hibás jelszó");
         setFeedbackText("Hibás jelszó!");
@@ -98,7 +98,7 @@ function Login() {
 
           <CardActions>
             <Button size="large" variant="contained" color="success" fullWidth onClick={submit}>Bejelentkezés</Button>
-            
+
           </CardActions>
 
         </Card>
