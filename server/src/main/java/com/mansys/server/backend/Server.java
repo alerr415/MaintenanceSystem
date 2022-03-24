@@ -90,6 +90,7 @@ public class Server implements ServerInterface {
     private ResponseCookie generateCookie(int sessId) {
         return ResponseCookie.from(COOKIE_ID,Integer.toString(sessId))
             .maxAge(COOKIE_LIFETIME)
+            .httpOnly(false)
             .secure(true)
             .build();
     }
