@@ -23,6 +23,7 @@ import Typography from '@mui/material/Typography';
 //import MenuItem from '@mui/material/MenuItem';
 import { UserContext } from "./User.js";
 import { Outlet , Link} from "react-router-dom"
+import { useCookies } from "react-cookie";
 
 
 
@@ -35,6 +36,7 @@ function Layout(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const {user, setUser} = useContext(UserContext);
+  const [cookies, setCookie] = useCookies();
 
 
 
@@ -109,7 +111,7 @@ function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Karbantartási Rendszer {JSON.stringify(user)}
+            Karbantartási Rendszer {/*cookies["session-id"]*/}
           </Typography>
         </Toolbar>
       </AppBar>
