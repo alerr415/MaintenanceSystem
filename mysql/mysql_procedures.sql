@@ -81,7 +81,7 @@ DELIMITER //
 CREATE PROCEDURE EszkozKategoria_hozzaadasa(IN device_category_name VARCHAR(50),
 											IN qualification VARCHAR(50),
 											IN period VARCHAR(50),
-											IN deadline VARCHAR(50),
+											IN norm_time INT,
                                             IN descrip LONGTEXT,
                                             IN parent VARCHAR(50),
                                             OUT resultcode INT)
@@ -102,12 +102,12 @@ BEGIN
                 WHERE Szulo = parent;
 			INSERT
 				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_neve, Periodus, Norma_ido, Eloiras, Szulo)
-				VALUES (device_category_name, qualification, parent_period, CONVERT(deadline, DATETIME), descrip, parent);
+				VALUES (device_category_name, qualification, parent_period, SEC_TO_TIME(norm_time * 3600), descrip, parent);
 			SET resultcode = 0;
 		ELSE
 			INSERT
 				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_neve, Periodus, Norma_ido, Eloiras, Szulo)
-				VALUES (device_category_name, qualification, period, CONVERT(deadline, DATETIME), descrip, parent);
+				VALUES (device_category_name, qualification, period, SEC_TO_TIME(norm_time * 3600), descrip, parent);
 			SET resultcode = 0;
         END IF;
     END IF;
@@ -115,12 +115,12 @@ END//
 DELIMITER ;
 
 -- Testing add device procedure
-SELECT * FROM EszkozKategoria;
--- CALL EszkozKategoria_hozzaadasa('szekek', 'asztalos', 'heti', '2022-03-20', 'Nezze meg a csavarokat, utana nezze meg oket', NULL, @resultcode);
+-- SELECT * FROM EszkozKategoria;
+-- CALL EszkozKategoria_hozzaadasa('iroasztal', 'asztalos', 'heti', 30, 'Nezze meg a csavarokat, utana nezze meg oket', NULL, @resultcode);
 -- SELECT @resultcode AS Resultcode;
--- CALL EszkozKategoria_hozzaadasa('szekek', 'valami', 'valami', 'valami', 'valami', 'valami', @resultcode);
+-- CALL EszkozKategoria_hozzaadasa('szekek', 'valami', 'valami', 8, 'valami', 'valami', @resultcode);
 -- SELECT @resultcode AS Resultcode;
--- CALL EszkozKategoria_hozzaadasa('garazslampak', 'villanyszerelo', NULL, '2023-03-20', 'Emelje az ajtot, nezze meg a kabeleket', 'lampak', @resultcode);
+-- CALL EszkozKategoria_hozzaadasa('dimmelheto lampak', 'villanyszerelo', NULL, 7, 'Emelje az ajtot, nezze meg a kabeleket', 'lampak', @resultcode);
 -- SELECT @resultcode AS Resultcode;
 
 -- ---------------------------------
@@ -138,4 +138,3 @@ DELIMITER ;
 
 -- Testing list categories procedures
 -- CALL Kategoriak_listazasa();
-

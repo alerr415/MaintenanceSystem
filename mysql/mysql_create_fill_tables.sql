@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.IdoszakosFeladat (
   Karbantarto_ID INT NOT NULL,
   Kezdeti_idopont DATETIME NULL,
   Befejezesi_idopont DATETIME NULL,
-  Norma_ido DATETIME NULL,
+  Norma_ido TIME NULL,
   Eloiras LONGTEXT NULL,
   PRIMARY KEY (IdoszakosFeladat_ID),
   FOREIGN KEY (Karbantarto_ID)
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.RendkivulFeladat (
   Karbantarto_ID INT NOT NULL,
   Kezdeti_idopont DATETIME NULL,
   Befejezesi_idopont DATETIME NULL,
-  Norma_ido DATETIME NULL,
+  Norma_ido TIME NULL,
   Eloiras LONGTEXT NULL,
   PRIMARY KEY (RendkivulFeladat_ID),
   FOREIGN KEY (Karbantarto_ID)
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.EszkozKategoria (
   Eszkoz_kategoria_neve VARCHAR(50) NOT NULL,
   Kepesites_neve VARCHAR(50) NULL,
   Periodus VARCHAR(50) NULL,
-  Norma_ido DATETIME NULL,
+  Norma_ido TIME NULL,
   Eloiras LONGTEXT NULL,
   Szulo VARCHAR(50) NULL,
   PRIMARY KEY (Eszkoz_kategoria_neve)
@@ -114,12 +114,12 @@ INSERT
 
 INSERT 
     INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_neve, Periodus, Norma_ido, Eloiras, Szulo)
-    VALUES ('lampak', 'villanyszerelo', 'eves', TIMESTAMPADD(year, 1, NOW()), 'Nezze meg mennyire vilagit, utana cserelje az izzokat', 'vilagitoberendezesek'),
-		   ('vilagitoberendezesek', 'villanyszerelo', 'eves', TIMESTAMPADD(year, 1, NOW()), 'Cserelje az izzokat es igazitsa a kabeleket', NULL),
-           ('zseblampak', 'villanyszerelo', 'eves', TIMESTAMPADD(year, 1, NOW()), 'Cserelje az izzokat es igazitsa a kabeleket', 'lampak'),
-           ('asztalok', 'asztalos', 'eves', TIMESTAMPADD(year, 1, NOW()), 'Nezze meg a csavarokat, utana erositse meg oket', NULL),
-           ('hegesztogepek', 'gepesztechnikus', 'havi', TIMESTAMPADD(month, 1, NOW()), 'Toltse fel az oxigen palackokat, utana ellenorizze a kompresszort', NULL),
-           ('gazcsovek', 'vizvezetekszerelo','havi', TIMESTAMPADD(month, 1, NOW()), 'A szivattyu ellenorzese. Ellenorizze a biztonsagi csavarokat', NULL);
+    VALUES ('lampak', 'villanyszerelo', 'eves', MAKETIME(8, 0, 0), 'Nezze meg mennyire vilagit, utana cserelje az izzokat', 'vilagitoberendezesek'),
+		   ('vilagitoberendezesek', 'villanyszerelo', 'eves', MAKETIME(8, 0, 0), 'Cserelje az izzokat es igazitsa a kabeleket', NULL),
+           ('zseblampak', 'villanyszerelo', 'eves', MAKETIME(8, 0, 0), 'Cserelje az izzokat es igazitsa a kabeleket', 'lampak'),
+           ('asztalok', 'asztalos', 'eves', MAKETIME(8, 0, 0), 'Nezze meg a csavarokat, utana erositse meg oket', NULL),
+           ('hegesztogepek', 'gepesztechnikus', 'havi', MAKETIME(8, 0, 0), 'Toltse fel az oxigen palackokat, utana ellenorizze a kompresszort', NULL),
+           ('gazcsovek', 'vizvezetekszerelo','havi', MAKETIME(8, 0, 0), 'A szivattyu ellenorzese. Ellenorizze a biztonsagi csavarokat', NULL);
 
 INSERT
     INTO Eszkoz (Eszkoz_neve, Eszkoz_kategoria_neve, Leiras, Elhelyezkedes)
