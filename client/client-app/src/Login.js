@@ -18,11 +18,13 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import { Link , useNavigate } from 'react-router-dom';
+import { useCookies } from "react-cookie";
 
 
 function Login() {
 
   const {user, setUser} = useContext(UserContext);
+  const [cookies, setCookie] = useCookies();
 
   const [error, hitError] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);

@@ -3,6 +3,7 @@ package com.mansys.server.backend;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mansys.server.backend.Category.GetResponse;
 import com.mansys.server.data.DatabaseManager;
 
 import org.springframework.http.ResponseCookie;
@@ -51,7 +52,7 @@ public class Server implements ServerInterface {
 
     // ------------------------------------------------------------------------------------------
     // [SINGLETON & CONSTRUCTION] ---------------------------------------------------------------
-    
+
     /**
      * Initializing sessions
      */
@@ -82,14 +83,14 @@ public class Server implements ServerInterface {
     // [SESSION] --------------------------------------------------------------------------------
 
     /**
-     * Configurable cookie generation. 
+     * Configurable cookie generation.
      * @param sessId the session id (from the generation or the list)
      * @return a freshly baked http ResponseCookie with the session id set.
      */
     private ResponseCookie generateCookie(int sessId) {
         return ResponseCookie.from(COOKIE_ID,Integer.toString(sessId))
-            .httpOnly(true)
             .maxAge(COOKIE_LIFETIME)
+            .httpOnly(false)
             .secure(true)
             .build();
     }
@@ -127,7 +128,7 @@ public class Server implements ServerInterface {
     }
 
     /**
-     * Deletes the session: 
+     * Deletes the session:
      * Deletes the session id from the list and gives a zero second lifetime cooke to the client.
      * That will make the client's browser instantly forget the cookie and the session id.
      * @param sessId
@@ -151,7 +152,7 @@ public class Server implements ServerInterface {
      */
     @Override
     public Authenticate.Response handleAuthenticate(Authenticate.Request req){
-        
+
 		System.out.println("[SERVER]: Handle login request username: " + req.getUsername() + " password: " + req.getPassword());
         // get the authentication data from the database
         Pair<Integer,String> dataResult = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
@@ -160,7 +161,7 @@ public class Server implements ServerInterface {
         // create and decode the return value into a response type
         Authenticate.Response res = new Authenticate.Response();
 
-        // NOT THE FINAL 
+        // NOT THE FINAL
         switch (res_code) {
             case 0: // good
             {
@@ -184,20 +185,20 @@ public class Server implements ServerInterface {
     public Device.Response handleDevice(Device.Request req) {
 
         System.out.println("[SERVER]: Handle device request:\nDeviceName: "   + req.getDeviceName()
-                                                                            + "\nCategoryName: " + req.getDeviceCategoryName() 
+                                                                            + "\nCategoryName: " + req.getDeviceCategoryName()
                                                                             + "\nDeviceDescription: " + req.getDeviceDescription()
                                                                             + "\nDevicePosition: " + req.getDeviceLocation());
         // get the device data from the database
         int res_code = 0;
-        res_code = DatabaseManager.getInstance().addDevice( req.getDeviceName(), 
-                                                                req.getDeviceCategoryName(), 
-                                                                req.getDeviceDescription(), 
+        res_code = DatabaseManager.getInstance().addDevice( req.getDeviceName(),
+                                                                req.getDeviceCategoryName(),
+                                                                req.getDeviceDescription(),
                                                                 req.getDeviceLocation());
 
         // create and decode the return value into a response type
         Device.Response res = new Device.Response();
-        
-         // NOT THE FINAL 
+
+         // NOT THE FINAL
          switch (res_code) {
             case 0: // good
             {
@@ -217,7 +218,7 @@ public class Server implements ServerInterface {
 
     @Override
     public Category.Response handleCategory(Category.Request req) {
-        
+
         System.out.println("[SERVER]: Handle category request:\nCategoryName: "   + req.getCategoryName()
                                                                                 + "\nQualification: " + req.getQualification()
                                                                                 + "\nPeriod: " + req.getCategoryPeriod()
@@ -226,9 +227,9 @@ public class Server implements ServerInterface {
                                                                                 + "\nParent: " + req.getParent());
         // get the device data from the database
         int res_code = 0;
-        res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryName(), 
-                                                                    req.getQualification(), 
-                                                                    req.getCategoryPeriod(), 
+        res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryName(),
+                                                                    req.getQualification(),
+                                                                    req.getCategoryPeriod(),
                                                                     req.getCategoryNormalTime(),
                                                                     req.getSpecification(),
                                                                     req.getParent());
@@ -236,7 +237,7 @@ public class Server implements ServerInterface {
 
         Category.Response res = new Category.Response();
 
-        // NOT THE FINAL 
+        // NOT THE FINAL
         switch (res_code) {
             case 0: // good
             {
@@ -254,10 +255,43 @@ public class Server implements ServerInterface {
         return res;
     }
 
+
+    @Override
+    public Category.GetResponse handleCategoryList() {
+        System.out.println("[SERVER]: Handle category list request: NO PARAMETER\n[LISTING CATEGORIES...]");
+
+        // get the device data from the database
+        int res_code = 0;
+        String[] data = DatabaseManager.getInstance().listCategory();
+        res_code = ((data.length == 0) ? 1 : 0);
+
+        Category.GetResponse res = new Category.GetResponse();
+
+        // NOT THE FINAL
+        switch (res_code) {
+            case 0: // good
+            {
+                res.setResultCode(RESCODE_OK);
+                res.setResultMessage("Success");
+                res.setCategoryList(data);
+                break;
+            }
+            default:
+            {
+                String[] errList = {"NO DATA"};
+                res.setResultCode(1);
+                res.setResultMessage("Error during device addition: NO DATA."); // UNKNOWN ERROR or NO DATA (?)
+                res.setCategoryList(errList);
+                break;
+            }
+        }
+        return res;
+    }
+
     @Override
     public Qualification.Response handleQualification(Qualification.Request req) {
-         
-        System.out.println("[SERVER]: Handle category request:\nQualificationID: " + req.getQualificationID() 
+
+        System.out.println("[SERVER]: Handle category request:\nQualificationID: " + req.getQualificationID()
                                                          + "\nQualificationName: " + req.getQualificationName());
         // get the device data from the database
         int res_code = 0;
@@ -265,7 +299,7 @@ public class Server implements ServerInterface {
 
         Qualification.Response res = new Qualification.Response();
 
-        // NOT THE FINAL 
+        // NOT THE FINAL
         switch (res_code) {
             case 0: // good
             {

@@ -95,4 +95,39 @@ public class Category {
             this.errorCode = value;
         }
     } 
+
+    public static class GetResponse {
+
+        private int resultCode;
+        private String resultMessage;
+        private String[] categoryList;
+
+        public GetResponse(){
+
+        }
+
+        public String[] getCategoryList(){
+            return this.categoryList;
+        }
+
+        public String getResultMessage(){
+            return this.resultMessage;
+        }
+
+        public int getResultCode(){
+            return this.resultCode;
+        }
+
+        public void setCategoryList(String[] value){
+            this.categoryList = value;
+        }
+
+        public void setResultMessage(String value){
+            this.resultMessage = value;
+        }
+
+        public void setResultCode(int value){
+            this.resultCode = value;
+        }
+    } 
 }

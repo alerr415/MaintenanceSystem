@@ -32,8 +32,9 @@ public class ServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
 		
-		// DatabaseManager dbm = DatabaseManager.getInstance();
-		// dbm.testProcedure();
+		//LIST CATEGORY DEBUG
+		//DatabaseManager dbm = DatabaseManager.getInstance();
+		//dbm.listCategory();
 	}
 
 	@GetMapping("/hello")
@@ -47,6 +48,8 @@ public class ServerApplication {
 	 * @param request the POST HTTP-request's json body
 	 * @return a http response entity with the result json
 	 */
+
+	//POST
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> authenticate(@RequestBody Authenticate.Request request) {
 		Authenticate.Response response = Server.getInstance().handleAuthenticate(request);
@@ -68,7 +71,7 @@ public class ServerApplication {
 		// check if the session is valid -> we can handle the request
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / Device] Invalid session: " + sessId);
-			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
 			//TODO: implement response for invalid sessions
 		}
 
@@ -87,7 +90,7 @@ public class ServerApplication {
 									   , @CookieValue(name="session-id",defaultValue="default") String sessId) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
-			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
 		}
 
 		Category.Response response = Server.getInstance().handleCategory(request);
@@ -105,12 +108,30 @@ public class ServerApplication {
 	public ResponseEntity<?> addQualification(@RequestBody Qualification.Request request
 											, @CookieValue(name="session-id",defaultValue="default") String sessId) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
-			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
 		}
 
 		Qualification.Response response = Server.getInstance().handleQualification(request);
 
 		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	//GET
+	@GetMapping("/category")
+	public ResponseEntity<?> getCategories(@CookieValue(name="session-id",defaultValue="default") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
+			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+		}
+
+		Category.GetResponse response = Server.getInstance().handleCategoryList();
+
+		if (response.getResultCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
 			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
 		} else {
