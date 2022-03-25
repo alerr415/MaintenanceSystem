@@ -1,6 +1,8 @@
 import Login from './Login.js';
 import Layout from './Layout.js';
 import AddDeviceScreen from './AddDeviceScreen.js';
+import ListDeviceScreen from './ListDeviceScreen.js';
+
 import AddCategoryScreen from './AddCategoryScreen.js';
 import Welcome from './Welcome.js';
 
@@ -23,7 +25,9 @@ function App() {
                 <Route path="welcome" element={<Welcome />} />
                 <Route path="newDevice" element={<AddDeviceScreen />} />
                 <Route path="newCategory" element={<AddCategoryScreen />} />
-              </Route>
+                <Route path="devices" element={<ListDeviceScreen />} />
+
+            </Route>
             </Routes>
         </UserContext.Provider>
       </BrowserRouter>

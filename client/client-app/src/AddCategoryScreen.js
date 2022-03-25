@@ -122,7 +122,7 @@ return(
       <Grid item xs={0} sm={0} lg={3}></Grid>
 
       <Grid item xs={12} sm={12} lg={6}>
-        <Card sx={{ mt: { xs : 0 , lg : 8 } }}>
+        <Card sx={{ mt: { xs : 0 , lg : 4 } }}>
           <CardContent>
 
             <Typography variant="h5">Új kategória</Typography>

@@ -1,27 +1,14 @@
 import * as React from 'react';
 import { useState, useContext } from "react";
-//import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-//import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-//import List from '@mui/material/List';
-//import ListItem from '@mui/material/ListItem';
-//import ListItemIcon from '@mui/material/ListItemIcon';
-//import ListItemText from '@mui/material/ListItemText';
-//import ListItemButton from '@mui/material/ListItemButton';
-//import AddIcon from '@mui/icons-material/Add';
-//import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-//import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-//import LogoutIcon from '@mui/icons-material/Logout';
 import Toolbar from '@mui/material/Toolbar';
-//import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-//import CardMedia from '@mui/material/CardMedia';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -36,7 +23,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import { useCookies } from "react-cookie";
 
-function AddDeviceScreen(props) {
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+function ListDeviceScreen(props) {
 
   const { window } = props;
 
@@ -108,7 +100,7 @@ function AddDeviceScreen(props) {
     setType(event.target.value);
   };
 
-return (
+return(
   <Box
     component="main"
     sx={{ flexGrow: 1,
@@ -118,85 +110,33 @@ return (
     <Toolbar />
 
     <Grid container spacing={2}>
-      <Grid item xs={0} sm={0} lg={3}></Grid>
+      <Grid item xs={0} sm={0} lg={1}></Grid>
 
-      <Grid item xs={12} sm={12} lg={6}>
+      <Grid item xs={12} sm={12} lg={10}>
         <Card sx={{ mt: { xs : 0 , lg : 4 } }}>
           <CardContent>
+            <Typography variant="h5">Eszközök</Typography>
+            <Divider  sx={{ mb : 2 }}/>
 
-            <Typography variant="h5">Új eszköz</Typography>
-            <Divider />
+            {['Tűzjelző', 'Poroltó', 'Kilincs', 'Pilács'].map((text, index) => (
+            <Accordion key={index}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>{text}</Typography>
+              </AccordionSummary>
 
-            <Grid container spacing={2} sx={{ mt : 1 }}>
-              <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Eszköz neve:</Typography>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                {/*  Eszköz neve */}
-                <TextField id="deviceName" label="Név" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
-              </Grid>
+              <AccordionDetails>
+                <Typography>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                  malesuada lacus ex, sit amet blandit leo lobortis eget.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>))}
 
-              <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Eszköz helye:</Typography>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                {/*  Eszköz helye */}
-                <FormControl sx={{ mx : 'auto' , width : 1 }}>
-                  <InputLabel id="locLabel">Helyszín</InputLabel>
-                  <Select labelId="locLabel" id="locSelect" value={loc} onChange={locChange} label="Helyszín">
-                    <MenuItem value={'mosdo'}>Mosdó</MenuItem>
-                    <MenuItem value={'iroda'}>Iroda</MenuItem>
-                    <MenuItem value={'folyoso'}>Folyosó</MenuItem>
-                  </Select>
-                </FormControl><br />
-              </Grid>
-
-              <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Eszköz kategóriája:</Typography>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                {/*  Eszköz kategóriája */}
-                <FormControl sx={{ mx : 'auto' ,  width : 1 }}>
-                  <InputLabel id="typeLabel">Kategória</InputLabel>
-                  <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Kategória">
-                    <MenuItem value={'tuzvedelem'}>Tűzvédelem</MenuItem>
-                    <MenuItem value={'vilagitas'}>Világítás</MenuItem>
-                    <MenuItem value={'szaniter'}>Szaniter</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Leírás:</Typography>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                {/*  Eszköz leírása */}
-                  <TextareaAutosize
-                    id="deviceDescription"
-                    minRows={3}
-                    placeholder="Az eszköz leírása"
-                    style={{ width: '100%' }}
-                  />
-              </Grid>
-
-            </Grid>
           </CardContent>
-
-          <CardActions>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12} md={6}>
-                {/*<Button size="large" variant="outlined" color="warning" fullWidth>Mégsem</Button>*/}
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Button size="large" variant="contained" color="success" onClick={addDevice} fullWidth>Hozzáadás</Button>
-              </Grid>
-            </Grid>
-          </CardActions>
-
         </Card>
       </Grid>
 
-      <Grid item xs={0} sm={0} lg={3}></Grid>
+      <Grid item xs={0} sm={0} lg={1}></Grid>
     </Grid>
 
     <Snackbar open={success} autoHideDuration={6000} onClose={() => {hitSuccess(false)}} action={(<IconButton
@@ -230,4 +170,4 @@ return (
 
 }
 
-export default AddDeviceScreen;
+export default ListDeviceScreen;
