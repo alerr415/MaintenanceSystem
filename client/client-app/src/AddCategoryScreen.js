@@ -21,6 +21,7 @@ import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
+import InputAdornment from '@mui/material/InputAdornment';
 
 function AddCategoryScreen(props) {
 
@@ -35,10 +36,9 @@ function AddCategoryScreen(props) {
   const addCategory = () => {
 
     //!!!!!!! !!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!! !!!!!!!!!! !!!!!!!!!!! !!!!!!!!!! !!!!!!!!!!!
-    let categoryName = document.getElementById("deviceName").value;
-    //let qualification = document.getElementById("deviceDescription").value;
-    let categoryNormalTime = document.getElementById("deviceName").value;
-    let specification = document.getElementById("deviceDescription").value;
+    let categoryName = document.getElementById("categoryName").value;
+    let categoryNormalTime = document.getElementById("categoryNormalTime").value;
+    let specification = document.getElementById("specification").value;
 
     if (categoryName !== "") {
       let toSend  = {"categoryName" : categoryName,
@@ -63,7 +63,7 @@ function AddCategoryScreen(props) {
         console.log('Success:', data);
         if (data.errorCode === 0) {
           console.log("Sikeres Hozzáadás :D");
-          setFeedbackText("Az eszköz hozzáadása megtörtént!");
+          setFeedbackText("A kategória hozzáadása megtörtént!");
           hitSuccess(true);
 
         } else {
@@ -146,11 +146,15 @@ return(
                 <Grid item xs={12} sm={12} md={6}>
                   {/* qualification */}
                   <FormControl sx={{ mx : 'auto' , width : 1 }}>
-                    <InputLabel id="qualLabel">Periódus</InputLabel>
+                    <InputLabel id="qualLabel">Képesítés</InputLabel>
                     <Select labelId="qualLabel" id="qualSelect" value={qualification} onChange={qualChange} label="Képesítés">
                       <MenuItem value={''}>nincs</MenuItem>
-                      <MenuItem value={'eves'}>Éves</MenuItem>
-                      <MenuItem value={'havi'}>Havi</MenuItem>
+                      <MenuItem value={'asztalos'}>Asztalos</MenuItem>
+                      <MenuItem value={'gazvezetektechnikus'}>Gázvezeték-technikus</MenuItem>
+                      <MenuItem value={'gepesztechnikus'}>Gépésztechnikus</MenuItem>
+                      <MenuItem value={'villanyszerelo'}>Villanyszerelő</MenuItem>
+                      <MenuItem value={'vizvezetekszerelo'}>Vízvezetékszerelő</MenuItem>
+
                     </Select>
                   </FormControl>
                 </Grid>
@@ -172,11 +176,18 @@ return(
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6}>
-                  <Typography variant="h6" sx={{ mt : 2 }}>Karbantartás normaideje:</Typography>
+                  <Typography variant="h6" sx={{ mt : 2 }}>Karbantartás normaideje (óra):</Typography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   {/*  normaidő */}
-                  <TextField id="categoryNormalTime" label="Normaidő" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
+                  <TextField id="categoryNormalTime"
+                             label="Normaidő"
+                             sx={{ mx : 'auto' , width : 1 }}
+                             variant="outlined"
+                             inputProps={{ inputMode: 'numeric',
+                                           pattern: '[0-9]*' }}
+                             />
+                           <br />
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6}>

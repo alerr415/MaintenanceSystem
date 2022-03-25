@@ -44,6 +44,10 @@ function Layout(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const logout = () => {
+    setUser("off");
+  };
+
   const drawer = (
     <div>
       <Toolbar />
@@ -75,7 +79,7 @@ function Layout(props) {
       <Divider />
 
       <List>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/" onClick={logout}>
           <ListItemIcon><LogoutIcon /></ListItemIcon>
           <ListItemText>Kijelentkezés</ListItemText>
         </ListItemButton>
