@@ -1,8 +1,8 @@
 import Login from './Login.js';
 import Layout from './Layout.js';
 import AddDeviceScreen from './AddDeviceScreen.js';
+import AddCategoryScreen from './AddCategoryScreen.js';
 import Welcome from './Welcome.js';
-
 
 import { UserContext } from './User.js';
 import { useState } from "react";
@@ -22,6 +22,7 @@ function App() {
               <Route path="/app" element={<Layout />}>
                 <Route path="welcome" element={<Welcome />} />
                 <Route path="newDevice" element={<AddDeviceScreen />} />
+                <Route path="newCategory" element={<AddCategoryScreen />} />
               </Route>
             </Routes>
         </UserContext.Provider>

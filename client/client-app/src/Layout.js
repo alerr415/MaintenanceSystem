@@ -60,7 +60,7 @@ function Layout(props) {
       <Divider />
 
       <List>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/app/newCategory">
           <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
           <ListItemText>Kategória hozzáadása</ListItemText>
         </ListItemButton>
