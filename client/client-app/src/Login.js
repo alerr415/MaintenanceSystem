@@ -17,14 +17,14 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-import { Link , useNavigate } from 'react-router-dom';
-import { useCookies } from "react-cookie";
+import { useNavigate } from 'react-router-dom';
+//import { useCookies } from "react-cookie";
 
 
 function Login() {
 
   const {user, setUser} = useContext(UserContext);
-  const [cookies, setCookie] = useCookies();
+  //const [cookies, setCookie] = useCookies();
 
   const [error, hitError] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
@@ -85,16 +85,16 @@ function Login() {
     <Grid container spacing={2}>
       <Grid item xs={0} sm={2} lg={4}></Grid>
       <Grid item xs={12} sm={8} lg={4}>
-        <Card sx={{ mt : 8 , mx : "auto", p : 2, textAlign: 'center'}}>
+        <Card sx={{ mt : { xs : 2 , lg : 12 } , mx : "auto", p : 2, textAlign: 'center'}}>
 
           <CardMedia>
-              <Typography variant="h3">Karbantartási<br />Rendszer</Typography>
+              <Typography variant="h4">Karbantartási<br />Rendszer</Typography>
           </CardMedia>
 
           <CardContent>
             <Typography variant="h5">Bejelentkezés</Typography>
-            {JSON.stringify(user)}
-            <TextField id="username" label="Felhasználónév" InputProps={{startAdornment: (<InputAdornment position="start"><AccountCircle /></InputAdornment>),}} variant="outlined" fullWidth/><br />
+
+            <TextField id="username" label="Felhasználónév" InputProps={{startAdornment: (<InputAdornment position="start"><AccountCircle /></InputAdornment>),}} variant="outlined" sx={{ mt : 4 }} fullWidth/><br />
             <TextField id="password" label="Jelszó" InputProps={{startAdornment: (<InputAdornment position="start"><LockIcon /></InputAdornment>),}} type="password"  sx={{ mt : 4 }} fullWidth/>
           </CardContent>
 

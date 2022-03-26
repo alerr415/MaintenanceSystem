@@ -7,21 +7,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
 import { UserContext } from "./User.js";
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-import { useCookies } from "react-cookie";
+//import { useCookies } from "react-cookie";
+import { Link } from 'react-router-dom';
+
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -36,7 +30,7 @@ function ListDeviceScreen(props) {
   const { window } = props;
 
   const {user, setUser} = useContext(UserContext);
-  const [cookies, setCookie] = useCookies();
+  //const [cookies, setCookie] = useCookies();
 
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
@@ -143,7 +137,7 @@ return(
       </Alert>
     </Snackbar>
 
-    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }}>
+    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }} component={Link} to="/app/newCategory">
       <AddIcon />
     </Fab>
 

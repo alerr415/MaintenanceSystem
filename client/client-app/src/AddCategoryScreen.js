@@ -21,7 +21,7 @@ import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-import InputAdornment from '@mui/material/InputAdornment';
+//import InputAdornment from '@mui/material/InputAdornment';
 
 function AddCategoryScreen(props) {
 
@@ -246,7 +246,7 @@ return(
                     <TextareaAutosize
                       id="specification"
                       minRows={3}
-                      placeholder="A kategória leírása"
+                      placeholder="A kategória leírása és karbantartási utasításai"
                       style={{ width: '100%' }}
                     />
                 </Grid>

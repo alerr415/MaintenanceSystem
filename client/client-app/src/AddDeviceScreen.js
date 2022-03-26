@@ -219,7 +219,7 @@ return (
                   </Select>
                 </FormControl>
                 <Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
-                <TextField id="categoryAddingCell" label="Új független kategória" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleCategoryAddingCell}/><br />
+                <TextField id="categoryAddingCell" label="Új FÜGGETLEN kategória" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleCategoryAddingCell}/><br />
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
