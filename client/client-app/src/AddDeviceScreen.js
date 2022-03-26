@@ -1,27 +1,14 @@
 import * as React from 'react';
 import { useState, useContext, useEffect } from "react";
-//import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-//import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-//import List from '@mui/material/List';
-//import ListItem from '@mui/material/ListItem';
-//import ListItemIcon from '@mui/material/ListItemIcon';
-//import ListItemText from '@mui/material/ListItemText';
-//import ListItemButton from '@mui/material/ListItemButton';
-//import AddIcon from '@mui/icons-material/Add';
-//import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-//import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-//import LogoutIcon from '@mui/icons-material/Logout';
 import Toolbar from '@mui/material/Toolbar';
-//import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-//import CardMedia from '@mui/material/CardMedia';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -34,34 +21,75 @@ import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-import { useCookies } from "react-cookie";
+//import { useCookies } from "react-cookie";
 
 function AddDeviceScreen(props) {
 
   const { window } = props;
 
   const {user, setUser} = useContext(UserContext);
-  const [cookies, setCookie] = useCookies();
+  //const [cookies, setCookie] = useCookies();
 
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
+  const [type, setType] = React.useState('');
+
+  const typeChange = (event) => {
+    setType(event.target.value);
+  };
+
+  const [categoryList, setCategoryList] = React.useState(["d"]);
+  const [catListFetched, setCatListFetched] =  React.useState(false);
+  const [disabledTypeSelect, setDisabledTypeSelect] =  React.useState(false);
+
+  const handleCategoryAddingCell = (event) => {
+    console.log("CHANGE");
+    if (event.target.value !== "") {
+      console.log("NOTEMPTY");
+      setDisabledTypeSelect(true);
+
+    } else {
+      console.log("EMPTY");
+      setDisabledTypeSelect(false);
+
+    }
+  };
+
+  function clearForm() {
+
+    document.getElementById("deviceName").value = "";
+    document.getElementById("deviceLocation").value = "";
+    setType(undefined);
+    document.getElementById('categoryAddingCell').value = "";
+    document.getElementById("deviceDescription").value = "";
+
+  };
+
+
   const addDevice = () => {
     let deviceName = document.getElementById("deviceName").value;
     let deviceDescription = document.getElementById("deviceDescription").value;
     let deviceLocation = document.getElementById("deviceLocation").value;
+    let deviceCategoryName = "";
+
+    if (disabledTypeSelect) {
+      deviceCategoryName = document.getElementById('categoryAddingCell').value;
+    } else {
+      deviceCategoryName = type;
+    }
 
     //console.log("deviceName:'" + deviceName + "'");
     //console.log("deviceLocation:'" + deviceLocation + "'");
     //console.log("deviceDescription:'" + deviceDescription + "'");
-    //console.log("deviceCategoryName:'" + type + "'");
+    //console.log("deviceCategoryName:'" + deviceCategoryName + "'");
 
     if (deviceName !== "" && type!== "" && deviceDescription !== "" && deviceLocation !== "") {
       let toSend  = {"deviceName" : deviceName,
-                     "deviceCategoryName" : type,
+                     "deviceCategoryName" : deviceCategoryName,
                      "deviceDescription" : deviceDescription,
-                     "deviceLocation" : loc}
+                     "deviceLocation" : deviceLocation}
 
       console.log(toSend);
 
@@ -80,10 +108,12 @@ function AddDeviceScreen(props) {
           setFeedbackText("Az eszköz hozzáadása megtörtént!");
           hitSuccess(true);
 
+          clearForm();
+
         } else {
           console.log("Sikertelen Hozzáadás! :(");
           console.log(data.errorMessage);
-          setFeedbackText("Az eszköz hozzáadása sikertelen!");
+          setFeedbackText("Az eszköz hozzáadása sikertelen! " + data.errorMessage);
           hitError(true);
         }
       })
@@ -101,21 +131,6 @@ function AddDeviceScreen(props) {
     }
   }
 
-
-  const [loc, setLoc] = React.useState('');
-
-  const locChange = (event) => {
-    setLoc(event.target.value);
-  };
-
-  const [type, setType] = React.useState('');
-
-  const typeChange = (event) => {
-    setType(event.target.value);
-  };
-
-  const [categoryList, setCategoryList] = React.useState(["d"]);
-  const [catListFetched, setCatListFetched] =  React.useState(false);
 
 
   function fetchCatList() {
@@ -151,6 +166,7 @@ function AddDeviceScreen(props) {
   useEffect(() => {
     if (!catListFetched) fetchCatList();
   });
+
 
 
 return (
@@ -191,16 +207,19 @@ return (
               <Grid item xs={12} sm={12} md={6}>
                 <Typography variant="h6" sx={{ mt : 2 }}>Eszköz kategóriája:</Typography>
               </Grid>
+
               <Grid item xs={12} sm={12} md={6}>
                 {/*  Eszköz kategóriája */}
-                <FormControl sx={{ mx : 'auto' ,  width : 1 }}>
-                  <InputLabel id="typeLabel">Kategória</InputLabel>
-                  <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Kategória">
+                <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="typeSelectControl" disabled={disabledTypeSelect}>
+                  <InputLabel id="typeLabel">Létező kategória</InputLabel>
+                  <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Létező kategória">
                     {categoryList.map((category, index) => (
                       <MenuItem value={category} key={index}>{category}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
+                <Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
+                <TextField id="categoryAddingCell" label="Új független kategória" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleCategoryAddingCell}/><br />
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -33,9 +33,41 @@ function AddCategoryScreen(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
+  const [qualification, setQualification] = React.useState('');
+
+  const qualChange = (event) => {
+    setQualification(event.target.value);
+  };
+
+  const [categoryPeriod, setCategoryPeriod] = React.useState('');
+
+  const periodChange = (event) => {
+    setCategoryPeriod(event.target.value);
+  };
+
+  const [parent, setParent] = React.useState('');
+
+  const parentChange = (event) => {
+    setParent(event.target.value);
+  };
+
+  const [categoryList, setCategoryList] = React.useState(["d"]);
+  const [catListFetched, setCatListFetched] =  React.useState(false);
+
+  function clearForm() {
+
+    document.getElementById("categoryName").value = "";
+    setQualification('');
+    setCategoryPeriod('');
+    document.getElementById("categoryNormalTime").value = "";
+    document.getElementById("specification").value = "";
+    setParent(undefined);
+
+  };
+
+
   const addCategory = () => {
 
-    //!!!!!!! !!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!! !!!!!!!!!! !!!!!!!!!!! !!!!!!!!!! !!!!!!!!!!!
     let categoryName = document.getElementById("categoryName").value;
     let categoryNormalTime = document.getElementById("categoryNormalTime").value;
     let specification = document.getElementById("specification").value;
@@ -66,6 +98,8 @@ function AddCategoryScreen(props) {
           setFeedbackText("A kategória hozzáadása megtörtént!");
           hitSuccess(true);
 
+          clearForm();
+
         } else {
           console.log("Sikertelen Hozzáadás! :(");
           console.log(data.errorMessage);
@@ -85,28 +119,42 @@ function AddCategoryScreen(props) {
       setFeedbackText("Az eszköz hozzáadása sikertelen! Töltse ki az összes mezőt!");
       hitError(true);
     }
-  }
-
-
-  const [qualification, setQualification] = React.useState('');
-
-  const qualChange = (event) => {
-    setQualification(event.target.value);
   };
 
-  const [categoryPeriod, setCategoryPeriod] = React.useState('');
+  function fetchCatList() {
+    fetch(serveraddress + '/category')
+    .then(response => response.json())
+    .then(data => {
 
-  const periodChange = (event) => {
-    setCategoryPeriod(event.target.value);
+      console.log('Success:', data);
+
+      if (data.resultCode === 0) {
+        console.log("Sikeres lekérdezés :D");
+        console.log(data.categoryList);
+
+        setCategoryList(data.categoryList);
+
+      } else {
+        console.log("Sikertelen lekérdezés! :(");
+        console.log(data.errorMessage);
+        hitError(true);
+      }
+
+      setCatListFetched(true);
+
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
+    });
   };
 
-  const [parent, setParent] = React.useState('');
 
-  const parentChange = (event) => {
-    setParent(event.target.value);
-  };
+  useEffect(() => {
+    if (!catListFetched) fetchCatList();
+  });
 
-  //!!!!!!! !!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!! !!!!!!!!!! !!!!!!!!!!! !!!!!!!!!! !!!!!!!!!!!
 
 
 return(
@@ -211,9 +259,9 @@ return(
                 <FormControl sx={{ mx : 'auto' ,  width : 1 }}>
                   <InputLabel id="parentLabel">Szülő kategória</InputLabel>
                   <Select labelId="parentLabel" id="parentSelect" value={parent} onChange={parentChange} label="Szülő kategória">
-                    <MenuItem value={'tuzvedelem'}>Tűzvédelem</MenuItem>
-                    <MenuItem value={'vilagitas'}>Világítás</MenuItem>
-                    <MenuItem value={'szaniter'}>Szaniter</MenuItem>
+                    {categoryList.map((category, index) => (
+                      <MenuItem value={category} key={index}>{category}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>

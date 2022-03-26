@@ -57,7 +57,7 @@ function Layout(props) {
           <ListItemIcon><AddIcon /></ListItemIcon>
           <ListItemText>Eszköz hozzáadása</ListItemText>
         </ListItemButton>
-        <ListItemButton component={Link} to="/app/devices">
+        <ListItemButton>
           <ListItemIcon><FormatListBulletedIcon /></ListItemIcon>
           <ListItemText>Eszközök megjelenítése</ListItemText>
         </ListItemButton>

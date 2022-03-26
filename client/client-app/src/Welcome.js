@@ -19,7 +19,7 @@ function Welcome(props) {
     >
       <Toolbar />
 
-      <Typography variant="h1">
+      <Typography variant="h2" sx={{ mt : 4 , width : 1 , textAlign : 'center' , mx : 0 , px : 0}}>
         Szia, {user.username}!
       </Typography>
     </Box>
