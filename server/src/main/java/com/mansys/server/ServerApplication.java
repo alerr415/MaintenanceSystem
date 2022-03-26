@@ -33,8 +33,8 @@ public class ServerApplication {
 		SpringApplication.run(ServerApplication.class, args);
 		
 		//LIST QUALIFICATION DEBUG
-		DatabaseManager dbm = DatabaseManager.getInstance();
-		dbm.listQualification();
+		//DatabaseManager dbm = DatabaseManager.getInstance();
+		//dbm.listQualification();
 	}
 
 	@GetMapping("/hello")
