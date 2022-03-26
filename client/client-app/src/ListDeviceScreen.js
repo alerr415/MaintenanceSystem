@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -39,66 +39,25 @@ function ListDeviceScreen(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const addDevice = () => {
-    let deviceName = document.getElementById("deviceName").value;
-    let deviceDescription = document.getElementById("deviceDescription").value;
+  const [deviceList, setDeviceList] = React.useState();
 
-    if (deviceName !== "" && type!== "" && deviceDescription !== "" && loc !== "") {
-      let toSend  = {"deviceName" : deviceName,
-                     "deviceCategoryName" : type,
-                     "deviceDescription" : deviceDescription,
-                     "deviceLocation" : loc}
+  useEffect(() => {
+    fetch(serveraddress + '/category')
+    .then(response => response.json())
+    .then(data => {
 
-      console.log(toSend);
+      console.log('Success:', data);
 
-      fetch(serveraddress + '/device', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(toSend),
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        if (data.errorCode === 0) {
-          console.log("Sikeres Hozzáadás :D");
-          setFeedbackText("Az eszköz hozzáadása megtörtént!");
-          hitSuccess(true);
+      //setDeviceList(data);
 
-        } else {
-          console.log("Sikertelen Hozzáadás! :(");
-          console.log(data.errorMessage);
-          setFeedbackText("Az eszköz hozzáadása sikertelen!");
-          hitError(true);
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
-        hitError(true);
-      });
-
-    } else { // ha valamelyik adat hiányzik
-      console.log("Sikertelen Hozzáadás! :(");
-      console.log("valamelyik mező üresen maradt");
-      setFeedbackText("Az eszköz hozzáadása sikertelen! Töltse ki az összes mezőt!");
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
       hitError(true);
-    }
-  }
+    });
 
-
-  const [loc, setLoc] = React.useState('');
-
-  const locChange = (event) => {
-    setLoc(event.target.value);
-  };
-
-  const [type, setType] = React.useState('');
-
-  const typeChange = (event) => {
-    setType(event.target.value);
-  };
+  } , []);
 
 return(
   <Box
