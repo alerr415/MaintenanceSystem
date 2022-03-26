@@ -28,6 +28,9 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+
 function ListDeviceScreen(props) {
 
   const { window } = props;
@@ -77,7 +80,7 @@ return(
             <Typography variant="h5">Eszközök</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {['Tűzjelző', 'Poroltó', 'Kilincs', 'Pilács'].map((text, index) => (
+            {['T','ű','z','j','e','l','z','ő', 'P','o','r','o','l','t','ó', 'K','i','l','i','n','c','s', 'P','i','l','á','c','s'].map((text, index) => (
             <Accordion key={index}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{text}</Typography>
@@ -123,6 +126,10 @@ return(
         {feedbackText}
       </Alert>
     </Snackbar>
+
+    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }}>
+      <AddIcon />
+    </Fab>
 
   </Box>
 );
