@@ -5,9 +5,10 @@ package com.mansys.server.backend;
  * @author Tálas Martin
  */
 
- @Deprecated
+
 public class Qualification {
     
+    @Deprecated
     public static class Request {
 
         private int qualificationID;
@@ -33,7 +34,8 @@ public class Qualification {
             this.qualificationName = value;
         }
     }
-
+    
+    @Deprecated
     public static class Response {
 
         private String errorMessage;
@@ -60,4 +62,40 @@ public class Qualification {
         }
 
     }
+
+    public static class GetResponse {
+
+        private int resultCode;
+        private String resultMessage;
+        private String[] qualificationList;
+
+        public GetResponse(){
+
+        }
+
+        public String[] getQualificationList(){
+            return this.qualificationList;
+        }
+
+        public String getResultMessage(){
+            return this.resultMessage;
+        }
+
+        public int getResultCode(){
+            return this.resultCode;
+        }
+
+        public void setQualificationList(String[] value){
+            this.qualificationList = value;
+        }
+
+        public void setResultMessage(String value){
+            this.resultMessage = value;
+        }
+
+        public void setResultCode(int value){
+            this.resultCode = value;
+        }
+    }
+
 }
