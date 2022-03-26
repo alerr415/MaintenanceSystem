@@ -1,9 +1,12 @@
 import Login from './Login.js';
 import Layout from './Layout.js';
+
 import AddDeviceScreen from './AddDeviceScreen.js';
 import ListDeviceScreen from './ListDeviceScreen.js';
 
 import AddCategoryScreen from './AddCategoryScreen.js';
+import ListCategoryScreen from './ListCategoryScreen.js';
+
 import Welcome from './Welcome.js';
 
 import { UserContext } from './User.js';
@@ -25,7 +28,8 @@ function App() {
                 <Route path="welcome" element={<Welcome />} />
                 <Route path="newDevice" element={<AddDeviceScreen />} />
                 <Route path="newCategory" element={<AddCategoryScreen />} />
-                <Route path="devices" element={<ListDeviceScreen />} />
+                {//<Route path="devices" element={<ListDeviceScreen />} />}
+                <Route path="categories" element={<ListCategoryScreen />} />
 
             </Route>
             </Routes>

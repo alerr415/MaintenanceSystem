@@ -70,7 +70,7 @@ function Layout(props) {
           <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
           <ListItemText>Kategória hozzáadása</ListItemText>
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/app/categories">
           <ListItemIcon><FormatListBulletedIcon /></ListItemIcon>
           <ListItemText>Kategóriák megjelenítése</ListItemText>
         </ListItemButton>
