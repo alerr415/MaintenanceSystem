@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 //import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 //import CssBaseline from '@mui/material/CssBaseline';
@@ -50,8 +50,14 @@ function AddDeviceScreen(props) {
   const addDevice = () => {
     let deviceName = document.getElementById("deviceName").value;
     let deviceDescription = document.getElementById("deviceDescription").value;
+    let deviceLocation = document.getElementById("deviceLocation").value;
 
-    if (deviceName !== "" && type!== "" && deviceDescription !== "" && loc !== "") {
+    //console.log("deviceName:'" + deviceName + "'");
+    //console.log("deviceLocation:'" + deviceLocation + "'");
+    //console.log("deviceDescription:'" + deviceDescription + "'");
+    //console.log("deviceCategoryName:'" + type + "'");
+
+    if (deviceName !== "" && type!== "" && deviceDescription !== "" && deviceLocation !== "") {
       let toSend  = {"deviceName" : deviceName,
                      "deviceCategoryName" : type,
                      "deviceDescription" : deviceDescription,
@@ -108,6 +114,45 @@ function AddDeviceScreen(props) {
     setType(event.target.value);
   };
 
+  const [categoryList, setCategoryList] = React.useState(["d"]);
+  const [catListFetched, setCatListFetched] =  React.useState(false);
+
+
+  function fetchCatList() {
+    fetch(serveraddress + '/category')
+    .then(response => response.json())
+    .then(data => {
+
+      console.log('Success:', data);
+
+      if (data.resultCode === 0) {
+        console.log("Sikeres lekérdezés :D");
+        console.log(data.categoryList);
+
+        setCategoryList(data.categoryList);
+
+      } else {
+        console.log("Sikertelen lekérdezés! :(");
+        console.log(data.errorMessage);
+        hitError(true);
+      }
+
+      setCatListFetched(true);
+
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
+    });
+  };
+
+
+  useEffect(() => {
+    if (!catListFetched) fetchCatList();
+  });
+
+
 return (
   <Box
     component="main"
@@ -123,11 +168,10 @@ return (
       <Grid item xs={12} sm={12} lg={6}>
         <Card sx={{ mt: { xs : 0 , lg : 4 } }}>
           <CardContent>
-
             <Typography variant="h5">Új eszköz</Typography>
             <Divider />
-
             <Grid container spacing={2} sx={{ mt : 1 }}>
+
               <Grid item xs={12} sm={12} md={6}>
                 <Typography variant="h6" sx={{ mt : 2 }}>Eszköz neve:</Typography>
               </Grid>
@@ -141,14 +185,7 @@ return (
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/*  Eszköz helye */}
-                <FormControl sx={{ mx : 'auto' , width : 1 }}>
-                  <InputLabel id="locLabel">Helyszín</InputLabel>
-                  <Select labelId="locLabel" id="locSelect" value={loc} onChange={locChange} label="Helyszín">
-                    <MenuItem value={'mosdo'}>Mosdó</MenuItem>
-                    <MenuItem value={'iroda'}>Iroda</MenuItem>
-                    <MenuItem value={'folyoso'}>Folyosó</MenuItem>
-                  </Select>
-                </FormControl><br />
+                <TextField id="deviceLocation" label="Helyszín" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
@@ -159,9 +196,9 @@ return (
                 <FormControl sx={{ mx : 'auto' ,  width : 1 }}>
                   <InputLabel id="typeLabel">Kategória</InputLabel>
                   <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Kategória">
-                    <MenuItem value={'tuzvedelem'}>Tűzvédelem</MenuItem>
-                    <MenuItem value={'vilagitas'}>Világítás</MenuItem>
-                    <MenuItem value={'szaniter'}>Szaniter</MenuItem>
+                    {categoryList.map((category, index) => (
+                      <MenuItem value={category} key={index}>{category}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>

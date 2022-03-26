@@ -96,10 +96,10 @@ return(
             <Typography variant="h5">Kategóriák</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {categoryList.map((text, index) => (
+            {categoryList.map((category, index) => (
             <Accordion key={index}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{text}</Typography>
+              <Typography>{category}</Typography>
               </AccordionSummary>
 
               <AccordionDetails>

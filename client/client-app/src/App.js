@@ -28,9 +28,7 @@ function App() {
                 <Route path="welcome" element={<Welcome />} />
                 <Route path="newDevice" element={<AddDeviceScreen />} />
                 <Route path="newCategory" element={<AddCategoryScreen />} />
-                {//<Route path="devices" element={<ListDeviceScreen />} />}
                 <Route path="categories" element={<ListCategoryScreen />} />
-
             </Route>
             </Routes>
         </UserContext.Provider>
