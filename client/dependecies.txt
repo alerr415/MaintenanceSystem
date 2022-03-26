@@ -1,0 +1,24 @@
+
+				::::: DEPENDENCIES :::::
+
+		> npm install
+
+		> npm update
+
+	egyébként:
+
+====================================================================================
+
+	- NODEJS ÉS NPM
+
+	- REACT JS
+
+	- MUI
+
+		> npm install @mui/material @emotion/react @emotion/styled
+
+		> npm install @mui/icons-material
+
+	- REACT ROUTER
+
+		> npm i -D react-router-dom
