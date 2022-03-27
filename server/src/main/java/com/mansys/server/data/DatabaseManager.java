@@ -212,7 +212,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
             callableStatement.setString("device_category_name",categoryName);
             callableStatement.setString("qualification",qualification);
             callableStatement.setString("period",categoryPeriod);
-            callableStatement.setString("deadline",categoryNormalTime);
+            callableStatement.setString("norm_time",categoryNormalTime);
             callableStatement.setString("descrip",specification);
             callableStatement.setString("parent",parent);
 
