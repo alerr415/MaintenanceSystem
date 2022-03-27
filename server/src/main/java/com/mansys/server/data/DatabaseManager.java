@@ -212,7 +212,7 @@ public class DatabaseManager implements DatabaseManagerInterface {
             callableStatement.setString("device_category_name",categoryName);
             callableStatement.setString("qualification",qualification);
             callableStatement.setString("period",categoryPeriod);
-            callableStatement.setString("deadline",categoryNormalTime);
+            callableStatement.setString("norm_time",categoryNormalTime);
             callableStatement.setString("descrip",specification);
             callableStatement.setString("parent",parent);
 
@@ -317,5 +317,56 @@ public class DatabaseManager implements DatabaseManagerInterface {
         }   
 
         return 0;
+    }
+
+    public String[] listQualification()
+    {
+        String[] res;
+        List<String> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            //---[TEMPORARY QUERY]
+            String query = "SELECT DISTINCT Kepesites_neve FROM karbantarto";
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            
+            while (resultSet.next())
+            {
+                String dataSnippet = resultSet.getString(1);
+                dataList.add(dataSnippet);
+            }
+
+            statement.cancel();
+            
+            res = new String[dataList.size()];
+            res = dataList.toArray(res);
+
+            for(String item : res)
+            {
+                System.out.println(item);
+            }
+            //---[END OF TEMPORARY QUERY]
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listQualification: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new String[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listQualification when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+
+        return res;
     }
 }
