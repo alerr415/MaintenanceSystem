@@ -32,9 +32,9 @@ public class ServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
 		
-		//LIST CATEGORY DEBUG
+		//LIST QUALIFICATION DEBUG
 		//DatabaseManager dbm = DatabaseManager.getInstance();
-		//dbm.listCategory();
+		//dbm.listQualification();
 	}
 
 	@GetMapping("/hello")
@@ -130,6 +130,23 @@ public class ServerApplication {
 		}
 
 		Category.GetResponse response = Server.getInstance().handleCategoryList();
+
+		if (response.getResultCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@GetMapping("/qualification")
+	public ResponseEntity<?> getQualifications(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / QUALIFICATIONS] Invalid session: " + sessId);
+			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+		}
+
+		Qualification.GetResponse response = Server.getInstance().handleQualificationList();
 
 		if (response.getResultCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
