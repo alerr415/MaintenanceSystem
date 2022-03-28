@@ -33,10 +33,10 @@ function AddCategoryScreen(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const [qualification, setQualification] = React.useState('');
+  const [qualSelectValue, setQualSelectValue] = React.useState('');
 
   const qualChange = (event) => {
-    setQualification(event.target.value);
+    setQualSelectValue(event.target.value);
   };
 
   const [categoryPeriod, setCategoryPeriod] = React.useState('');
@@ -54,14 +54,32 @@ function AddCategoryScreen(props) {
   const [categoryList, setCategoryList] = React.useState(["d"]);
   const [catListFetched, setCatListFetched] =  React.useState(false);
 
+  const [qualificationList, setQualificationList] = React.useState(["d"]);
+  const [qualListFetched, setQualListFetched] =  React.useState(false);
+  const [disabledQualSelect, setDisabledQualSelect] =  React.useState(false);
+
+  const handleQualificationAddingCell = (event) => {
+    console.log("CHANGE");
+    if (event.target.value !== "") {
+      console.log("NOTEMPTY");
+      setDisabledQualSelect(true);
+
+    } else {
+      console.log("EMPTY");
+      setDisabledQualSelect(false);
+
+    }
+  };
+
   function clearForm() {
 
     document.getElementById("categoryName").value = "";
-    setQualification('');
+    setQualSelectValue('');
+    document.getElementById("qualificationAddingCell").value = "";
     setCategoryPeriod('');
     document.getElementById("categoryNormalTime").value = "";
     document.getElementById("specification").value = "";
-    setParent(undefined);
+    setParent('');
 
   };
 
@@ -72,7 +90,15 @@ function AddCategoryScreen(props) {
     let categoryNormalTime = document.getElementById("categoryNormalTime").value;
     let specification = document.getElementById("specification").value;
 
-    if (categoryName !== "") {
+    let qualification = "";
+    if (document.getElementById("qualificationAddingCell").value !== "") {
+      qualification = document.getElementById("qualificationAddingCell").value;
+    } else {
+      qualification = qualSelectValue;
+    }
+
+
+    if (categoryName !== "" && qualification !== "") {
       let toSend  = {"categoryName" : categoryName,
                      "qualification" : qualification,
                      "categoryPeriod" : categoryPeriod,
@@ -150,11 +176,39 @@ function AddCategoryScreen(props) {
     });
   };
 
+  function fetchQualList() {
+    fetch(serveraddress + '/qualification')
+    .then(response => response.json())
+    .then(data => {
+
+      console.log('Success:', data);
+
+      if (data.resultCode === 0) {
+        console.log("Sikeres lekérdezés :D");
+        console.log(data.qualificationList);
+
+        setQualificationList(data.qualificationList);
+
+      } else {
+        console.log("Sikertelen lekérdezés! :(");
+        console.log(data.errorMessage);
+        hitError(true);
+      }
+
+      setQualListFetched(true);
+
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
+    });
+  };
 
   useEffect(() => {
     if (!catListFetched) fetchCatList();
+    if (!qualListFetched) fetchQualList();
   });
-
 
 
 return(
@@ -189,23 +243,23 @@ return(
 
 
                 <Grid item xs={12} sm={12} md={6}>
-                  <Typography variant="h6" sx={{ mt : 2 }}>Elvárt képesítés:</Typography>
+                  <Typography variant="h6" sx={{ mt : 2 }}>* Elvárt képesítés:</Typography>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6}>
-                  {/* qualification */}
-                  <FormControl sx={{ mx : 'auto' , width : 1 }}>
-                    <InputLabel id="qualLabel">Képesítés</InputLabel>
-                    <Select labelId="qualLabel" id="qualSelect" value={qualification} onChange={qualChange} label="Képesítés">
-                      <MenuItem value={''}>nincs</MenuItem>
-                      <MenuItem value={'asztalos'}>Asztalos</MenuItem>
-                      <MenuItem value={'gazvezetektechnikus'}>Gázvezeték-technikus</MenuItem>
-                      <MenuItem value={'gepesztechnikus'}>Gépésztechnikus</MenuItem>
-                      <MenuItem value={'villanyszerelo'}>Villanyszerelő</MenuItem>
-                      <MenuItem value={'vizvezetekszerelo'}>Vízvezetékszerelő</MenuItem>
 
+                <Grid item xs={12} sm={12} md={6}>
+                  {/*  Eszköz kategóriája */}
+                  <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="qualSelectControl" disabled={disabledQualSelect}>
+                    <InputLabel id="qualLabel">Képesítés</InputLabel>
+                    <Select labelId="qualLabel" id="qualSelect" value={qualSelectValue} onChange={qualChange} label="Képesítés">
+                      {qualificationList.map((qualification, index) => (
+                        <MenuItem value={qualification} key={index}>{qualification}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
+                  <Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
+                  <TextField id="qualificationAddingCell" label="Új képesítés" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleQualificationAddingCell}/><br />
                 </Grid>
+
 
 
                 <Grid item xs={12} sm={12} md={6}>
