@@ -82,32 +82,39 @@ CREATE PROCEDURE EszkozKategoria_hozzaadasa(IN device_category_name VARCHAR(50),
 											IN qualification VARCHAR(50),
 											IN period VARCHAR(50),
 											IN norm_time INT,
-                                            IN descrip LONGTEXT,
+                                            IN steps_descrip LONGTEXT,
                                             IN parent VARCHAR(50),
                                             OUT resultcode INT)
 BEGIN
 	DECLARE check_esz_kat_nev INT;
     DECLARE parent_period VARCHAR(50);
+	DECLARE qualif_ID INT;
+
     SELECT COUNT(*) INTO check_esz_kat_nev
 		FROM EszkozKategoria
         WHERE Eszkoz_kategoria_neve = device_category_name;
+
 	IF check_esz_kat_nev >= 1 THEN
 		-- Mar letezik a kategoria
         SET resultcode = 400;
 	ELSE
 		-- Nem volt olyan kategoria
+		SELECT Kepesites_ID INTO qualif_ID
+			FROM Kepesites
+			WHERE Kepesites_neve = qualification;
+
         IF period IS NULL THEN
 			SELECT Periodus INTO parent_period
 				FROM EszkozKategoria
                 WHERE Szulo = parent;
 			INSERT
-				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_neve, Periodus, Norma_ido, Eloiras, Szulo)
-				VALUES (device_category_name, qualification, parent_period, SEC_TO_TIME(norm_time * 3600), descrip, parent);
+				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_ID, Periodus, Norma_ido, Eloiras, Szulo)
+				VALUES (device_category_name, qualif_ID, parent_period, SEC_TO_TIME(norm_time * 3600), descrip, parent);
 			SET resultcode = 0;
 		ELSE
 			INSERT
-				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_neve, Periodus, Norma_ido, Eloiras, Szulo)
-				VALUES (device_category_name, qualification, period, SEC_TO_TIME(norm_time * 3600), descrip, parent);
+				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_ID, Periodus, Norma_ido, Eloiras, Szulo)
+				VALUES (device_category_name, qualif_ID, period, SEC_TO_TIME(norm_time * 3600), descrip, parent);
 			SET resultcode = 0;
         END IF;
     END IF;
@@ -138,3 +145,203 @@ DELIMITER ;
 
 -- Testing list categories procedures
 -- CALL Kategoriak_listazasa();
+
+-- ---------------------------------
+-- List qualifications procedure
+-- ---------------------------------
+DROP PROCEDURE IF EXISTS Kepesitesek_listazasa;
+DELIMITER //
+
+CREATE PROCEDURE Kepesitesek_listazasa()
+BEGIN
+	SELECT Kepesites_neve
+		FROM Kepesites;
+END//
+DELIMITER ;
+
+-- Testing list qualifications procedures
+-- CALL Kepesitesek_listazasa();
+
+-- ---------------------------------
+-- Add qualification procedure
+-- ---------------------------------
+DROP PROCEDURE IF EXISTS Kepesites_hozzaadasa;
+DELIMITER //
+
+CREATE PROCEDURE Kepesites_hozzaadasa(IN qualification_name VARCHAR(50),
+									  OUT resultcode INT)
+BEGIN
+	DECLARE check_kepesites_nev INT;
+	SELECT COUNT(*) INTO check_kepesites_nev
+		FROM Kepesites
+		WHERE Kepesites_neve = qualification_name;
+
+	IF check_kepesites_nev >= 1 THEN
+		-- Mar letezik a kepesites
+		SET resultcode = 400;
+	ELSE
+		-- Nem volt olyan kepesites
+		INSERT
+			INTO Kepesites (Kepesites_neve)
+			VALUES (qualification_name);
+		SET resultcode = 0;
+	END IF;
+END//
+DELIMITER ;
+
+-- Testing add qualification procedure
+-- SELECT * FROM Kepesites;
+-- CALL Kepesites_hozzaadasa('autoszerelo', @resultcode);
+-- SELECT @resultcode AS Resultcode;
+
+-- --------------------------------------
+-- List maintenance specialists procedure
+-- --------------------------------------
+DROP PROCEDURE IF EXISTS Karbantartok_listazasa;
+DELIMITER //
+
+CREATE PROCEDURE Karbantartok_listazasa()
+BEGIN
+	SELECT Vezeteknev, Keresztnev, Kepesites_neve
+		FROM Karbantarto JOIN Kepesites USING (Kepesites_ID);
+END//
+DELIMITER ;
+
+-- Testing list maintenance specialists procedure
+-- CALL Karbantartok_listazasa();
+
+-- ------------------------------------
+-- Add maintenance specialist procedure
+-- ------------------------------------
+DROP PROCEDURE IF EXISTS Karbantarto_hozzaadasa;
+DELIMITER //
+
+CREATE PROCEDURE Karbantarto_hozzaadasa(IN last_name VARCHAR(50),
+										IN first_name VARCHAR(50),
+										IN qualification VARCHAR(50),
+										OUT resultcode INT)
+BEGIN
+	DECLARE qualif_ID INT;
+		
+	SELECT Kepesites_ID INTO qualif_ID
+		FROM Kepesites
+		WHERE Kepesites_neve = qualification;
+
+	INSERT
+		INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID)
+		VALUES (first_name, last_name, qualif_ID);
+	SET resultcode = 0;
+END//
+DELIMITER ;
+
+-- Testing add maintenance specialist procedure
+-- SELECT * FROM Karbantarto;
+-- CALL Karbantarto_hozzaadasa('Lipot', 'Szilveszter', 'autoszerelo', @resultcode);
+-- SELECT @resultcode AS Resultcode;
+
+-- ----------------------------------------
+-- List devices procedure
+-- ----------------------------------------
+DROP PROCEDURE IF EXISTS Eszkozok_listazasa;
+DELIMITER //
+
+CREATE PROCEDURE Eszkozok_listazasa()
+BEGIN
+	SELECT *
+		FROM Eszkoz;
+END//
+DELIMITER ;
+
+-- ----------------------------------------
+-- Add extraordinary maintenance procedure
+-- ----------------------------------------
+DROP PROCEDURE IF EXISTS RendkivulFeladat_hozzaadasa;
+DELIMITER //
+
+CREATE PROCEDURE RendkivulFeladat_hozzaadasa(IN device_ID INT,
+											 IN device_name VARCHAR(50),
+											 IN task_name VARCHAR(50),
+											 IN status INT,
+											 IN no_justification LONGTEXT,
+											 IN qualification VARCHAR(50),
+											 IN maint_specialist_ID INT,
+											 IN task_start DATETIME,
+											 IN task_end DATETIME,
+											 IN period VARCHAR(50),
+											 IN steps_descrip LONGTEXT,
+											 OUT resultcode INT)
+BEGIN
+	INSERT
+		INTO RendkivulFeladat (Eszkoz_ID, 
+							   Eszkoz_neve, 
+							   Nev, 
+							   Allapot, 
+							   Elutasitas_indoklasa, 
+							   Kepesites_neve, 
+							   Karbantarto_ID,
+							   Kezdeti_idopont, 
+							   Befejezesi_idopont, 
+							   Norma_ido, 
+							   Eloiras)
+		VALUES (device_ID, 
+				device_name, 
+				task_name, 
+				status, 
+				no_justification, 
+				qualification, 
+				maint_specialist_ID,
+				task_start,
+				task_end, 
+				period, 
+				steps_descrip);
+END//
+DELIMITER ;
+
+-- --------------------------------------------
+-- Extraordinary maintenance location procedure
+-- --------------------------------------------
+DROP PROCEDURE IF EXISTS RendkivulFeladat_helye;
+DELIMITER //
+
+CREATE PROCEDURE RendkivulFeladat_helye(IN device_ID INT,
+										OUT location VARCHAR(50),
+									    OUT resultcode INT)
+BEGIN
+	DECLARE check_device_ID INT;
+
+	SELECT COUNT(*) INTO check_device_ID
+		FROM Eszkoz
+		WHERE Eszkoz_ID = device_ID;
+
+	IF check_device_ID < 1 THEN
+		-- Nem letezik az eszkoz
+		SET resultcode = 400;
+	ELSE
+		-- Letezik az eszkoz
+		SELECT Elhelyezkedes INTO location
+			FROM Eszkoz
+			WHERE Eszkoz_ID = device_ID;
+		SET resultcode = 0;
+	END IF;	
+END//
+DELIMITER ;
+
+-- Testing extraordinary maintenance location procedure
+-- CALL RendkivulFeladat_helye(1, @location, @resultcode);
+-- SELECT @location AS Location, @resultcode AS Resultcode;
+-- CALL RendkivulFeladat_helye(100, @location, @resultcode);
+-- SELECT @location AS Location, @resultcode AS Resultcode;
+
+-- -----------------------------------------
+-- List extraordinary maintenances procedure
+-- -----------------------------------------
+DROP PROCEDURE IF EXISTS RendkivulFeladatok_listazasa;
+DELIMITER //
+
+CREATE PROCEDURE RendkivulFeladatok_listazasa()
+BEGIN
+	SELECT *
+		FROM RendkivulFeladat;
+END//
+DELIMITER ;
+

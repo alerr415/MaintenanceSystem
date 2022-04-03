@@ -5,14 +5,26 @@ DROP SCHEMA IF EXISTS MaintenanceSystem2;
 CREATE SCHEMA IF NOT EXISTS MaintenanceSystem2;
 USE MaintenanceSystem2;
 -- ----------------------------------------------------------------------------
+-- Table MaintenanceSystem2.Kepesites
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Kepesites (
+    Kepesites_ID INT AUTO_INCREMENT,
+    Kepesites_neve VARCHAR(50) NOT NULL,
+    PRIMARY KEY (Kepesites_ID)
+);
+-- ----------------------------------------------------------------------------
 -- Table MaintenanceSystem2.Karbantarto
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Karbantarto (
   Karbantarto_ID INT NOT NULL AUTO_INCREMENT,
   Vezeteknev VARCHAR(50) NULL,
   Keresztnev VARCHAR(50) NULL,
-  Kepesites_neve VARCHAR(50) NULL,
-  PRIMARY KEY (Karbantarto_ID)
+  Kepesites_ID INT NOT NULL,
+  PRIMARY KEY (Karbantarto_ID),
+  FOREIGN KEY (Kepesites_ID) 
+    REFERENCES MaintenanceSystem2.Kepesites (Kepesites_ID)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
 -- ----------------------------------------------------------------------------
 -- Table MaintenanceSystem2.IdoszakosFeladat
@@ -72,12 +84,16 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Felhasznalo (
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS MaintenanceSystem2.EszkozKategoria (
   Eszkoz_kategoria_neve VARCHAR(50) NOT NULL,
-  Kepesites_neve VARCHAR(50) NULL,
+  Kepesites_ID INT NOT NULL,
   Periodus VARCHAR(50) NULL,
   Norma_ido TIME NULL,
   Eloiras LONGTEXT NULL,
   Szulo VARCHAR(50) NULL,
-  PRIMARY KEY (Eszkoz_kategoria_neve)
+  PRIMARY KEY (Eszkoz_kategoria_neve),
+  FOREIGN KEY (Kepesites_ID)
+    REFERENCES MaintenanceSystem2.Kepesites (Kepesites_ID)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
 -- ----------------------------------------------------------------------------
 -- Table MaintenanceSystem2.Eszkoz
@@ -94,13 +110,22 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Eszkoz (
 -- Fill tables
 -- ---------------------------------------------------------------------------
 USE maintenancesystem2;
+
 INSERT
-    INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_neve)
-    VALUES ('Gonzalez', 'Laszlo', 'villanyszerelo'),
-           ('Kovacs', 'Pista', 'asztalos'),
-           ('Lakatos', 'Brendon', 'gepesztechnikus'),
-           ('Lusta', 'Aranka', 'gazvezetektechnikus'),
-           ('Felipe', 'Quinto', 'vizvezetekszerelo');
+    INTO Kepesites (Kepesites_neve)
+    VALUES ('villanyszerelo'),
+           ('asztalos'),
+           ('gepesztechnikus'),
+           ('gazvezetektechnikus'),
+           ('vizvezetekszerelo');
+
+INSERT
+    INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID)
+    VALUES ('Gonzalez', 'Laszlo', 1),
+           ('Kovacs', 'Pista', 2),
+           ('Lakatos', 'Brendon', 3),
+           ('Lusta', 'Aranka', 4),
+           ('Felipe', 'Quinto', 5);
 
 INSERT 
 	INTO Felhasznalo (Felhasznalonev, Jelszo, Szerepkor)
@@ -113,13 +138,13 @@ INSERT
            ('felipe', 'felipe321', 'karbantarto');
 
 INSERT 
-    INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_neve, Periodus, Norma_ido, Eloiras, Szulo)
-    VALUES ('lampak', 'villanyszerelo', 'eves', MAKETIME(8, 0, 0), 'Nezze meg mennyire vilagit, utana cserelje az izzokat', 'vilagitoberendezesek'),
-		   ('vilagitoberendezesek', 'villanyszerelo', 'eves', MAKETIME(8, 0, 0), 'Cserelje az izzokat es igazitsa a kabeleket', NULL),
-           ('zseblampak', 'villanyszerelo', 'eves', MAKETIME(8, 0, 0), 'Cserelje az izzokat es igazitsa a kabeleket', 'lampak'),
-           ('asztalok', 'asztalos', 'eves', MAKETIME(8, 0, 0), 'Nezze meg a csavarokat, utana erositse meg oket', NULL),
-           ('hegesztogepek', 'gepesztechnikus', 'havi', MAKETIME(8, 0, 0), 'Toltse fel az oxigen palackokat, utana ellenorizze a kompresszort', NULL),
-           ('gazcsovek', 'vizvezetekszerelo','havi', MAKETIME(8, 0, 0), 'A szivattyu ellenorzese. Ellenorizze a biztonsagi csavarokat', NULL);
+    INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_ID, Periodus, Norma_ido, Eloiras, Szulo)
+    VALUES ('lampak', 1, 'eves', MAKETIME(8, 0, 0), 'Nezze meg mennyire vilagit, utana cserelje az izzokat', 'vilagitoberendezesek'),
+		       ('vilagitoberendezesek', 1, 'eves', MAKETIME(8, 0, 0), 'Cserelje az izzokat es igazitsa a kabeleket', NULL),
+           ('zseblampak', 1, 'eves', MAKETIME(8, 0, 0), 'Cserelje az izzokat es igazitsa a kabeleket', 'lampak'),
+           ('asztalok', 2, 'eves', MAKETIME(8, 0, 0), 'Nezze meg a csavarokat, utana erositse meg oket', NULL),
+           ('hegesztogepek', 3, 'havi', MAKETIME(8, 0, 0), 'Toltse fel az oxigen palackokat, utana ellenorizze a kompresszort', NULL),
+           ('gazcsovek', 4,'havi', MAKETIME(8, 0, 0), 'A szivattyu ellenorzese. Ellenorizze a biztonsagi csavarokat', NULL);
 
 INSERT
     INTO Eszkoz (Eszkoz_neve, Eszkoz_kategoria_neve, Leiras, Elhelyezkedes)
@@ -127,3 +152,8 @@ INSERT
            ('asztal1', 'asztalok', 'A fonok asztala', 'A0'),
            ('hegesztogep1', 'hegesztogepek', 'Vas hegesztesre szolgal', 'B1'),
            ('gazcso1', 'gazcsovek', 'A konyha tuzhelyet szolgalja', 'K1');
+
+INSERT
+    INTO RendkivulFeladat (Eszkoz_ID, Eszkoz_neve, Nev, Allapot, Elutasitas_indoklasa,
+      Kepesites_neve, Karbantarto_ID, Kezdeti_idopont, Befejezesi_idopont, Norma_ido, Eloiras)
+    VALUES(1, 'lampa1', 'Izzo csere', 1, NULL, 'villanyszerelo', 1, NULL, NULL, MAKETIME(8, 0, 0), 'A4-es izzot keresni utana cserelni')
