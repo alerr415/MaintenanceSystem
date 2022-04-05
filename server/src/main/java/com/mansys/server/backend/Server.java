@@ -222,7 +222,12 @@ public class Server implements ServerInterface {
 
     @Override
     public Category.Response handleCategory(Category.Request req) {
-        
+            
+        if(req.getParent().equals(""))
+        {
+            req.setParent(null);
+        }
+
         System.out.println("[SERVER]: Handle category request:\nCategoryName: "   + req.getCategoryName()
                                                                                 + "\nQualification: " + req.getQualification()
                                                                                 + "\nPeriod: " + req.getCategoryPeriod()
