@@ -23,6 +23,11 @@ public class Server implements ServerInterface {
     private static Server instance = null;
 
     /**
+     * Cookie enforcement 
+     */
+    private final boolean COOKIE_ENFORCEMENT = false; 
+
+    /**
      * Just for ease to standardise the success code.
      */
     private final int RESCODE_OK = 0;
