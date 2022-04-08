@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Worker;
 
 import org.junit.jupiter.api.Test;
@@ -75,7 +76,7 @@ class DatabaseManagerTest {
 
     @Test
     void callLisDevice() {
-        String[] devices = DatabaseManager.getInstance().listDevice();
+        Device.DeviceData[] devices = DatabaseManager.getInstance().listDevice();
         assertNotNull(devices);
     }
 

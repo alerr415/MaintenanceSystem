@@ -10,6 +10,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Worker;
 
 import javafx.util.Pair;
@@ -446,10 +447,10 @@ public class DatabaseManager{
         return res;
     }
 
-    public String[] listDevice()
+    public Device.DeviceData[] listDevice()
     {
-        String[] res;
-        List<String> dataList = new ArrayList<>(); 
+        Device.DeviceData[] res;
+        List<Device.DeviceData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -459,16 +460,21 @@ public class DatabaseManager{
             ResultSet resultSet = callableStatement.executeQuery();
             
             while (resultSet.next()) {
-                dataList.add(resultSet.getString(1));
+                Device.DeviceData temp = new Device.DeviceData();
+                temp.setDeviceName(resultSet.getString(2));
+                temp.setDeviceCategoryName(resultSet.getString(3));
+                temp.setDeviceDescription(resultSet.getString(4));
+                temp.setDeviceLocation(resultSet.getString(5));
+                dataList.add(temp);
             }
 
-            res = new String[dataList.size()];
+            res = new Device.DeviceData[dataList.size()];
             res = dataList.toArray(res);
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listDevice: " + ex + "\nStack trace: ");
             ex.printStackTrace();
-            res = new String[0];
+            res = new Device.DeviceData[0];
         } 
         finally {
             try {
