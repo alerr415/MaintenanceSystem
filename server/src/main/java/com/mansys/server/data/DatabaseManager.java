@@ -10,6 +10,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mansys.server.backend.Worker;
+
 import javafx.util.Pair;
 
 
@@ -398,5 +400,10 @@ public class DatabaseManager{
         }   
 
         return resCode;
+    }
+
+    public Worker.WorkerData[] listWorker()
+    {
+        return new Worker.WorkerData[0];
     }
 }
