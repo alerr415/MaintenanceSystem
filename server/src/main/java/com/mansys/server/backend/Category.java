@@ -10,7 +10,7 @@ public class Category {
     public static class Request {
 
         String categoryName;
-        String  qualification;
+        String qualification;
         String categoryPeriod;
         String categoryNormalTime;
         String specification;

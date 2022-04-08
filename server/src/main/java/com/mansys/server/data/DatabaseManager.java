@@ -126,6 +126,8 @@ public class DatabaseManager{
     //------------------------------------------------------------------------------------------------
 
     public Pair<Integer,String> authenticateUser(String username, String password) {
+        
+        Pair<Integer, String> res = new Pair<>(-1,"Internal error");
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String sendProcedure = "{CALL Bejelentkezes(?, ?, ?, ?)}";
@@ -142,11 +144,12 @@ public class DatabaseManager{
             String role = callableStatement.getString("qualification");
             System.out.println("[DATABASE]: Called Bejelentkezes, result: " + resCode + ", role: " + role);
 
-            return new Pair<>(resCode,role);
+            res = new Pair<>(resCode,role);
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function TEMPLATE: " + ex + "\nStack trace: ");
             ex.printStackTrace();
+            res = new Pair<>(-1,"Internal error");
         } 
         finally {
             try {
@@ -160,11 +163,12 @@ public class DatabaseManager{
             }
         }   
 
-        return new Pair<>(-1,"Internal error");
+        return res;
     }
 
     public int addDevice(String deviceName, String deviceCategoryName, String deviceDescription, String devPosition)
     {
+        int resCode;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String call = "{CALL Eszkoz_hozzaadasa(?, ?, ?, ?, ?)}";
@@ -179,13 +183,13 @@ public class DatabaseManager{
 
             callableStatement.execute();
 
-            int resCode = callableStatement.getInt("resultCode");
+            resCode = callableStatement.getInt("resultCode");
             System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
-            return resCode;
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addDevice: " + ex + "\nStack trace: ");
             ex.printStackTrace();
+            resCode = 1;
         } 
         finally {
             try {
@@ -196,14 +200,16 @@ public class DatabaseManager{
             catch (SQLException ex) {
                 System.err.println("[ERROR]: Error occured in function addDevice when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
+                resCode = 1;
             }
         }  
         
-        return -1;
+        return resCode;
     }
 
     public int addCategory(String categoryName, String qualification, String categoryPeriod, String categoryNormalTime, String specification, String parent)
     {
+        int resCode;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String call = "{CALL EszkozKategoria_hozzaadasa(?, ?, ?, ?, ?, ?, ?)}";
@@ -220,19 +226,18 @@ public class DatabaseManager{
 
             callableStatement.execute();
 
-            int resCode = callableStatement.getInt("resultCode");
+            resCode = callableStatement.getInt("resultCode");
             System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
-            return resCode;
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addCategory: " + ex + "\nStack trace: ");
             ex.printStackTrace();
-            return 1;
+            resCode =  1;
         } 
         catch (NumberFormatException ex) {
             System.err.println("[ERROR]: Invalid parse in function addCategory: " + ex + "\nStack trace: ");
             ex.printStackTrace();
-            return 2;
+            resCode =  2;
         } 
         finally {
             try {
@@ -243,9 +248,10 @@ public class DatabaseManager{
             catch (SQLException ex) {
                 System.err.println("[ERROR]: Error occured in function addCategory when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
-                return 1;
+                resCode =  1;
             }
         }   
+        return resCode;
     }
 
     public String[] listCategory()
@@ -350,5 +356,46 @@ public class DatabaseManager{
         }   
 
         return res;
+    }
+
+
+    public int addWorker(String lastName, String firstName, String qualification) {
+
+        int resCode;
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL EszkozKategoria_hozzaadasa(?, ?, ?, ?, ?, ?, ?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("device_category_name",lastName);
+            callableStatement.setString("period",firstName);
+
+            callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+
+            resCode = callableStatement.getInt("resultCode");
+            System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
+
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addCategory: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            resCode = 1;
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addCategory when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+                resCode = 1;
+            }
+        }   
+
+        return resCode;
     }
 }
