@@ -388,6 +388,33 @@ public class Server implements ServerInterface {
         return res;
     }
 
+    @Override
+    public GetResponse handleWorkerList() {
+        System.out.println("[SERVER]: Handle worker list request: NO PARAMETER\n[LISTING WORKERS...]");
+        int res_code = 0;
+        Worker.WorkerData[] data = {};
+        // data = DatabaseManager.getInstance().listWorker();
+        // res_code = data.length == 0 ? 1 : 0;
 
+        Worker.GetResponse res = new Worker.GetResponse();
+        switch (res_code)
+        {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                res.setData(data);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+
+        return res;
+    }
 
 }
