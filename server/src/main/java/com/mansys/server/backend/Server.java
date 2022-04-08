@@ -432,6 +432,7 @@ public class Server implements ServerInterface {
             {
                 res.setErrorMessage("Success");
                 res.setErrorCode(RESCODE_OK);
+                res.setData(data);
                 break;
             }
             default:
