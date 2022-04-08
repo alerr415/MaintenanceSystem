@@ -69,8 +69,14 @@ class DatabaseManagerTest {
 
     @Test
     void callListWorker() {
-        Worker.WorkerData[] qualifications = DatabaseManager.getInstance().listWorker();
-        assertNotNull(qualifications);
+        Worker.WorkerData[] workers = DatabaseManager.getInstance().listWorker();
+        assertNotNull(workers);
+    }
+
+    @Test
+    void callLisDevice() {
+        String[] devices = DatabaseManager.getInstance().listDevice();
+        assertNotNull(devices);
     }
 
 }

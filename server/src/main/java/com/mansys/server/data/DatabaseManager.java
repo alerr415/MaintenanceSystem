@@ -445,4 +445,43 @@ public class DatabaseManager{
 
         return res;
     }
+
+    public String[] listDevice()
+    {
+        String[] res;
+        List<String> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "{CALL Eszkozok_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                dataList.add(resultSet.getString(1));
+            }
+
+            res = new String[dataList.size()];
+            res = dataList.toArray(res);
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listDevice: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new String[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+
+        return res;
+    }
 }
