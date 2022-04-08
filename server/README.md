@@ -41,6 +41,8 @@ Used to get all the categories in a list.
 
 ### Response
 - \[String\] categories
+- String errorMessage
+- int errorCode
 
 ## Add device (POST /device)
 Used for creating new devices.
@@ -63,6 +65,7 @@ Used for creating new devices.
 ### Response
 - String errorMessage
 - int errorCode
+- \[String\]
 
 ## Add worker (POST /worker)
 
@@ -82,6 +85,8 @@ Used for creating new devices.
 
 ### Response
 - \[ Worker \]
+- String errorMessage
+- int errorCode
 
 ### Worker
 - String lastName
