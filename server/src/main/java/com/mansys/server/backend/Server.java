@@ -119,6 +119,8 @@ public class Server implements ServerInterface {
      * @return boolean representing the validness of the request
      */
     public boolean isSessionValid(int sessId) {
+        if (!COOKIE_ENFORCEMENT)
+            return true;
         return validSessions.contains(sessId);
     }
 
