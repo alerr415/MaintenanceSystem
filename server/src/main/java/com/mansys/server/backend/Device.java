@@ -75,4 +75,35 @@ public class Device {
             this.errorCode = value;
         }
     }
+
+    public static class GetResponse {
+        private String errorMessage;
+        private int errorCode;
+
+        private String[] data;
+
+        public String getErrorMessage(){
+            return this.errorMessage;
+        }
+
+        public int getErrorCode(){
+            return this.errorCode;
+        }
+
+        public String[] getData() {
+            return this.data;
+        }
+
+        public void setErrorMessage(String value){
+            this.errorMessage = value;
+        }
+
+        public void setErrorCode(int value){
+            this.errorCode = value;
+        }   
+        
+        public void setData(String[] value) {
+            this.data = value;
+        }
+    }
 }
