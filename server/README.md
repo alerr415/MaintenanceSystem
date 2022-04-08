@@ -65,7 +65,13 @@ Used for creating new devices.
 ### Response
 - String errorMessage
 - int errorCode
-- \[String\]
+- \[Device\]
+
+### DeviceData
+- String deviceName
+- String deviceCategoryName
+- String deviceDescription
+- String deviceLocation
 
 ## Add worker (POST /worker)
 

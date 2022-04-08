@@ -76,11 +76,49 @@ public class Device {
         }
     }
 
+    public static class DeviceData {
+        private String deviceName;
+        private String deviceCategoryName;
+        private String deviceDescription;
+        private String deviceLocation;
+
+        public String getDeviceName(){
+            return this.deviceName;
+        }
+
+        public String getDeviceCategoryName(){
+            return this.deviceCategoryName;
+        }
+
+        public String getDeviceDescription(){
+            return this.deviceDescription;
+        }
+
+        public String getDeviceLocation(){
+            return this.deviceLocation;
+        }
+
+        public void setDeviceName(String value){
+            this.deviceName = value;
+        }
+
+        public void setDeviceCategoryName(String value){
+            this.deviceCategoryName = value;
+        }
+
+        public void setDeviceDescription(String value){
+            this.deviceDescription = value;
+        }
+        public void setDeviceLocation(String value){
+            this.deviceLocation = value;
+        }
+    }
+
     public static class GetResponse {
         private String errorMessage;
         private int errorCode;
 
-        private String[] data;
+        private DeviceData[] data;
 
         public String getErrorMessage(){
             return this.errorMessage;
@@ -90,7 +128,7 @@ public class Device {
             return this.errorCode;
         }
 
-        public String[] getData() {
+        public DeviceData[] getData() {
             return this.data;
         }
 
@@ -102,7 +140,7 @@ public class Device {
             this.errorCode = value;
         }   
         
-        public void setData(String[] value) {
+        public void setData(DeviceData[] value) {
             this.data = value;
         }
     }
