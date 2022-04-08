@@ -21,7 +21,7 @@ import javafx.util.Pair;
  * @category Database
  */
 
-public class DatabaseManager implements DatabaseManagerInterface {
+public class DatabaseManager{
 
     //-----------------------------------------[ VARIABLES ]------------------------------------------
 
@@ -327,28 +327,17 @@ public class DatabaseManager implements DatabaseManagerInterface {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             
-            //---[TEMPORARY QUERY]
-            String query = "SELECT DISTINCT Kepesites_neve FROM karbantarto";
+            String call = "{CALL Kepesitesek_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
             
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            
-            while (resultSet.next())
-            {
-                String dataSnippet = resultSet.getString(1);
-                dataList.add(dataSnippet);
+            while (resultSet.next()) {
+                dataList.add(resultSet.getString(1));
             }
 
-            statement.cancel();
-            
             res = new String[dataList.size()];
             res = dataList.toArray(res);
 
-            for(String item : res)
-            {
-                System.out.println(item);
-            }
-            //---[END OF TEMPORARY QUERY]
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listQualification: " + ex + "\nStack trace: ");
