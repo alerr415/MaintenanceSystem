@@ -19,8 +19,8 @@ class ServerApplicationTests {
 		Category.Request req = new Category.Request();
 		req.setCategoryName("Test Device");
 		req.setParent("");
-		req.setCategoryNormalTime("Havi");
-		req.setCategoryPeriod("01:00:00");
+		req.setCategoryNormalTime("1");
+		req.setCategoryPeriod("Havi");
 		req.setQualification("Tester");
 		req.setSpecification("Easy to use!");
 

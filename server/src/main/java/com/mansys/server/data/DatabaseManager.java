@@ -212,8 +212,8 @@ public class DatabaseManager{
             callableStatement.setString("device_category_name",categoryName);
             callableStatement.setString("qualification",qualification);
             callableStatement.setString("period",categoryPeriod);
-            callableStatement.setString("norm_time",categoryNormalTime);
-            callableStatement.setString("descrip",specification);
+            callableStatement.setInt("norm_time",Integer.parseInt(categoryNormalTime));
+            callableStatement.setString("steps_descrip",specification);
             callableStatement.setString("parent",parent);
 
             callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
@@ -227,6 +227,12 @@ public class DatabaseManager{
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addCategory: " + ex + "\nStack trace: ");
             ex.printStackTrace();
+            return 1;
+        } 
+        catch (NumberFormatException ex) {
+            System.err.println("[ERROR]: Invalid parse in function addCategory: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            return 2;
         } 
         finally {
             try {
@@ -237,10 +243,9 @@ public class DatabaseManager{
             catch (SQLException ex) {
                 System.err.println("[ERROR]: Error occured in function addCategory when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
+                return 1;
             }
         }   
-
-        return 0;
     }
 
     public String[] listCategory()
@@ -251,28 +256,16 @@ public class DatabaseManager{
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             
-            //---[TEMPORARY QUERY]
-            String query = "SELECT Eszkoz_kategoria_neve FROM eszkozkategoria";
+            String call = "{CALL Kategoriak_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
             
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            
-            while (resultSet.next())
-            {
-                String dataSnippet = resultSet.getString(1);
-                dataList.add(dataSnippet);
+            while (resultSet.next()) {
+                dataList.add(resultSet.getString(1));
             }
 
-            statement.cancel();
-            
             res = new String[dataList.size()];
             res = dataList.toArray(res);
-
-            for(String item : res)
-            {
-                System.out.println(item);
-            }
-            //---[END OF TEMPORARY QUERY]
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listCategory: " + ex + "\nStack trace: ");

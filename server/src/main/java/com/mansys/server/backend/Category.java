@@ -12,7 +12,7 @@ public class Category {
         String categoryName;
         String  qualification;
         String categoryPeriod;
-        String categoryNormalTime; //cast to datetime
+        String categoryNormalTime;
         String specification;
         String parent;
 
