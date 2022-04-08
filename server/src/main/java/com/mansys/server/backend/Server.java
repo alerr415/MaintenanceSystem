@@ -371,7 +371,7 @@ public class Server implements ServerInterface {
         
         int res_code = 0;
         Worker.Response res = new Worker.Response();
-        // res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualification());
+        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualification());
         switch (res_code) {
             case 0: // good
             {
@@ -393,8 +393,8 @@ public class Server implements ServerInterface {
         System.out.println("[SERVER]: Handle worker list request: NO PARAMETER\n[LISTING WORKERS...]");
         int res_code = 0;
         Worker.WorkerData[] data = {};
-        // data = DatabaseManager.getInstance().listWorker();
-        // res_code = data.length == 0 ? 1 : 0;
+        data = DatabaseManager.getInstance().listWorker();
+        res_code = data.length == 0 ? 1 : 0;
 
         Worker.GetResponse res = new Worker.GetResponse();
         switch (res_code)
