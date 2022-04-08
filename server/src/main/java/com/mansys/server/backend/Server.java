@@ -417,4 +417,31 @@ public class Server implements ServerInterface {
         return res;
     }
 
+    @Override
+    public Device.GetResponse handleDeviceList() {
+        System.out.println("[SERVER]: Handle device list request: NO PARAMETER\n[LISTING DEVICES...]");
+        int res_code = 0;
+        String[] data = {};
+        //data = DatabaseManager.getInstance().listDevice();
+        res_code = data.length == 0 ? 1 : 0;
+
+        Device.GetResponse res = new Device.GetResponse();
+        switch (res_code)
+        {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+        return res;
+    }
+
 }
