@@ -12,4 +12,6 @@ public interface ServerInterface {
     public Category.GetResponse handleCategoryList();
     public Qualification.GetResponse handleQualificationList();
     public Qualification.Response handleQualification(Qualification.Request req);
+    public Worker.Response handleWorker(Worker.Request req);
+    public Worker.GetResponse handleWorkerList();
 }

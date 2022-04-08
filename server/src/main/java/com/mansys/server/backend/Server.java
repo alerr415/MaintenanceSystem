@@ -3,6 +3,9 @@ package com.mansys.server.backend;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mansys.server.backend.Worker.GetResponse;
+import com.mansys.server.backend.Worker.Request;
+import com.mansys.server.backend.Worker.Response;
 import com.mansys.server.data.DatabaseManager;
 
 import org.springframework.http.ResponseCookie;
@@ -359,4 +362,59 @@ public class Server implements ServerInterface {
         }
         return res;
     }
+
+    @Override
+    public Response handleWorker(Request req) {
+        System.out.println("[SERVER]: Handle add worker request:\nFirstName: " + req.getFirstName()
+                                                             + "\nLastName: " + req.getLastName()
+                                                             + "\nQualification: " + req.getQualification());
+        
+        int res_code = 0;
+        Worker.Response res = new Worker.Response();
+        // res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualification());
+        switch (res_code) {
+            case 0: // good
+            {
+                res.setErrorCode(RESCODE_OK);
+                res.setErrorMessage("Success");
+                break;
+            }
+            default:
+            {
+                res.setErrorCode(1);
+                res.setErrorMessage("Worker creation failed: Wrong parameter.");
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public GetResponse handleWorkerList() {
+        System.out.println("[SERVER]: Handle worker list request: NO PARAMETER\n[LISTING WORKERS...]");
+        int res_code = 0;
+        Worker.WorkerData[] data = {};
+        // data = DatabaseManager.getInstance().listWorker();
+        // res_code = data.length == 0 ? 1 : 0;
+
+        Worker.GetResponse res = new Worker.GetResponse();
+        switch (res_code)
+        {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                res.setData(data);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+
+        return res;
+    }
+
 }
