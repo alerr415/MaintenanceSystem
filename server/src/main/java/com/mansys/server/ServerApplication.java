@@ -5,6 +5,7 @@ import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Qualification;
 import com.mansys.server.backend.Server;
+import com.mansys.server.backend.Worker;
 import com.mansys.server.data.DatabaseManager;
 
 import org.springframework.boot.SpringApplication;
@@ -149,6 +150,41 @@ public class ServerApplication {
 		Qualification.GetResponse response = Server.getInstance().handleQualificationList();
 
 		if (response.getResultCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@PostMapping("/worker")
+	public ResponseEntity<?> addWorker(@RequestBody Worker.Request request,
+									   @CookieValue(name="session-id", defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Worker.Response response = Server.getInstance().handleWorker(request);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@GetMapping("/worker")
+	public ResponseEntity<?> getWorkers(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Worker.GetResponse response = Server.getInstance().handleWorkerList();
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
 			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
 		} else {
