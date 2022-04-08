@@ -59,4 +59,10 @@ class DatabaseManagerTest {
         assertNotNull(qualifications);
     }
 
+    @Test
+    void callAddWorker() {
+        int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", "Gepesztechnikus");
+        assertEquals(0,ok);
+    }
+
 }

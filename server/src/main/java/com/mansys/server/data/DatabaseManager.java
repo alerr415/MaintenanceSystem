@@ -364,22 +364,23 @@ public class DatabaseManager{
         int resCode;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            String call = "{CALL EszkozKategoria_hozzaadasa(?, ?, ?, ?, ?, ?, ?)}";
+            String call = "{CALL Karbantarto_hozzaadasa(?,?,?,?)}";
 
             CallableStatement callableStatement = connection.prepareCall(call);
-            callableStatement.setString("device_category_name",lastName);
-            callableStatement.setString("period",firstName);
+            callableStatement.setString("last_name",lastName);
+            callableStatement.setString("first_name",firstName);
+            callableStatement.setString("qualification",qualification);
 
             callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
 
             callableStatement.execute();
 
             resCode = callableStatement.getInt("resultCode");
-            System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
+            System.out.println("[DATABASE]: Called Karbantarto_hozzaadasa, result: " + resCode);
 
         } 
         catch (SQLException ex) {
-            System.err.println("[ERROR]: Error occured in function addCategory: " + ex + "\nStack trace: ");
+            System.err.println("[ERROR]: Error occured in function addWorker: " + ex + "\nStack trace: ");
             ex.printStackTrace();
             resCode = 1;
         } 
@@ -390,7 +391,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function addCategory when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function addWorker when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
                 resCode = 1;
             }
