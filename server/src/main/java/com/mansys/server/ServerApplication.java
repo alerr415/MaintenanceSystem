@@ -192,4 +192,21 @@ public class ServerApplication {
 		}
 	}
 
+	@GetMapping("/device")
+	public ResponseEntity<?> getDevice(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Device.GetResponse response = Server.getInstance().handleDeviceList();
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
 }

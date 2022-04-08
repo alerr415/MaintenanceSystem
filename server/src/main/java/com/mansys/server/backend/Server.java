@@ -422,7 +422,7 @@ public class Server implements ServerInterface {
         System.out.println("[SERVER]: Handle device list request: NO PARAMETER\n[LISTING DEVICES...]");
         int res_code = 0;
         String[] data = {};
-        //data = DatabaseManager.getInstance().listDevice();
+        data = DatabaseManager.getInstance().listDevice();
         res_code = data.length == 0 ? 1 : 0;
 
         Device.GetResponse res = new Device.GetResponse();
