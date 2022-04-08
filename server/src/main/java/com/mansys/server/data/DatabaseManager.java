@@ -404,6 +404,45 @@ public class DatabaseManager{
 
     public Worker.WorkerData[] listWorker()
     {
-        return new Worker.WorkerData[0];
+        Worker.WorkerData[] res;
+        List<Worker.WorkerData> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "{CALL Karbantartok_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Worker.WorkerData temp = new Worker.WorkerData();
+                temp.setLastName(resultSet.getString(1));
+                temp.setFirstName(resultSet.getString(2));
+                temp.setQualification(resultSet.getString(3));
+                dataList.add(temp);
+            }
+
+            res = new Worker.WorkerData[dataList.size()];
+            res = dataList.toArray(res);
+
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listWorker: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new Worker.WorkerData[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listWorker when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+
+        return res;
     }
 }

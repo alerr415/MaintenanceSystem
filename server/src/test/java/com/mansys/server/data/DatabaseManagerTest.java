@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.mansys.server.backend.Worker;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -63,6 +65,12 @@ class DatabaseManagerTest {
     void callAddWorker() {
         int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", "Gepesztechnikus");
         assertEquals(0,ok);
+    }
+
+    @Test
+    void callListWorker() {
+        Worker.WorkerData[] qualifications = DatabaseManager.getInstance().listWorker();
+        assertNotNull(qualifications);
     }
 
 }
