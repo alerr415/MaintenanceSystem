@@ -17,15 +17,6 @@ Used for login authentication of the users. The username and password should be 
 - String errorMessage  
 - int errorCode  
 
-## Query categories (GET /category)
-Used to get all the categories in a list.
-
-### Request params
-(None for now)
-
-### Response
-- \[String\] categories
-
 ## Add category (POST /category)
 Used for category management (creating and organizing categories).
 The qualificationID can be used to assign a specified qualification for the category.
@@ -42,7 +33,16 @@ The qualificationID can be used to assign a specified qualification for the cate
 - String errorMessage
 - int errorCode
 
-## Device (POST /device)
+## Query categories (GET /category)
+Used to get all the categories in a list.
+
+### Request params
+(None for now)
+
+### Response
+- \[String\] categories
+
+## Add device (POST /device)
 Used for creating new devices.
 
 ### Request
@@ -54,3 +54,55 @@ Used for creating new devices.
 ### Response
 - String errorMessage
 - int errorCode
+
+## Query devices (GET /device)
+
+### Request
+(none for now)
+
+### Response
+- String errorMessage
+- int errorCode
+
+## Add worker (POST /worker)
+
+### Request
+- String lastName
+- String firstName
+- String qualification
+
+### Response
+- String errorMessage
+- int errorCode
+
+## Query workers (GET /worker)
+
+### Request
+(none for now)
+
+### Response
+- \[ Worker \]
+
+### Worker
+- String lastName
+- String firstName
+- String qualification
+
+## Add Qualification (POST /qualification)
+
+### Request
+- String qualificationName
+
+### Response
+- String errorMessage
+- int errorCode
+
+## Query Qualifications (GET /qualification)
+
+### Request
+(none for now)
+
+### Response
+- int resultCode
+- String resultMessage
+- \[String\] qualificationList
