@@ -109,12 +109,12 @@ BEGIN
                 WHERE Szulo = parent;
 			INSERT
 				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_ID, Periodus, Norma_ido, Eloiras, Szulo)
-				VALUES (device_category_name, qualif_ID, parent_period, SEC_TO_TIME(norm_time * 3600), descrip, parent);
+				VALUES (device_category_name, qualif_ID, parent_period, SEC_TO_TIME(norm_time * 3600), steps_descrip, parent);
 			SET resultcode = 0;
 		ELSE
 			INSERT
 				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_ID, Periodus, Norma_ido, Eloiras, Szulo)
-				VALUES (device_category_name, qualif_ID, period, SEC_TO_TIME(norm_time * 3600), descrip, parent);
+				VALUES (device_category_name, qualif_ID, period, SEC_TO_TIME(norm_time * 3600), steps_descrip, parent);
 			SET resultcode = 0;
         END IF;
     END IF;
