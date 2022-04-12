@@ -298,8 +298,16 @@ public class DatabaseManager{
 
     public int addQualication(String qualificationName)
     {
+        int resCode = 1;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL Kepesites_hozzaadasa(?, ?)}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("qualification_name",qualificationName);
+            callableStatement.registerOutParameter("resultcode",java.sql.Types.INTEGER);
+            callableStatement.execute();
+            resCode = callableStatement.getInt("resultcode");
+            System.out.println("[DATABASE]: called Kepesites_hozzaadasa, result: " + resCode);
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addQualication: " + ex + "\nStack trace: ");
@@ -317,7 +325,7 @@ public class DatabaseManager{
             }
         }   
 
-        return 0;
+        return resCode;
     }
 
     public String[] listQualification()
