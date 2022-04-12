@@ -8,26 +8,16 @@ package com.mansys.server.backend;
 
 public class Qualification {
     
-    @Deprecated
     public static class Request {
 
-        private int qualificationID;
         private String qualificationName;
 
         public Request(){
                      
         }
 
-        public int getQualificationID(){
-            return this.qualificationID;
-        }
-
         public String getQualificationName(){
             return this.qualificationName;
-        }
-
-        public void setQualificationID(int value){
-            this.qualificationID = value;
         }
 
         public void setQualificationName(String value){
@@ -35,7 +25,6 @@ public class Qualification {
         }
     }
     
-    @Deprecated
     public static class Response {
 
         private String errorMessage;
