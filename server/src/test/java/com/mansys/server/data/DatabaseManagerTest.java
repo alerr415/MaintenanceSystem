@@ -80,4 +80,10 @@ class DatabaseManagerTest {
         assertNotNull(devices);
     }
 
+    @Test
+    void callAddQualification() {
+        int ok = DatabaseManager.getInstance().addQualication("szexuális segédmunkás");
+        assertEquals(ok,0);
+    }
+
 }
