@@ -296,8 +296,7 @@ public class DatabaseManager{
         return res;
     }
 
-    @Deprecated
-    public int addQualication(int qualificationID,  String qualificationName)
+    public int addQualication(String qualificationName)
     {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
