@@ -305,11 +305,10 @@ public class Server implements ServerInterface {
     @Override
     public Qualification.Response handleQualification(Qualification.Request req) {
          
-        System.out.println("[SERVER]: Handle category request:\nQualificationID: " + req.getQualificationID() 
-                                                         + "\nQualificationName: " + req.getQualificationName());
+        System.out.println("[SERVER]: Handle category request: QualificationName: " + req.getQualificationName());
         // get the device data from the database
         int res_code = 0;
-        // res_code = DatabaseManager.getInstance().addQualication(req.getQualificationID(), req.getQualificationName());
+        res_code = DatabaseManager.getInstance().addQualication(req.getQualificationName());
 
         Qualification.Response res = new Qualification.Response();
 
