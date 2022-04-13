@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Worker;
+import com.mansys.server.backend.Qualification;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,13 +59,13 @@ class DatabaseManagerTest {
 
     @Test
     void callListQualification() {
-        String[] qualifications = DatabaseManager.getInstance().listQualification();
+        Qualification.QualificationData[] qualifications = DatabaseManager.getInstance().listQualification();
         assertNotNull(qualifications);
     }
 
     @Test
     void callAddWorker() {
-        int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", "Gepesztechnikus");
+        int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", 1);
         assertEquals(0,ok);
     }
 
@@ -84,6 +85,12 @@ class DatabaseManagerTest {
     void callAddQualification() {
         int ok = DatabaseManager.getInstance().addQualication("szexuális segédmunkás");
         assertEquals(ok,0);
+    }
+
+    @Test
+    void callAddMaintenanceTask() {
+        int ok = DatabaseManager.getInstance().addMaintenance(1,"nemtommi","csinád",1, "vidámság", "10:00:00");
+        assertEquals(0,ok);
     }
 
 }

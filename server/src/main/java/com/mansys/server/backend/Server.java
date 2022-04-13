@@ -234,7 +234,7 @@ public class Server implements ServerInterface {
         }
 
         System.out.println("[SERVER]: Handle category request:\nCategoryName: "   + req.getCategoryName()
-                                                                                + "\nQualification: " + req.getQualification()
+                                                                                + "\nQualification: " + req.getQualificationID()
                                                                                 + "\nPeriod: " + req.getCategoryPeriod()
                                                                                 + "\nNormal time: " + req.getCategoryNormalTime()
                                                                                 + "\nSpecification: " + req.getSpecification()
@@ -242,7 +242,7 @@ public class Server implements ServerInterface {
         // get the device data from the database
         int res_code = 0;
         res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryName(), 
-                                                                    req.getQualification(), 
+                                                                    req.getQualificationID(), 
                                                                     req.getCategoryPeriod(), 
                                                                     req.getCategoryNormalTime(),
                                                                     req.getSpecification(),
@@ -336,7 +336,7 @@ public class Server implements ServerInterface {
          
         // get the device data from the database
         int res_code = 0;
-        String[] data = DatabaseManager.getInstance().listQualification();
+        Qualification.QualificationData[] data = DatabaseManager.getInstance().listQualification();
         res_code = ((data.length == 0) ? 1 : 0);
 
         Qualification.GetResponse res = new Qualification.GetResponse();
@@ -352,7 +352,7 @@ public class Server implements ServerInterface {
             }
             default:
             {
-                String[] errList = {"NO DATA"};
+                Qualification.QualificationData[] errList = new Qualification.QualificationData[0];
                 res.setResultCode(1);
                 res.setResultMessage("Error during listing qualifications: NO DATA."); // UNKNOWN ERROR or NO DATA (?)
                 res.setQualificationList(errList);
@@ -366,11 +366,11 @@ public class Server implements ServerInterface {
     public Response handleWorker(Request req) {
         System.out.println("[SERVER]: Handle add worker request:\nFirstName: " + req.getFirstName()
                                                              + "\nLastName: " + req.getLastName()
-                                                             + "\nQualification: " + req.getQualification());
+                                                             + "\nQualification id: " + req.getQualificationID());
         
         int res_code = 0;
         Worker.Response res = new Worker.Response();
-        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualification());
+        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualificationID());
         switch (res_code) {
             case 0: // good
             {

@@ -20,10 +20,14 @@ Used for login authentication of the users. The username and password should be 
 ## Add category (POST /category)
 Used for category management (creating and organizing categories).
 The qualificationID can be used to assign a specified qualification for the category.
+CHANGE: the category now requires the qualification id.
+The qualification ids can 
+be queried with the GET /qualification resource and 
+from that point the data can be cached.
 
 ### Request
 - String categoryName
-- String qualification
+- int qualificationID
 - String categoryPeriod
 - String categoryNormalTime
 - String specification
@@ -68,36 +72,47 @@ Used for creating new devices.
 - \[Device\]
 
 ### DeviceData
+- int deviceID
 - String deviceName
 - String deviceCategoryName
 - String deviceDescription
 - String deviceLocation
 
 ## Add worker (POST /worker)
+CHANGE: the worker requires the qualification id
+for more consistent database.
+The qualification ids can 
+be queried with the GET /qualification resource and 
+from that point the data can be cached.
 
 ### Request
 - String lastName
 - String firstName
-- String qualification
+- int qualificationID
 
 ### Response
 - String errorMessage
 - int errorCode
 
 ## Query workers (GET /worker)
+CHANGE: the WorkerData now contains the id of the 
+worker's qualification. The qualification names can 
+be queried with the GET /qualification resource and 
+from that point the data can be cached.
+NOTE: cache refresh response not implemented yet.
 
 ### Request
 (none for now)
 
 ### Response
-- \[ Worker \]
+- \[Worker\] data
 - String errorMessage
 - int errorCode
 
-### Worker
+### WorkerData
 - String lastName
 - String firstName
-- String qualification
+- int qualificationID
 
 ## Add Qualification (POST /qualification)
 
@@ -116,4 +131,22 @@ Used for creating new devices.
 ### Response
 - int resultCode
 - String resultMessage
-- \[String\] qualificationList
+- \[QualifiactionData\] qualificationList
+
+### QualificationData
+- int qualificationID
+- String qualificationName
+
+## Add Maintenance task (POST /maintenance)
+
+## Request
+- int deviceID
+- String deviceName
+- String taskName
+- int qualificationID
+- String specification
+- String normTime
+
+### Response
+- String errorMessage
+- int errorCode

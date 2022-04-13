@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mansys.server.backend.Device;
+import com.mansys.server.backend.Qualification;
 import com.mansys.server.backend.Worker;
 
 import javafx.util.Pair;
@@ -210,7 +211,7 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public int addCategory(String categoryName, String qualification, String categoryPeriod, String categoryNormalTime, String specification, String parent)
+    public int addCategory(String categoryName, int qualificationID, String categoryPeriod, String categoryNormalTime, String specification, String parent)
     {
         int resCode;
         try {
@@ -219,7 +220,7 @@ public class DatabaseManager{
 
             CallableStatement callableStatement = connection.prepareCall(call);
             callableStatement.setString("device_category_name",categoryName);
-            callableStatement.setString("qualification",qualification);
+            callableStatement.setInt("qualification",qualificationID); // INCOMPLETE PROCEDURE
             callableStatement.setString("period",categoryPeriod);
             callableStatement.setInt("norm_time",Integer.parseInt(categoryNormalTime));
             callableStatement.setString("steps_descrip",specification);
@@ -328,10 +329,10 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public String[] listQualification()
+    public Qualification.QualificationData[] listQualification()
     {
-        String[] res;
-        List<String> dataList = new ArrayList<>(); 
+        Qualification.QualificationData[] res;
+        List<Qualification.QualificationData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -341,17 +342,21 @@ public class DatabaseManager{
             ResultSet resultSet = callableStatement.executeQuery();
             
             while (resultSet.next()) {
-                dataList.add(resultSet.getString(1));
+                Qualification.QualificationData temp = new Qualification.QualificationData();
+                temp.setQualificationID(resultSet.getInt(0));
+                temp.setQualificationName(resultSet.getString(2));
+                dataList.add(temp);
             }
 
-            res = new String[dataList.size()];
+
+            res = new Qualification.QualificationData[dataList.size()];
             res = dataList.toArray(res);
 
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listQualification: " + ex + "\nStack trace: ");
             ex.printStackTrace();
-            res = new String[0];
+            res = new Qualification.QualificationData[0];
         } 
         finally {
             try {
@@ -369,7 +374,7 @@ public class DatabaseManager{
     }
 
 
-    public int addWorker(String lastName, String firstName, String qualification) {
+    public int addWorker(String lastName, String firstName, int qualificationID) {
 
         int resCode;
         try {
@@ -377,9 +382,9 @@ public class DatabaseManager{
             String call = "{CALL Karbantarto_hozzaadasa(?,?,?,?)}";
 
             CallableStatement callableStatement = connection.prepareCall(call);
-            callableStatement.setString("last_name",lastName);
-            callableStatement.setString("first_name",firstName);
-            callableStatement.setString("qualification",qualification);
+            callableStatement.setString("last_name", lastName); // INCOMPLETE PROCEDURE
+            callableStatement.setString("first_name", firstName); // INCOMPLETE PROCEDURE
+            callableStatement.setInt("qualification", qualificationID); // INCOMPLETE PROCEDURE
 
             callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
 
@@ -426,7 +431,7 @@ public class DatabaseManager{
                 Worker.WorkerData temp = new Worker.WorkerData();
                 temp.setLastName(resultSet.getString(1));
                 temp.setFirstName(resultSet.getString(2));
-                temp.setQualification(resultSet.getString(3));
+                temp.setQualificationID(resultSet.getInt(3)); // INCOMPLETE PROCEDURE
                 dataList.add(temp);
             }
 
@@ -497,5 +502,53 @@ public class DatabaseManager{
         }   
 
         return res;
+    }
+
+    public int addMaintenance(int deviceID, String deviceName, String taskName, int qualificationID, String specification, String normTime) {
+        int resCode = 1;
+        
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL RendkivulFeladat_hozzaadasa(?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setInt("device_ID",deviceID);
+            callableStatement.setString("device_name",deviceName);
+            callableStatement.setString("task_name",taskName);
+            callableStatement.setInt("status",0);
+            callableStatement.setString("no_justification",null);
+            callableStatement.setInt("qualification",qualificationID);
+            callableStatement.setInt("maint_specialist_ID",1);
+            callableStatement.setString("task_start",null);
+            callableStatement.setString("task_end",null);
+            callableStatement.setString("period",normTime);
+            callableStatement.setString("steps_descrip",specification);
+            callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+
+            resCode = callableStatement.getInt("resultCode");
+            System.out.println("[DATABASE]: Called Karbantarto_hozzaadasa, result: " + resCode);
+
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addWorker: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            resCode = 1;
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addWorker when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+                resCode = 1;
+            }
+        }   
+
+        return resCode;
     }
 }
