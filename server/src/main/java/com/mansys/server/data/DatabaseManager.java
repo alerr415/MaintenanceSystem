@@ -374,7 +374,7 @@ public class DatabaseManager{
     }
 
 
-    public int addWorker(String lastName, String firstName, String qualification) {
+    public int addWorker(String lastName, String firstName, int qualificationID) {
 
         int resCode;
         try {
@@ -382,9 +382,9 @@ public class DatabaseManager{
             String call = "{CALL Karbantarto_hozzaadasa(?,?,?,?)}";
 
             CallableStatement callableStatement = connection.prepareCall(call);
-            callableStatement.setString("last_name",lastName);
-            callableStatement.setString("first_name",firstName);
-            callableStatement.setString("qualification",qualification);
+            callableStatement.setString("last_name", lastName); // INCOMPLETE PROCEDURE
+            callableStatement.setString("first_name", firstName); // INCOMPLETE PROCEDURE
+            callableStatement.setInt("qualification", qualificationID); // INCOMPLETE PROCEDURE
 
             callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
 
@@ -431,7 +431,7 @@ public class DatabaseManager{
                 Worker.WorkerData temp = new Worker.WorkerData();
                 temp.setLastName(resultSet.getString(1));
                 temp.setFirstName(resultSet.getString(2));
-                temp.setQualification(resultSet.getString(3));
+                temp.setQualificationID(resultSet.getInt(3)); // INCOMPLETE PROCEDURE
                 dataList.add(temp);
             }
 

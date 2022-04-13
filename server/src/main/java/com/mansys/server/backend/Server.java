@@ -366,11 +366,11 @@ public class Server implements ServerInterface {
     public Response handleWorker(Request req) {
         System.out.println("[SERVER]: Handle add worker request:\nFirstName: " + req.getFirstName()
                                                              + "\nLastName: " + req.getLastName()
-                                                             + "\nQualification: " + req.getQualification());
+                                                             + "\nQualification id: " + req.getQualificationID());
         
         int res_code = 0;
         Worker.Response res = new Worker.Response();
-        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualification());
+        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualificationID());
         switch (res_code) {
             case 0: // good
             {

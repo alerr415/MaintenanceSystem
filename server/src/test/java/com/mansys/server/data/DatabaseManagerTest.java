@@ -65,7 +65,7 @@ class DatabaseManagerTest {
 
     @Test
     void callAddWorker() {
-        int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", "Gepesztechnikus");
+        int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", 1);
         assertEquals(0,ok);
     }
 

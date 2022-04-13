@@ -4,7 +4,7 @@ public class Worker {
     public static class Request {
         private String lastName;
         private String firstName;
-        private String qualification;
+        private int qualificationID;
 
         public String getLastName() {
             return lastName;
@@ -14,18 +14,18 @@ public class Worker {
             return firstName;
         }
 
-        public String getQualification() {
-            return qualification;
+        public int getQualificationID() {
+            return qualificationID;
         }
 
         public void setLastName(String value) {
-            this.lastName=value;
+            this.lastName = value;
         }       
         public void setFirstName(String value) {
-            this.firstName=value;
+            this.firstName = value;
         }
-        public void setQualification(String value) {
-            this.qualification=value;
+        public void setQualificationID(int value) {
+            this.qualificationID = value;
         }
 
     }
@@ -54,7 +54,7 @@ public class Worker {
     public static class WorkerData {
         private String lastName;
         private String firstName;
-        private String qualification;
+        private int qualificationID;
 
         public String getLastName() {
             return lastName;
@@ -64,18 +64,18 @@ public class Worker {
             return firstName;
         }
 
-        public String getQualification() {
-            return qualification;
+        public int getQualificationID() {
+            return qualificationID;
         }
 
         public void setLastName(String value) {
-            this.lastName=value;
+            this.lastName = value;
         }       
         public void setFirstName(String value) {
-            this.firstName=value;
+            this.firstName = value;
         }
-        public void setQualification(String value) {
-            this.qualification=value;
+        public void setQualificationID(int value) {
+            this.qualificationID = value;
         }
 
     }
