@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Worker;
+import com.mansys.server.backend.Qualification;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,7 +59,7 @@ class DatabaseManagerTest {
 
     @Test
     void callListQualification() {
-        String[] qualifications = DatabaseManager.getInstance().listQualification();
+        Qualification.QualificationData[] qualifications = DatabaseManager.getInstance().listQualification();
         assertNotNull(qualifications);
     }
 

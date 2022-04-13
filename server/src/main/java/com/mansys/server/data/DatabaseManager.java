@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mansys.server.backend.Device;
+import com.mansys.server.backend.Qualification;
 import com.mansys.server.backend.Worker;
 
 import javafx.util.Pair;
@@ -328,10 +329,10 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public String[] listQualification()
+    public Qualification.QualificationData[] listQualification()
     {
-        String[] res;
-        List<String> dataList = new ArrayList<>(); 
+        Qualification.QualificationData[] res;
+        List<Qualification.QualificationData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -341,17 +342,21 @@ public class DatabaseManager{
             ResultSet resultSet = callableStatement.executeQuery();
             
             while (resultSet.next()) {
-                dataList.add(resultSet.getString(1));
+                Qualification.QualificationData temp = new Qualification.QualificationData();
+                temp.setQualificationID(resultSet.getInt(0));
+                temp.setQualificationName(resultSet.getString(2));
+                dataList.add(temp);
             }
 
-            res = new String[dataList.size()];
+
+            res = new Qualification.QualificationData[dataList.size()];
             res = dataList.toArray(res);
 
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listQualification: " + ex + "\nStack trace: ");
             ex.printStackTrace();
-            res = new String[0];
+            res = new Qualification.QualificationData[0];
         } 
         finally {
             try {

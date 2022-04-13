@@ -56,13 +56,13 @@ public class Qualification {
 
         private int resultCode;
         private String resultMessage;
-        private String[] qualificationList;
+        private Qualification.QualificationData[] qualificationList;
 
         public GetResponse(){
 
         }
 
-        public String[] getQualificationList(){
+        public Qualification.QualificationData[] getQualificationList(){
             return this.qualificationList;
         }
 
@@ -74,7 +74,7 @@ public class Qualification {
             return this.resultCode;
         }
 
-        public void setQualificationList(String[] value){
+        public void setQualificationList(Qualification.QualificationData[] value){
             this.qualificationList = value;
         }
 
@@ -104,11 +104,11 @@ public class Qualification {
             return this.qualificationName;
         }
 
-        public void setResultCode(int value){
+        public void setQualificationID(int value){
             this.qualificationID = value;
         }
 
-        public void setResultCode(String value){
+        public void setQualificationName(String value){
             this.qualificationName = value;
         }
     }
