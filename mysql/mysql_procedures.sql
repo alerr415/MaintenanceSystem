@@ -154,7 +154,7 @@ DELIMITER //
 
 CREATE PROCEDURE Kepesitesek_listazasa()
 BEGIN
-	SELECT Kepesites_neve
+	SELECT Kepesites_ID, Kepesites_neve
 		FROM Kepesites;
 END//
 DELIMITER ;
