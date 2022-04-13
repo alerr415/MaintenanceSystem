@@ -211,7 +211,7 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public int addCategory(String categoryName, String qualification, String categoryPeriod, String categoryNormalTime, String specification, String parent)
+    public int addCategory(String categoryName, int qualificationID, String categoryPeriod, String categoryNormalTime, String specification, String parent)
     {
         int resCode;
         try {
@@ -220,7 +220,7 @@ public class DatabaseManager{
 
             CallableStatement callableStatement = connection.prepareCall(call);
             callableStatement.setString("device_category_name",categoryName);
-            callableStatement.setString("qualification",qualification);
+            callableStatement.setInt("qualification",qualificationID); // INCOMPLETE PROCEDURE
             callableStatement.setString("period",categoryPeriod);
             callableStatement.setInt("norm_time",Integer.parseInt(categoryNormalTime));
             callableStatement.setString("steps_descrip",specification);

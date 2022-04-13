@@ -234,7 +234,7 @@ public class Server implements ServerInterface {
         }
 
         System.out.println("[SERVER]: Handle category request:\nCategoryName: "   + req.getCategoryName()
-                                                                                + "\nQualification: " + req.getQualification()
+                                                                                + "\nQualification: " + req.getQualificationID()
                                                                                 + "\nPeriod: " + req.getCategoryPeriod()
                                                                                 + "\nNormal time: " + req.getCategoryNormalTime()
                                                                                 + "\nSpecification: " + req.getSpecification()
@@ -242,7 +242,7 @@ public class Server implements ServerInterface {
         // get the device data from the database
         int res_code = 0;
         res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryName(), 
-                                                                    req.getQualification(), 
+                                                                    req.getQualificationID(), 
                                                                     req.getCategoryPeriod(), 
                                                                     req.getCategoryNormalTime(),
                                                                     req.getSpecification(),

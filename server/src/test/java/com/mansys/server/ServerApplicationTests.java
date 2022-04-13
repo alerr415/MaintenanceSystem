@@ -21,7 +21,7 @@ class ServerApplicationTests {
 		req.setParent("");
 		req.setCategoryNormalTime("1");
 		req.setCategoryPeriod("Havi");
-		req.setQualification("Tester");
+		req.setQualificationID(5);
 		req.setSpecification("Easy to use!");
 
 		Server serv = Server.getInstance();
