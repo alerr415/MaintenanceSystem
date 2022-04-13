@@ -68,6 +68,7 @@ Used for creating new devices.
 - \[Device\]
 
 ### DeviceData
+- int deviceID
 - String deviceName
 - String deviceCategoryName
 - String deviceDescription
@@ -117,3 +118,17 @@ Used for creating new devices.
 - int resultCode
 - String resultMessage
 - \[String\] qualificationList
+
+## Add Maintenance task (POST /maintenance)
+
+## Request
+- int deviceID
+- String deviceName
+- String taskName
+- int qualificationID
+- String specification
+- String normTime
+
+### Response
+- String errorMessage
+- int errorCode

@@ -498,4 +498,52 @@ public class DatabaseManager{
 
         return res;
     }
+
+    public int addMaintenance(int deviceID, String deviceName, String taskName, int qualificationID, String specification, String normTime) {
+        int resCode = 1;
+        
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL RendkivulFeladat_hozzaadasa(?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setInt("device_ID",deviceID);
+            callableStatement.setString("device_name",deviceName);
+            callableStatement.setString("task_name",taskName);
+            callableStatement.setInt("status",0);
+            callableStatement.setString("no_justification",null);
+            callableStatement.setInt("qualification",qualificationID);
+            callableStatement.setInt("maint_specialist_ID",1);
+            callableStatement.setString("task_start",null);
+            callableStatement.setString("task_end",null);
+            callableStatement.setString("period",normTime);
+            callableStatement.setString("steps_descrip",specification);
+            callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+
+            resCode = callableStatement.getInt("resultCode");
+            System.out.println("[DATABASE]: Called Karbantarto_hozzaadasa, result: " + resCode);
+
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addWorker: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            resCode = 1;
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addWorker when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+                resCode = 1;
+            }
+        }   
+
+        return resCode;
+    }
 }
