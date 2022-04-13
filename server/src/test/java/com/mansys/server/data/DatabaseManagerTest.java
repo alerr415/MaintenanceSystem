@@ -87,4 +87,10 @@ class DatabaseManagerTest {
         assertEquals(ok,0);
     }
 
+    @Test
+    void callAddMaintenanceTask() {
+        int ok = DatabaseManager.getInstance().addMaintenance(1,"nemtommi","csinád",1, "vidámság", "10:00:00");
+        assertEquals(0,ok);
+    }
+
 }
