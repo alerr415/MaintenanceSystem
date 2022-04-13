@@ -468,6 +468,7 @@ public class DatabaseManager{
             
             while (resultSet.next()) {
                 Device.DeviceData temp = new Device.DeviceData();
+                temp.setDeviceID(resultSet.getInt(1));
                 temp.setDeviceName(resultSet.getString(2));
                 temp.setDeviceCategoryName(resultSet.getString(3));
                 temp.setDeviceDescription(resultSet.getString(4));
