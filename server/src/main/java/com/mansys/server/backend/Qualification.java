@@ -87,4 +87,30 @@ public class Qualification {
         }
     }
 
+    public static class QualificationData
+    {
+        private int qualificationID;
+        private String qualificationName;
+
+        public QualificationData(){
+
+        }
+
+        public int getQualificationID(){
+            return this.qualificationID;
+        }
+        
+        public String getQualificationName(){
+            return this.qualificationName;
+        }
+
+        public void setResultCode(int value){
+            this.qualificationID = value;
+        }
+
+        public void setResultCode(String value){
+            this.qualificationName = value;
+        }
+    }
+
 }
