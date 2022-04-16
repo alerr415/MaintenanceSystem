@@ -3,5 +3,5 @@
 ### Procedures
 
 <p>Bejelentkezes</p>
-IN: username (varchar), pass (varchar), qualification
-OUT: qualification (varchar), resultcode (int) !!Here qualification refers to specialist, operator etc.
+<p>IN: username (varchar), pass (varchar), qualification</p>
+<p>OUT: qualification (varchar), resultcode (int) !!Here qualification refers to specialist, operator etc.</p>
