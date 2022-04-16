@@ -79,7 +79,7 @@ DROP PROCEDURE IF EXISTS EszkozKategoria_hozzaadasa;
 DELIMITER //
 
 CREATE PROCEDURE EszkozKategoria_hozzaadasa(IN device_category_name VARCHAR(50),
-											IN qualification VARCHAR(50),
+											IN qualification INT,
 											IN period VARCHAR(50),
 											IN norm_time INT,
                                             IN steps_descrip LONGTEXT,
@@ -202,8 +202,8 @@ DELIMITER //
 
 CREATE PROCEDURE Karbantartok_listazasa()
 BEGIN
-	SELECT Vezeteknev, Keresztnev, Kepesites_neve
-		FROM Karbantarto JOIN Kepesites USING (Kepesites_ID);
+	SELECT *
+		FROM Karbantarto;
 END//
 DELIMITER ;
 
@@ -218,18 +218,12 @@ DELIMITER //
 
 CREATE PROCEDURE Karbantarto_hozzaadasa(IN last_name VARCHAR(50),
 										IN first_name VARCHAR(50),
-										IN qualification VARCHAR(50),
+										IN qualification INT,
 										OUT resultcode INT)
 BEGIN
-	DECLARE qualif_ID INT;
-		
-	SELECT Kepesites_ID INTO qualif_ID
-		FROM Kepesites
-		WHERE Kepesites_neve = qualification;
-
 	INSERT
 		INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID)
-		VALUES (first_name, last_name, qualif_ID);
+		VALUES (last_name, first_name, qualification);
 	SET resultcode = 0;
 END//
 DELIMITER ;
@@ -253,36 +247,33 @@ END//
 DELIMITER ;
 
 -- ----------------------------------------
--- Add extraordinary maintenance procedure
+-- Add maintenance procedure
 -- ----------------------------------------
-DROP PROCEDURE IF EXISTS RendkivulFeladat_hozzaadasa;
+DROP PROCEDURE IF EXISTS Feladat_hozzaadasa;
 DELIMITER //
 
-CREATE PROCEDURE RendkivulFeladat_hozzaadasa(IN device_ID INT,
-											 IN device_name VARCHAR(50),
-											 IN task_name VARCHAR(50),
-											 IN status INT,
-											 IN no_justification LONGTEXT,
-											 IN qualification VARCHAR(50),
-											 IN maint_specialist_ID INT,
-											 IN task_start DATETIME,
-											 IN task_end DATETIME,
-											 IN period VARCHAR(50),
-											 IN steps_descrip LONGTEXT,
-											 OUT resultcode INT)
+CREATE PROCEDURE Feladat_hozzaadasa(IN device_ID INT,
+									IN task_name VARCHAR(50),
+									IN status INT,
+									IN no_justification LONGTEXT,
+									IN maint_specialist_ID INT,
+									IN task_start DATETIME,
+									IN task_end DATETIME,
+									IN norm_time VARCHAR(50),
+									IN steps_descrip LONGTEXT)
 BEGIN
 	INSERT
-		INTO RendkivulFeladat (Eszkoz_ID, 
-							   Eszkoz_neve, 
-							   Nev, 
-							   Allapot, 
-							   Elutasitas_indoklasa, 
-							   Kepesites_neve, 
-							   Karbantarto_ID,
-							   Kezdeti_idopont, 
-							   Befejezesi_idopont, 
-							   Norma_ido, 
-							   Eloiras)
+		INTO Feladat (Eszkoz_ID, 
+					  Eszkoz_neve, 
+					  Nev, 
+					  Allapot, 
+					  Elutasitas_indoklasa, 
+					  Kepesites_neve, 
+					  Karbantarto_ID,
+					  Kezdeti_idopont, 
+					  Befejezesi_idopont, 
+					  Norma_ido, 
+					  Eloiras)
 		VALUES (device_ID, 
 				device_name, 
 				task_name, 
@@ -292,39 +283,39 @@ BEGIN
 				maint_specialist_ID,
 				task_start,
 				task_end, 
-				period, 
+				norm_time, 
 				steps_descrip);
 END//
 DELIMITER ;
 
 -- --------------------------------------------
--- Extraordinary maintenance location procedure
+-- Get maintenance locations procedure
 -- --------------------------------------------
-DROP PROCEDURE IF EXISTS RendkivulFeladat_helye;
-DELIMITER //
+-- DROP PROCEDURE IF EXISTS Feladat_helye;
+-- DELIMITER //
 
-CREATE PROCEDURE RendkivulFeladat_helye(IN device_ID INT,
-										OUT location VARCHAR(50),
-									    OUT resultcode INT)
-BEGIN
-	DECLARE check_device_ID INT;
+-- CREATE PROCEDURE Feladat_helye(IN device_ID INT,
+-- 							   OUT location VARCHAR(50),
+-- 							   OUT resultcode INT)
+-- BEGIN
+-- 	DECLARE check_device_ID INT;
 
-	SELECT COUNT(*) INTO check_device_ID
-		FROM Eszkoz
-		WHERE Eszkoz_ID = device_ID;
+-- 	SELECT COUNT(*) INTO check_device_ID
+-- 		FROM Eszkoz
+-- 		WHERE Eszkoz_ID = device_ID;
 
-	IF check_device_ID < 1 THEN
-		-- Nem letezik az eszkoz
-		SET resultcode = 400;
-	ELSE
-		-- Letezik az eszkoz
-		SELECT Elhelyezkedes INTO location
-			FROM Eszkoz
-			WHERE Eszkoz_ID = device_ID;
-		SET resultcode = 0;
-	END IF;	
-END//
-DELIMITER ;
+-- 	IF check_device_ID < 1 THEN
+-- 		-- Nem letezik az eszkoz
+-- 		SET resultcode = 400;
+-- 	ELSE
+-- 		-- Letezik az eszkoz
+-- 		SELECT Elhelyezkedes INTO location
+-- 			FROM Eszkoz
+-- 			WHERE Eszkoz_ID = device_ID;
+-- 		SET resultcode = 0;
+-- 	END IF;	
+-- END//
+-- DELIMITER ;
 
 -- Testing extraordinary maintenance location procedure
 -- CALL RendkivulFeladat_helye(1, @location, @resultcode);
@@ -333,15 +324,66 @@ DELIMITER ;
 -- SELECT @location AS Location, @resultcode AS Resultcode;
 
 -- -----------------------------------------
--- List extraordinary maintenances procedure
+-- List maintenances procedure
 -- -----------------------------------------
-DROP PROCEDURE IF EXISTS RendkivulFeladatok_listazasa;
+DROP PROCEDURE IF EXISTS Feladatok_listazasa;
 DELIMITER //
 
-CREATE PROCEDURE RendkivulFeladatok_listazasa()
+CREATE PROCEDURE Feladatok_listazasa()
 BEGIN
-	SELECT *
-		FROM RendkivulFeladat;
+	SELECT *, Elhelyezkedes
+		FROM Feladat JOIN Eszkoz USING (Eszkoz_ID);
 END//
 DELIMITER ;
 
+-- -----------------------------------------
+-- Add periodic maintenance procedure
+-- -----------------------------------------
+DROP PROCEDURE IF EXISTS Idoszakos_feladat_hozzaadasa;
+DELIMITER //
+
+CREATE PROCEDURE Idoszakos_feladat_hozzaadasa(IN device_category_name VARCHAR(50),
+											  IN task_name VARCHAR(50),
+											  IN status INT,
+											  IN maint_specialist_ID INT,
+											  IN task_start DATETIME,
+											  IN task_end DATETIME,
+											  IN norm_time VARCHAR(50),
+											  IN steps_descrip LONGTEXT,
+											  IN ref_date DATETIME)
+BEGIN
+	INSERT
+		INTO IdoszakosFeladat (Eszkoz_kategoria_neve,
+							   Nev, 
+							   Allapot, 
+							   Kepesites_neve, 
+							   Karbantarto_ID,
+							   Kezdeti_idopont, 
+							   Befejezesi_idopont, 
+							   Norma_ido, 
+							   Eloiras,
+							   Referencia_datum)
+		VALUES (device_category_name, 
+				task_name, 
+				status, 
+				maint_specialist_ID, 
+				task_start,
+				task_end, 
+				norm_time, 
+				steps_descrip,
+				ref_date);
+END//
+DELIMITER ;
+
+-- -----------------------------------------
+-- List periodic maintenance procedure
+-- -----------------------------------------
+DROP PROCEDURE IF EXISTS Idoszakos_feladat_listazasa;
+DELIMITER //
+
+CREATE PROCEDURE Idoszakos_feladat_listazasa()
+BEGIN
+	SELECT *
+		FROM IdoszakosFeladat;
+END//
+DELIMITER ;

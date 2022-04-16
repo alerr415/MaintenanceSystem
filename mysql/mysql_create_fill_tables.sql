@@ -27,59 +27,6 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Karbantarto (
     ON UPDATE NO ACTION
 );
 -- ----------------------------------------------------------------------------
--- Table MaintenanceSystem2.IdoszakosFeladat
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS MaintenanceSystem2.IdoszakosFeladat (
-  IdoszakosFeladat_ID INT NOT NULL AUTO_INCREMENT,
-  Eszkoz_kategoria_neve VARCHAR(50) NULL,
-  Nev VARCHAR(50) NULL,
-  Allapot INT NULL,
-  Elutasitas_indoklasa LONGTEXT NULL,
-  Kepesites_neve VARCHAR(50) NULL,
-  Karbantarto_ID INT NOT NULL,
-  Kezdeti_idopont DATETIME NULL,
-  Befejezesi_idopont DATETIME NULL,
-  Norma_ido TIME NULL,
-  Eloiras LONGTEXT NULL,
-  PRIMARY KEY (IdoszakosFeladat_ID),
-  FOREIGN KEY (Karbantarto_ID)
-    REFERENCES MaintenanceSystem2.Karbantarto (Karbantarto_ID)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
--- ----------------------------------------------------------------------------
--- Table MaintenanceSystem2.RendkivulFeladat
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS MaintenanceSystem2.RendkivulFeladat (
-  RendkivulFeladat_ID INT NOT NULL AUTO_INCREMENT,
-  Eszkoz_ID INT,
-  Eszkoz_neve VARCHAR(50) NULL,
-  Nev VARCHAR(50) NULL,
-  Allapot INT NULL,
-  Elutasitas_indoklasa LONGTEXT NULL,
-  Kepesites_neve VARCHAR(50) NULL,
-  Karbantarto_ID INT NOT NULL,
-  Kezdeti_idopont DATETIME NULL,
-  Befejezesi_idopont DATETIME NULL,
-  Norma_ido TIME NULL,
-  Eloiras LONGTEXT NULL,
-  PRIMARY KEY (RendkivulFeladat_ID),
-  FOREIGN KEY (Karbantarto_ID)
-    REFERENCES MaintenanceSystem2.Karbantarto (Karbantarto_ID)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
--- ----------------------------------------------------------------------------
--- Table MaintenanceSystem2.Felhasznalo
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Felhasznalo (
-  Felhasznalo_ID INT NOT NULL AUTO_INCREMENT,
-  Felhasznalonev VARCHAR(50) NOT NULL,
-  Jelszo VARCHAR(50) NOT NULL,
-  Szerepkor VARCHAR(50) NOT NULL,
-  PRIMARY KEY (Felhasznalo_ID)
-);
--- ----------------------------------------------------------------------------
 -- Table MaintenanceSystem2.EszkozKategoria
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS MaintenanceSystem2.EszkozKategoria (
@@ -96,6 +43,29 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.EszkozKategoria (
     ON UPDATE NO ACTION
 );
 -- ----------------------------------------------------------------------------
+-- Table MaintenanceSystem2.IdoszakosFeladat
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS MaintenanceSystem2.IdoszakosFeladat (
+  IdoszakosFeladat_ID INT NOT NULL AUTO_INCREMENT,
+  Eszkoz_kategoria_neve VARCHAR(50) NULL,
+  Nev VARCHAR(50) NULL,
+  Allapot INT NULL,
+  Karbantarto_ID INT NOT NULL,
+  Kezdeti_idopont DATETIME NULL,
+  Befejezesi_idopont DATETIME NULL,
+  Norma_ido TIME NULL,
+  Eloiras LONGTEXT NULL,
+  PRIMARY KEY (IdoszakosFeladat_ID),
+  FOREIGN KEY (Eszkoz_kategoria_neve) 
+    REFERENCES MaintenanceSystem2.EszkozKategoria (Eszkoz_kategoria_neve)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (Karbantarto_ID)
+    REFERENCES MaintenanceSystem2.Karbantarto (Karbantarto_ID)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+-- ----------------------------------------------------------------------------
 -- Table MaintenanceSystem2.Eszkoz
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Eszkoz (
@@ -104,8 +74,46 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Eszkoz (
   Eszkoz_kategoria_neve VARCHAR(50) NULL,
   Leiras VARCHAR(50) NULL,
   Elhelyezkedes VARCHAR(50) NULL,
-  PRIMARY KEY (Eszkoz_ID)
-  );
+  PRIMARY KEY (Eszkoz_ID),
+  FOREIGN KEY (Eszkoz_kategoria_neve) 
+    REFERENCES MaintenanceSystem2.EszkozKategoria (Eszkoz_kategoria_neve)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+-- ----------------------------------------------------------------------------
+-- Table MaintenanceSystem2.Feladat
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Feladat (
+  Feladat_ID INT NOT NULL AUTO_INCREMENT,
+  Eszkoz_ID INT,
+  Nev VARCHAR(50) NULL,
+  Allapot INT NULL,
+  Elutasitas_indoklasa LONGTEXT NULL,
+  Karbantarto_ID INT NOT NULL,
+  Kezdeti_idopont DATETIME NULL,
+  Befejezesi_idopont DATETIME NULL,
+  Norma_ido TIME NULL,
+  Eloiras LONGTEXT NULL,
+  PRIMARY KEY (Feladat_ID),
+  FOREIGN KEY (Eszkoz_ID)
+    REFERENCES MaintenanceSystem2.Eszkoz (Eszkoz_ID)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (Karbantarto_ID)
+    REFERENCES MaintenanceSystem2.Karbantarto (Karbantarto_ID)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+-- ----------------------------------------------------------------------------
+-- Table MaintenanceSystem2.Felhasznalo
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Felhasznalo (
+  Felhasznalo_ID INT NOT NULL AUTO_INCREMENT,
+  Felhasznalonev VARCHAR(50) NOT NULL,
+  Jelszo VARCHAR(50) NOT NULL,
+  Szerepkor VARCHAR(50) NOT NULL,
+  PRIMARY KEY (Felhasznalo_ID)
+);
 -- ----------------------------------------------------------------------------
 -- Fill tables
 -- ---------------------------------------------------------------------------
@@ -154,6 +162,6 @@ INSERT
            ('gazcso1', 'gazcsovek', 'A konyha tuzhelyet szolgalja', 'K1');
 
 INSERT
-    INTO RendkivulFeladat (Eszkoz_ID, Eszkoz_neve, Nev, Allapot, Elutasitas_indoklasa,
-      Kepesites_neve, Karbantarto_ID, Kezdeti_idopont, Befejezesi_idopont, Norma_ido, Eloiras)
-    VALUES(1, 'lampa1', 'Izzo csere', 1, NULL, 'villanyszerelo', 1, NULL, NULL, MAKETIME(8, 0, 0), 'A4-es izzot keresni utana cserelni')
+    INTO Feladat (Eszkoz_ID, Nev, Allapot, Elutasitas_indoklasa,
+                  Karbantarto_ID, Kezdeti_idopont, Befejezesi_idopont, Norma_ido, Eloiras)
+    VALUES(1, 'Izzo csere', 1, NULL, 1, NULL, NULL, MAKETIME(8, 0, 0), 'A4-es izzot keresni utana cserelni')
