@@ -3,8 +3,8 @@
 ### Procedures
 
 ### Bejelentkezes
-<p>IN: username (varchar), pass (varchar), qualification</p>
-<p>OUT: qualification (varchar), resultcode (int) !!Here qualification refers to specialist, operator or device supervisor</p>
+<p>IN: username VARCHAR(50), pass VARCHAR(20)</p>
+<p>OUT: qualification VARCHAR(50), resultcode INT !!Here qualification refers to specialist, operator or device supervisor</p>
 <p>Perfoms log in</p>
 
 ### Eszkoz_hozzaadasa
