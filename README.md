@@ -4,7 +4,8 @@
 
 ### Bejelentkezes
 <p>IN: username VARCHAR(50), pass VARCHAR(20)</p>
-<p>OUT: qualification VARCHAR(50), resultcode INT !!Here qualification refers to specialist, operator or device supervisor</p>
+<p>OUT: qualification VARCHAR(50), resultcode INT</p> 
+<p>!!Here qualification refers to specialist, operator or device supervisor</p>
 <p>Perfoms log in</p>
 
 ### Eszkoz_hozzaadasa
