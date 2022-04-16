@@ -2,6 +2,6 @@
 ## Advanced System Design project
 ### Procedures
 
-<p>Bejelentkezes</p>
+#### Bejelentkezes
 <p>IN: username (varchar), pass (varchar), qualification</p>
 <p>OUT: qualification (varchar), resultcode (int) !!Here qualification refers to specialist, operator etc.</p>
