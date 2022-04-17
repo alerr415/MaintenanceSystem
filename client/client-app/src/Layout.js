@@ -15,6 +15,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import AddIcon from '@mui/icons-material/Add';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import BuildIcon from '@mui/icons-material/Build';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Toolbar from '@mui/material/Toolbar';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -47,6 +49,45 @@ function Layout(props) {
   const logout = () => {
     setUser("off");
   };
+
+  const operatormenu = (
+    <div>
+      <Toolbar />
+
+      <List>
+        <ListItemButton>
+          <ListItemIcon><AddIcon /></ListItemIcon>
+          <ListItemText>Feladat hozzáadása</ListItemText>
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon><BuildIcon /></ListItemIcon>
+          <ListItemText>Feladatok megjelenítése</ListItemText>
+        </ListItemButton>
+      </List>
+
+      <Divider />
+
+      <List>
+        <ListItemButton>
+          <ListItemIcon><AddIcon /></ListItemIcon>
+          <ListItemText>Karbantartó hozzáadása</ListItemText>
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon><EngineeringIcon /></ListItemIcon>
+          <ListItemText>Karbantartók megjelenítése</ListItemText>
+        </ListItemButton>
+      </List>
+
+      <Divider />
+
+      <List>
+        <ListItemButton component={Link} to="/" onClick={logout}>
+          <ListItemIcon><LogoutIcon /></ListItemIcon>
+          <ListItemText>Kijelentkezés</ListItemText>
+        </ListItemButton>
+      </List>
+    </div>
+  );
 
   const drawer = (
     <div>
@@ -115,7 +156,7 @@ function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Karbantartási Rendszer {/*cookies["session-id"]*/}
+            Karbantartási Rendszer {JSON.stringify(user)}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -140,7 +181,7 @@ function Layout(props) {
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
         >
-          {drawer}
+          {user.role == "eszkozfelelos" ? drawer : operatormenu}
         </Drawer>
 
         {/* Desktop. */}
@@ -152,7 +193,7 @@ function Layout(props) {
           }}
           open
         >
-          {drawer}
+          {user.role == "eszkozfelelos" ? drawer : operatormenu}
         </Drawer>
       </Box>
 
