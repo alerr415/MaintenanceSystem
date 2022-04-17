@@ -247,7 +247,7 @@ return(
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6}>
-                  {/*  Eszköz kategóriája */}
+                  {/* Képesítés */}
                   <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="qualSelectControl" disabled={disabledQualSelect}>
                     <InputLabel id="qualLabel">Képesítés</InputLabel>
                     <Select labelId="qualLabel" id="qualSelect" value={qualSelectValue} onChange={qualChange} label="Képesítés">
@@ -259,8 +259,6 @@ return(
                   <Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
                   <TextField id="qualificationAddingCell" label="Új képesítés" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleQualificationAddingCell}/><br />
                 </Grid>
-
-
 
                 <Grid item xs={12} sm={12} md={6}>
                   <Typography variant="h6" sx={{ mt : 2 }}>Rendszeres karbantartás:</Typography>

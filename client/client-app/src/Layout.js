@@ -55,7 +55,7 @@ function Layout(props) {
       <Toolbar />
 
       <List>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/app/newTask">
           <ListItemIcon><AddIcon /></ListItemIcon>
           <ListItemText>Feladat hozzáadása</ListItemText>
         </ListItemButton>
@@ -68,7 +68,7 @@ function Layout(props) {
       <Divider />
 
       <List>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/app/newWorker">
           <ListItemIcon><AddIcon /></ListItemIcon>
           <ListItemText>Karbantartó hozzáadása</ListItemText>
         </ListItemButton>
@@ -181,7 +181,7 @@ function Layout(props) {
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
         >
-          {user.role == "eszkozfelelos" ? drawer : operatormenu}
+          {user.role === "eszkozfelelos" ? drawer : operatormenu}
         </Drawer>
 
         {/* Desktop. */}
@@ -193,7 +193,7 @@ function Layout(props) {
           }}
           open
         >
-          {user.role == "eszkozfelelos" ? drawer : operatormenu}
+          {user.role === "eszkozfelelos" ? drawer : operatormenu}
         </Drawer>
       </Box>
 

@@ -7,6 +7,11 @@ import ListDeviceScreen from './ListDeviceScreen.js';
 import AddCategoryScreen from './AddCategoryScreen.js';
 import ListCategoryScreen from './ListCategoryScreen.js';
 
+import AddMaintenanceTask from './AddMaintenanceTask.js';
+
+import AddMaintenanceWorker from './AddMaintenanceWorker.js';
+
+
 import Welcome from './Welcome.js';
 
 import { UserContext } from './User.js';
@@ -29,6 +34,9 @@ function App() {
                 <Route path="newDevice" element={<AddDeviceScreen />} />
                 <Route path="newCategory" element={<AddCategoryScreen />} />
                 <Route path="categories" element={<ListCategoryScreen />} />
+                <Route path="newTask" element={<AddMaintenanceTask />} />
+                <Route path="newWorker" element={<AddMaintenanceWorker />} />
+
             </Route>
             </Routes>
         </UserContext.Provider>
