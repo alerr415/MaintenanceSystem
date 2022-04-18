@@ -474,7 +474,30 @@ public class Server implements ServerInterface {
 
     @Override
     public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList() {
-        return null;
+        System.out.println("[SERVER]: Handle maintenance list request: NO PARAMETER\n[LISTING MAINTENANCE TASKS...]");
+        int res_code = 0;
+        Maintenance.MaintenanceData[] data = {};
+        data = DatabaseManager.getInstance().listMaintenance();
+        res_code = data.length == 0 ? 1 : 0;
+
+        Maintenance.GetResponse res = new Maintenance.GetResponse();
+        switch (res_code)
+        {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                res.setData(data);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+        return res;
     }
 
 }
