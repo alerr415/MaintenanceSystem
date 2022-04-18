@@ -86,11 +86,9 @@ class DatabaseManagerTest {
         int ok = DatabaseManager.getInstance().addQualication("szexuális segédmunkás");
         assertEquals(ok,0);
     }
-/*
     @Test
     void callAddMaintenanceTask() {
-        int ok = DatabaseManager.getInstance().addMaintenance(1,"nemtommi","csinád",1, "vidámság", "10:00:00");
+        int ok = DatabaseManager.getInstance().addMaintenance(1,"fix it","1, 2, 3, 4","12:00");
         assertEquals(0,ok);
     }
-*/
 }

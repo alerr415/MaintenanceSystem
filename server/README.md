@@ -141,9 +141,7 @@ NOTE: cache refresh response not implemented yet.
 
 ## Request
 - int deviceID
-- String deviceName
 - String taskName
-- int qualificationID
 - String specification
 - String normTime
 

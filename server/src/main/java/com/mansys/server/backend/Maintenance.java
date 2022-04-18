@@ -4,23 +4,15 @@ public class Maintenance {
 
     public static class Request{
         private int deviceID;
-        private String deviceName;
         private String taskName;
-        private int qualificationID;
         private String specification;
         private String normTime;
     
         public int getDeviceID() {
             return deviceID;
         }
-        public String getDeviceName() {
-            return deviceName;
-        }
         public String getTaskName() {
             return taskName;
-        }
-        public int getQualification() {
-            return qualificationID;
         }
         public String getSpecification() {
             return specification;
@@ -32,14 +24,8 @@ public class Maintenance {
         public void setDeviceID(int value) {
             this.deviceID = value;
         }
-        public void setDeviceName(String value) {
-            this.deviceName = value;
-        }
         public void setTaskName(String value) {
             this.taskName = value;
-        }
-        public void setQualificationID(int value) {
-            this.qualificationID = value;
         }
         public void setSpecification(String value) {
             this.specification = value;
