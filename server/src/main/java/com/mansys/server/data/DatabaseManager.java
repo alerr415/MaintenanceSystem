@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mansys.server.backend.Device;
+import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Qualification;
 import com.mansys.server.backend.Worker;
 
@@ -516,6 +517,7 @@ public class DatabaseManager{
             callableStatement.setString("task_name",taskName);
             callableStatement.setInt("status",0);
             callableStatement.setString("no_justification",null);
+            // TODO: this needs to be null somehow
             callableStatement.setInt("maint_specialist_ID",1);
             callableStatement.setString("task_start",null);
             callableStatement.setString("task_end",null);
@@ -549,5 +551,56 @@ public class DatabaseManager{
         }   
 
         return resCode;
+    }
+
+    public Maintenance.MaintenanceData[] listMaintenance() {
+        Maintenance.MaintenanceData[] res;
+        List<Maintenance.MaintenanceData> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "{CALL Feladatok_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Maintenance.MaintenanceData temp = new Maintenance.MaintenanceData();
+                temp.deviceID = resultSet.getInt(1);
+                temp.maintenanceTaskID = resultSet.getInt(2);
+                temp.maintenanceTaskName = resultSet.getString(3);
+                temp.state = resultSet.getInt(4);
+                temp.workerID = resultSet.getInt(6);
+                temp.startDate = resultSet.getString(7);
+                temp.finishDate = resultSet.getString(8);
+                temp.normTime = resultSet.getString(9);
+                temp.specification = resultSet.getString(10);
+                temp.deviceName = resultSet.getString(11);
+                temp.deviceLocation = resultSet.getString(14);
+                dataList.add(temp);
+            }
+
+            res = new Maintenance.MaintenanceData[dataList.size()];
+            res = dataList.toArray(res);
+            System.out.println("[DATABASE]: Called Feladatok_listazasa");
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new Maintenance.MaintenanceData[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return res;
+        
     }
 }
