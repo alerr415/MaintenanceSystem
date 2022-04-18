@@ -343,7 +343,7 @@ public class DatabaseManager{
             
             while (resultSet.next()) {
                 Qualification.QualificationData temp = new Qualification.QualificationData();
-                temp.setQualificationID(resultSet.getInt(0));
+                temp.setQualificationID(resultSet.getInt(1));
                 temp.setQualificationName(resultSet.getString(2));
                 dataList.add(temp);
             }
@@ -429,9 +429,9 @@ public class DatabaseManager{
             
             while (resultSet.next()) {
                 Worker.WorkerData temp = new Worker.WorkerData();
-                temp.setLastName(resultSet.getString(1));
-                temp.setFirstName(resultSet.getString(2));
-                temp.setQualificationID(resultSet.getInt(3)); // INCOMPLETE PROCEDURE
+                temp.setLastName(resultSet.getString(2));
+                temp.setFirstName(resultSet.getString(3));
+                temp.setQualificationID(resultSet.getInt(4)); // INCOMPLETE PROCEDURE
                 dataList.add(temp);
             }
 
