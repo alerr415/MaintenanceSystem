@@ -444,4 +444,37 @@ public class Server implements ServerInterface {
         return res;
     }
 
+    @Override
+    public com.mansys.server.backend.Maintenance.Response handleMaintenance(
+            com.mansys.server.backend.Maintenance.Request req) {
+        System.out.println("[SERVER]: handle add maintenance request:"
+                         + "\ndeviceID: " + req.getDeviceID()
+                         + "\ntaskName: " + req.getTaskName()
+                         + "\nspecification: " + req.getSpecification()
+                         + "\nnormTime: " + req.getNormTime());
+        int res_code = DatabaseManager.getInstance().addMaintenance(
+            req.getDeviceID(), req.getTaskName(), req.getSpecification(), req.getNormTime());
+        Maintenance.Response res = new Maintenance.Response();
+        switch (res_code) {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList() {
+        return null;
+    }
+
 }
