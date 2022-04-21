@@ -3,6 +3,9 @@ package com.mansys.server.backend;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mansys.server.backend.Worker.GetResponse;
+import com.mansys.server.backend.Worker.Request;
+import com.mansys.server.backend.Worker.Response;
 import com.mansys.server.data.DatabaseManager;
 
 import org.springframework.http.ResponseCookie;
@@ -21,6 +24,11 @@ public class Server implements ServerInterface {
     // [FIELDS] ---------------------------------------------------------------------------------
     // singleton instance
     private static Server instance = null;
+
+    /**
+     * Cookie enforcement 
+     */
+    private final boolean COOKIE_ENFORCEMENT = false; 
 
     /**
      * Just for ease to standardise the success code.
@@ -114,6 +122,8 @@ public class Server implements ServerInterface {
      * @return boolean representing the validness of the request
      */
     public boolean isSessionValid(int sessId) {
+        if (!COOKIE_ENFORCEMENT)
+            return true;
         return validSessions.contains(sessId);
     }
 
@@ -217,18 +227,23 @@ public class Server implements ServerInterface {
 
     @Override
     public Category.Response handleCategory(Category.Request req) {
+            
+        if(req.getParent().equals(""))
+        {
+            req.setParent(null);
+        }
 
         System.out.println("[SERVER]: Handle category request:\nCategoryName: "   + req.getCategoryName()
-                                                                                + "\nQualification: " + req.getQualification()
+                                                                                + "\nQualification: " + req.getQualificationID()
                                                                                 + "\nPeriod: " + req.getCategoryPeriod()
                                                                                 + "\nNormal time: " + req.getCategoryNormalTime()
                                                                                 + "\nSpecification: " + req.getSpecification()
                                                                                 + "\nParent: " + req.getParent());
         // get the device data from the database
         int res_code = 0;
-        res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryName(),
-                                                                    req.getQualification(),
-                                                                    req.getCategoryPeriod(),
+        res_code = DatabaseManager.getInstance().addCategory(   req.getCategoryName(), 
+                                                                    req.getQualificationID(), 
+                                                                    req.getCategoryPeriod(), 
                                                                     req.getCategoryNormalTime(),
                                                                     req.getSpecification(),
                                                                     req.getParent());
@@ -289,12 +304,11 @@ public class Server implements ServerInterface {
 
     @Override
     public Qualification.Response handleQualification(Qualification.Request req) {
-
-        System.out.println("[SERVER]: Handle category request:\nQualificationID: " + req.getQualificationID()
-                                                         + "\nQualificationName: " + req.getQualificationName());
+         
+        System.out.println("[SERVER]: Handle category request: QualificationName: " + req.getQualificationName());
         // get the device data from the database
         int res_code = 0;
-        // res_code = DatabaseManager.getInstance().addQualication(req.getQualificationID(), req.getQualificationName());
+        res_code = DatabaseManager.getInstance().addQualication(req.getQualificationName());
 
         Qualification.Response res = new Qualification.Response();
 
@@ -322,7 +336,7 @@ public class Server implements ServerInterface {
          
         // get the device data from the database
         int res_code = 0;
-        String[] data = DatabaseManager.getInstance().listQualification();
+        Qualification.QualificationData[] data = DatabaseManager.getInstance().listQualification();
         res_code = ((data.length == 0) ? 1 : 0);
 
         Qualification.GetResponse res = new Qualification.GetResponse();
@@ -338,7 +352,7 @@ public class Server implements ServerInterface {
             }
             default:
             {
-                String[] errList = {"NO DATA"};
+                Qualification.QualificationData[] errList = new Qualification.QualificationData[0];
                 res.setResultCode(1);
                 res.setResultMessage("Error during listing qualifications: NO DATA."); // UNKNOWN ERROR or NO DATA (?)
                 res.setQualificationList(errList);
@@ -347,4 +361,143 @@ public class Server implements ServerInterface {
         }
         return res;
     }
+
+    @Override
+    public Response handleWorker(Request req) {
+        System.out.println("[SERVER]: Handle add worker request:\nFirstName: " + req.getFirstName()
+                                                             + "\nLastName: " + req.getLastName()
+                                                             + "\nQualification id: " + req.getQualificationID());
+        
+        int res_code = 0;
+        Worker.Response res = new Worker.Response();
+        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualificationID());
+        switch (res_code) {
+            case 0: // good
+            {
+                res.setErrorCode(RESCODE_OK);
+                res.setErrorMessage("Success");
+                break;
+            }
+            default:
+            {
+                res.setErrorCode(1);
+                res.setErrorMessage("Worker creation failed: Wrong parameter.");
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public GetResponse handleWorkerList() {
+        System.out.println("[SERVER]: Handle worker list request: NO PARAMETER\n[LISTING WORKERS...]");
+        int res_code = 0;
+        Worker.WorkerData[] data = {};
+        data = DatabaseManager.getInstance().listWorker();
+        res_code = data.length == 0 ? 1 : 0;
+
+        Worker.GetResponse res = new Worker.GetResponse();
+        switch (res_code)
+        {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                res.setData(data);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+
+        return res;
+    }
+
+    @Override
+    public Device.GetResponse handleDeviceList() {
+        System.out.println("[SERVER]: Handle device list request: NO PARAMETER\n[LISTING DEVICES...]");
+        int res_code = 0;
+        Device.DeviceData[] data = {};
+        data = DatabaseManager.getInstance().listDevice();
+        res_code = data.length == 0 ? 1 : 0;
+
+        Device.GetResponse res = new Device.GetResponse();
+        switch (res_code)
+        {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                res.setData(data);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public com.mansys.server.backend.Maintenance.Response handleMaintenance(
+            com.mansys.server.backend.Maintenance.Request req) {
+        System.out.println("[SERVER]: handle add maintenance request:"
+                         + "\ndeviceID: " + req.getDeviceID()
+                         + "\ntaskName: " + req.getTaskName()
+                         + "\nspecification: " + req.getSpecification()
+                         + "\nnormTime: " + req.getNormTime());
+        int res_code = DatabaseManager.getInstance().addMaintenance(
+            req.getDeviceID(), req.getTaskName(), req.getSpecification(), req.getNormTime());
+        Maintenance.Response res = new Maintenance.Response();
+        switch (res_code) {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList() {
+        System.out.println("[SERVER]: Handle maintenance list request: NO PARAMETER\n[LISTING MAINTENANCE TASKS...]");
+        int res_code = 0;
+        Maintenance.MaintenanceData[] data = {};
+        data = DatabaseManager.getInstance().listMaintenance();
+        res_code = data.length == 0 ? 1 : 0;
+
+        Maintenance.GetResponse res = new Maintenance.GetResponse();
+        switch (res_code)
+        {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                res.setData(data);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+        return res;
+    }
+
 }

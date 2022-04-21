@@ -10,9 +10,9 @@ public class Category {
     public static class Request {
 
         String categoryName;
-        String  qualification;
+        int qualificationID;
         String categoryPeriod;
-        String categoryNormalTime; //cast to datetime
+        String categoryNormalTime;
         String specification;
         String parent;
 
@@ -25,8 +25,8 @@ public class Category {
             return this.categoryName;
         }
 
-        public String getQualification() {
-            return this.qualification;
+        public int getQualificationID() {
+            return this.qualificationID;
         }
 
         public String getCategoryPeriod(){
@@ -49,8 +49,8 @@ public class Category {
             this.categoryName = value;
         }
 
-        public void setQualification(String value){
-            this.qualification = value;
+        public void setQualificationID(int value){
+            this.qualificationID = value;
         }
 
         public void setCategoryPeriod(String value){

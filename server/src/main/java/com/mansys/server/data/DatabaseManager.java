@@ -10,6 +10,11 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mansys.server.backend.Device;
+import com.mansys.server.backend.Maintenance;
+import com.mansys.server.backend.Qualification;
+import com.mansys.server.backend.Worker;
+
 import javafx.util.Pair;
 
 
@@ -21,7 +26,7 @@ import javafx.util.Pair;
  * @category Database
  */
 
-public class DatabaseManager implements DatabaseManagerInterface {
+public class DatabaseManager{
 
     //-----------------------------------------[ VARIABLES ]------------------------------------------
 
@@ -126,6 +131,8 @@ public class DatabaseManager implements DatabaseManagerInterface {
     //------------------------------------------------------------------------------------------------
 
     public Pair<Integer,String> authenticateUser(String username, String password) {
+        
+        Pair<Integer, String> res = new Pair<>(-1,"Internal error");
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String sendProcedure = "{CALL Bejelentkezes(?, ?, ?, ?)}";
@@ -142,11 +149,12 @@ public class DatabaseManager implements DatabaseManagerInterface {
             String role = callableStatement.getString("qualification");
             System.out.println("[DATABASE]: Called Bejelentkezes, result: " + resCode + ", role: " + role);
 
-            return new Pair<>(resCode,role);
+            res = new Pair<>(resCode,role);
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function TEMPLATE: " + ex + "\nStack trace: ");
             ex.printStackTrace();
+            res = new Pair<>(-1,"Internal error");
         } 
         finally {
             try {
@@ -160,11 +168,12 @@ public class DatabaseManager implements DatabaseManagerInterface {
             }
         }   
 
-        return new Pair<>(-1,"Internal error");
+        return res;
     }
 
     public int addDevice(String deviceName, String deviceCategoryName, String deviceDescription, String devPosition)
     {
+        int resCode;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String call = "{CALL Eszkoz_hozzaadasa(?, ?, ?, ?, ?)}";
@@ -179,13 +188,13 @@ public class DatabaseManager implements DatabaseManagerInterface {
 
             callableStatement.execute();
 
-            int resCode = callableStatement.getInt("resultCode");
+            resCode = callableStatement.getInt("resultCode");
             System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
-            return resCode;
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addDevice: " + ex + "\nStack trace: ");
             ex.printStackTrace();
+            resCode = 1;
         } 
         finally {
             try {
@@ -196,37 +205,44 @@ public class DatabaseManager implements DatabaseManagerInterface {
             catch (SQLException ex) {
                 System.err.println("[ERROR]: Error occured in function addDevice when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
+                resCode = 1;
             }
         }  
         
-        return -1;
+        return resCode;
     }
 
-    public int addCategory(String categoryName, String qualification, String categoryPeriod, String categoryNormalTime, String specification, String parent)
+    public int addCategory(String categoryName, int qualificationID, String categoryPeriod, String categoryNormalTime, String specification, String parent)
     {
+        int resCode;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String call = "{CALL EszkozKategoria_hozzaadasa(?, ?, ?, ?, ?, ?, ?)}";
 
             CallableStatement callableStatement = connection.prepareCall(call);
             callableStatement.setString("device_category_name",categoryName);
-            callableStatement.setString("qualification",qualification);
+            callableStatement.setInt("qualification",qualificationID); // INCOMPLETE PROCEDURE
             callableStatement.setString("period",categoryPeriod);
-            callableStatement.setString("norm_time",categoryNormalTime);
-            callableStatement.setString("descrip",specification);
+            callableStatement.setInt("norm_time",Integer.parseInt(categoryNormalTime));
+            callableStatement.setString("steps_descrip",specification);
             callableStatement.setString("parent",parent);
 
             callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
 
             callableStatement.execute();
 
-            int resCode = callableStatement.getInt("resultCode");
+            resCode = callableStatement.getInt("resultCode");
             System.out.println("[DATABASE]: Called Eszkoz_hozzaadasa, result: " + resCode);
-            return resCode;
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addCategory: " + ex + "\nStack trace: ");
             ex.printStackTrace();
+            resCode =  1;
+        } 
+        catch (NumberFormatException ex) {
+            System.err.println("[ERROR]: Invalid parse in function addCategory: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            resCode =  2;
         } 
         finally {
             try {
@@ -237,10 +253,10 @@ public class DatabaseManager implements DatabaseManagerInterface {
             catch (SQLException ex) {
                 System.err.println("[ERROR]: Error occured in function addCategory when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
+                resCode =  1;
             }
         }   
-
-        return 0;
+        return resCode;
     }
 
     public String[] listCategory()
@@ -251,28 +267,16 @@ public class DatabaseManager implements DatabaseManagerInterface {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             
-            //---[TEMPORARY QUERY]
-            String query = "SELECT Eszkoz_kategoria_neve FROM eszkozkategoria";
+            String call = "{CALL Kategoriak_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
             
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            
-            while (resultSet.next())
-            {
-                String dataSnippet = resultSet.getString(1);
-                dataList.add(dataSnippet);
+            while (resultSet.next()) {
+                dataList.add(resultSet.getString(1));
             }
 
-            statement.cancel();
-            
             res = new String[dataList.size()];
             res = dataList.toArray(res);
-
-            for(String item : res)
-            {
-                System.out.println(item);
-            }
-            //---[END OF TEMPORARY QUERY]
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listCategory: " + ex + "\nStack trace: ");
@@ -294,11 +298,18 @@ public class DatabaseManager implements DatabaseManagerInterface {
         return res;
     }
 
-    @Deprecated
-    public int addQualication(int qualificationID,  String qualificationName)
+    public int addQualication(String qualificationName)
     {
+        int resCode = 1;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL Kepesites_hozzaadasa(?, ?)}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("qualification_name",qualificationName);
+            callableStatement.registerOutParameter("resultcode",java.sql.Types.INTEGER);
+            callableStatement.execute();
+            resCode = callableStatement.getInt("resultcode");
+            System.out.println("[DATABASE]: called Kepesites_hozzaadasa, result: " + resCode);
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addQualication: " + ex + "\nStack trace: ");
@@ -316,44 +327,37 @@ public class DatabaseManager implements DatabaseManagerInterface {
             }
         }   
 
-        return 0;
+        return resCode;
     }
 
-    public String[] listQualification()
+    public Qualification.QualificationData[] listQualification()
     {
-        String[] res;
-        List<String> dataList = new ArrayList<>(); 
+        Qualification.QualificationData[] res;
+        List<Qualification.QualificationData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             
-            //---[TEMPORARY QUERY]
-            String query = "SELECT DISTINCT Kepesites_neve FROM karbantarto";
+            String call = "{CALL Kepesitesek_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
             
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            
-            while (resultSet.next())
-            {
-                String dataSnippet = resultSet.getString(1);
-                dataList.add(dataSnippet);
+            while (resultSet.next()) {
+                Qualification.QualificationData temp = new Qualification.QualificationData();
+                temp.setQualificationID(resultSet.getInt(1));
+                temp.setQualificationName(resultSet.getString(2));
+                dataList.add(temp);
             }
 
-            statement.cancel();
-            
-            res = new String[dataList.size()];
+
+            res = new Qualification.QualificationData[dataList.size()];
             res = dataList.toArray(res);
 
-            for(String item : res)
-            {
-                System.out.println(item);
-            }
-            //---[END OF TEMPORARY QUERY]
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listQualification: " + ex + "\nStack trace: ");
             ex.printStackTrace();
-            res = new String[0];
+            res = new Qualification.QualificationData[0];
         } 
         finally {
             try {
@@ -368,5 +372,235 @@ public class DatabaseManager implements DatabaseManagerInterface {
         }   
 
         return res;
+    }
+
+
+    public int addWorker(String lastName, String firstName, int qualificationID) {
+
+        int resCode;
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL Karbantarto_hozzaadasa(?,?,?,?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("last_name", lastName); // INCOMPLETE PROCEDURE
+            callableStatement.setString("first_name", firstName); // INCOMPLETE PROCEDURE
+            callableStatement.setInt("qualification", qualificationID); // INCOMPLETE PROCEDURE
+
+            callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+
+            resCode = callableStatement.getInt("resultCode");
+            System.out.println("[DATABASE]: Called Karbantarto_hozzaadasa, result: " + resCode);
+
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addWorker: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            resCode = 1;
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addWorker when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+                resCode = 1;
+            }
+        }   
+
+        return resCode;
+    }
+
+    public Worker.WorkerData[] listWorker()
+    {
+        Worker.WorkerData[] res;
+        List<Worker.WorkerData> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "{CALL Karbantartok_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Worker.WorkerData temp = new Worker.WorkerData();
+                temp.setLastName(resultSet.getString(2));
+                temp.setFirstName(resultSet.getString(3));
+                temp.setQualificationID(resultSet.getInt(4)); // INCOMPLETE PROCEDURE
+                dataList.add(temp);
+            }
+
+            res = new Worker.WorkerData[dataList.size()];
+            res = dataList.toArray(res);
+
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listWorker: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new Worker.WorkerData[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listWorker when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+
+        return res;
+    }
+
+    public Device.DeviceData[] listDevice()
+    {
+        Device.DeviceData[] res;
+        List<Device.DeviceData> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "{CALL Eszkozok_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Device.DeviceData temp = new Device.DeviceData();
+                temp.setDeviceID(resultSet.getInt(1));
+                temp.setDeviceName(resultSet.getString(2));
+                temp.setDeviceCategoryName(resultSet.getString(3));
+                temp.setDeviceDescription(resultSet.getString(4));
+                temp.setDeviceLocation(resultSet.getString(5));
+                dataList.add(temp);
+            }
+
+            res = new Device.DeviceData[dataList.size()];
+            res = dataList.toArray(res);
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listDevice: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new Device.DeviceData[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+
+        return res;
+    }
+
+    public int addMaintenance(int deviceID, String taskName, String specification, String normTime) {
+        int resCode = 1;
+        
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL Feladat_hozzaadasa(?,?,?,?,?,?,?,?,?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setInt("device_ID",deviceID);
+            callableStatement.setString("task_name",taskName);
+            callableStatement.setInt("status",0);
+            callableStatement.setString("no_justification",null);
+            // TODO: this needs to be null somehow
+            callableStatement.setInt("maint_specialist_ID",1);
+            callableStatement.setString("task_start",null);
+            callableStatement.setString("task_end",null);
+            callableStatement.setString("norm_time",normTime);
+            callableStatement.setString("steps_descrip",specification);
+
+            callableStatement.execute();
+
+            // this is like OMEGA BAD... needs fixing
+            // TODO: add result to the server procedure thingy
+            resCode = 0;
+            System.out.println("[DATABASE]: Called Feladat_hozzaadasa, result: " + resCode);
+
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            resCode = 1;
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addWorker when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+                resCode = 1;
+            }
+        }   
+
+        return resCode;
+    }
+
+    public Maintenance.MaintenanceData[] listMaintenance() {
+        Maintenance.MaintenanceData[] res;
+        List<Maintenance.MaintenanceData> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "{CALL Feladatok_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Maintenance.MaintenanceData temp = new Maintenance.MaintenanceData();
+                temp.deviceID = resultSet.getInt(1);
+                temp.maintenanceTaskID = resultSet.getInt(2);
+                temp.maintenanceTaskName = resultSet.getString(3);
+                temp.state = resultSet.getInt(4);
+                temp.workerID = resultSet.getInt(6);
+                temp.startDate = resultSet.getString(7);
+                temp.finishDate = resultSet.getString(8);
+                temp.normTime = resultSet.getString(9);
+                temp.specification = resultSet.getString(10);
+                temp.deviceName = resultSet.getString(11);
+                temp.deviceLocation = resultSet.getString(14);
+                dataList.add(temp);
+            }
+
+            res = new Maintenance.MaintenanceData[dataList.size()];
+            res = dataList.toArray(res);
+            System.out.println("[DATABASE]: Called Feladatok_listazasa");
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new Maintenance.MaintenanceData[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return res;
+        
     }
 }
