@@ -60,4 +60,51 @@ public class Maintenance {
             this.errorCode = value;
         }
     }
+
+    public static class GetResponse {
+        private String errorMessage;
+        private int errorCode;
+
+        private MaintenanceData[] data;
+
+        public String getErrorMessage(){
+            return this.errorMessage;
+        }
+
+        public int getErrorCode(){
+            return this.errorCode;
+        }
+
+        public MaintenanceData[] getData() {
+            return this.data;
+        }
+
+        public void setErrorMessage(String value){
+            this.errorMessage = value;
+        }
+
+        public void setErrorCode(int value){
+            this.errorCode = value;
+        }   
+        
+        public void setData(MaintenanceData[] value) {
+            this.data = value;
+        }
+    }
+
+    public static class MaintenanceData {
+        public int maintenanceTaskID;
+        public int deviceID;
+        public String deviceName;
+        public String deviceLocation;
+        public String maintenanceTaskName;
+        // TODO: can change this to the string representation
+        public int state;
+        public int workerID;
+        // TODO: probably other worker data mayB
+        public String startDate;
+        public String finishDate;
+        public String normTime;
+        public String specification;
+    }
 }

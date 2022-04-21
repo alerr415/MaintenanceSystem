@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.mansys.server.backend.Device;
+import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Worker;
 import com.mansys.server.backend.Qualification;
 
@@ -86,9 +87,16 @@ class DatabaseManagerTest {
         int ok = DatabaseManager.getInstance().addQualication("szexuális segédmunkás");
         assertEquals(ok,0);
     }
+
     @Test
     void callAddMaintenanceTask() {
         int ok = DatabaseManager.getInstance().addMaintenance(1,"fix it","1, 2, 3, 4","12:00");
         assertEquals(0,ok);
+    }
+
+    @Test
+    void callListMaintenance() {
+        Maintenance.MaintenanceData[] maintenances = DatabaseManager.getInstance().listMaintenance();
+        assertNotNull(maintenances);
     }
 }

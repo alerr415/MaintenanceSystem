@@ -444,4 +444,60 @@ public class Server implements ServerInterface {
         return res;
     }
 
+    @Override
+    public com.mansys.server.backend.Maintenance.Response handleMaintenance(
+            com.mansys.server.backend.Maintenance.Request req) {
+        System.out.println("[SERVER]: handle add maintenance request:"
+                         + "\ndeviceID: " + req.getDeviceID()
+                         + "\ntaskName: " + req.getTaskName()
+                         + "\nspecification: " + req.getSpecification()
+                         + "\nnormTime: " + req.getNormTime());
+        int res_code = DatabaseManager.getInstance().addMaintenance(
+            req.getDeviceID(), req.getTaskName(), req.getSpecification(), req.getNormTime());
+        Maintenance.Response res = new Maintenance.Response();
+        switch (res_code) {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList() {
+        System.out.println("[SERVER]: Handle maintenance list request: NO PARAMETER\n[LISTING MAINTENANCE TASKS...]");
+        int res_code = 0;
+        Maintenance.MaintenanceData[] data = {};
+        data = DatabaseManager.getInstance().listMaintenance();
+        res_code = data.length == 0 ? 1 : 0;
+
+        Maintenance.GetResponse res = new Maintenance.GetResponse();
+        switch (res_code)
+        {
+            case 0: // good
+            {
+                res.setErrorMessage("Success");
+                res.setErrorCode(RESCODE_OK);
+                res.setData(data);
+                break;
+            }
+            default:
+            {
+                res.setErrorMessage("Server error");
+                res.setErrorCode(1);
+                break;
+            }
+        }
+        return res;
+    }
+
 }

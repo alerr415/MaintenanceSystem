@@ -138,8 +138,10 @@ NOTE: cache refresh response not implemented yet.
 - String qualificationName
 
 ## Add Maintenance task (POST /maintenance)
+The basic stuff that is needed to initialize
+a maintenance task. Might change later.
 
-## Request
+### Request
 - int deviceID
 - String taskName
 - String specification
@@ -148,3 +150,27 @@ NOTE: cache refresh response not implemented yet.
 ### Response
 - String errorMessage
 - int errorCode
+
+## Query Maintenance tasks (GET /maintenance)
+Maintenance data query method.
+
+### Request
+(none)
+
+### Response
+- int resultCode
+- String resultMessage
+- \[MaintenanceData\] maintenanceList
+
+### MaintenanceData
+- int maintenanceTaskID
+- int deviceID
+- String deviceName
+- String deviceLocation
+- String maintenanceTaskName
+- int state
+- int workerID
+- String startDate
+- String finishDate
+- String normTime
+- String specification
