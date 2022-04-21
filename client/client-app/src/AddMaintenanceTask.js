@@ -56,21 +56,13 @@ function AddMaintenanceTask(props) {
   const addTask = () => {
     let taskName = document.getElementById("taskName").value;
     let specification = document.getElementById("taskDescription").value;
-    //let deviceLocation = document.getElementById("deviceLocation").value;
-    //let deviceCategoryName = "";
-
-    //console.log("deviceName:'" + deviceName + "'");
-    //console.log("deviceLocation:'" + deviceLocation + "'");
-    //console.log("deviceDescription:'" + deviceDescription + "'");
-    //console.log("deviceCategoryName:'" + deviceCategoryName + "'");
+    let normTime = document.getElementById("normTime").value;
 
     if (taskName !== "" && deviceID!== "" && specification !== "") {
-      let toSend  = {"deviceID" : 1,
-                     "deviceName" : "semmi",
-                     "taskName" : "feladat",
-                     "qualificationID" : 1,
-                     "specification" : "leiras",
-                     "normTime" : 1
+      let toSend  = {"deviceID" : deviceID,
+                     "taskName" : taskName,
+                     "specification" : specification,
+                     "normTime" : normTime
                    }
 
       console.log(toSend);
@@ -121,11 +113,11 @@ function AddMaintenanceTask(props) {
 
       console.log('Success:', data);
 
-      if (data.resultCode === 0) {
+      if (data.errorCode === 0) {
         console.log("Sikeres lekérdezés :D");
-        console.log(data.deviceData);
-
-        setDeviceList(data.deviceData);
+        console.log(data.data);
+        setDeviceList(data.data);
+        console.log(deviceList);
 
       } else {
         console.log("Sikertelen lekérdezés! :(");
@@ -205,6 +197,16 @@ return (
                     style={{ width: '100%' }}
                   />
               </Grid>
+
+              <Grid item xs={12} sm={12} md={6}>
+                <Typography variant="h6" sx={{ mt : 2 }}>Normaidő:</Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                {/* normaidő */}
+                <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} id="normTime" label="Normaidő" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
+              </Grid>
+
+
 
             </Grid>
           </CardContent>
