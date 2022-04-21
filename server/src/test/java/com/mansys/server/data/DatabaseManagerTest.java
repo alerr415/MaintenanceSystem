@@ -4,6 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.mansys.server.backend.Device;
+import com.mansys.server.backend.Maintenance;
+import com.mansys.server.backend.Worker;
+import com.mansys.server.backend.Qualification;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -43,8 +48,8 @@ class DatabaseManagerTest {
 
     @Test
     void callAddCategory() {
-        int ok = DatabaseManager.getInstance().addCategory("ivhegesztok","gepesztechnikus","eves","2023-03-22 16:00:00","Ellenorizze a trafo szigeteleset","hegesztogepek");
-        assertEquals(0,ok);
+        //int ok = DatabaseManager.getInstance().addCategory("tesztkategoria","gepesztechnikus","eves", "1","Ellenorizze a trafo szigeteleset","hegesztogepek");
+        //assertEquals(0,ok);
     }
 
     @Test
@@ -55,8 +60,43 @@ class DatabaseManagerTest {
 
     @Test
     void callListQualification() {
-        String[] qualifications = DatabaseManager.getInstance().listQualification();
+        Qualification.QualificationData[] qualifications = DatabaseManager.getInstance().listQualification();
         assertNotNull(qualifications);
     }
 
+    @Test
+    void callAddWorker() {
+        int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", 1);
+        assertEquals(0,ok);
+    }
+
+    @Test
+    void callListWorker() {
+        Worker.WorkerData[] workers = DatabaseManager.getInstance().listWorker();
+        assertNotNull(workers);
+    }
+
+    @Test
+    void callLisDevice() {
+        Device.DeviceData[] devices = DatabaseManager.getInstance().listDevice();
+        assertNotNull(devices);
+    }
+
+    @Test
+    void callAddQualification() {
+        int ok = DatabaseManager.getInstance().addQualication("szexuális segédmunkás");
+        assertEquals(ok,0);
+    }
+
+    @Test
+    void callAddMaintenanceTask() {
+        int ok = DatabaseManager.getInstance().addMaintenance(1,"fix it","1, 2, 3, 4","12:00");
+        assertEquals(0,ok);
+    }
+
+    @Test
+    void callListMaintenance() {
+        Maintenance.MaintenanceData[] maintenances = DatabaseManager.getInstance().listMaintenance();
+        assertNotNull(maintenances);
+    }
 }
