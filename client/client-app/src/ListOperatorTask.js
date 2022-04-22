@@ -15,6 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 //import { useCookies } from "react-cookie";
 import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 
 import Accordion from '@mui/material/Accordion';
@@ -93,23 +94,26 @@ return(
               </AccordionSummary>
 
               <AccordionDetails>
-                <p>
-                  <Typography sx={{ fontWeight: "bold" }}>{task.deviceLocation}</Typography> helyszínen
-                  <Typography sx={{ fontWeight: "bold" }}>{task.deviceName} (ID:{task.deviceID})</Typography> eszköz karbantartása vált szükségessé. <br />
-                  &#34;{task.specification}&#34;
-                </p>
+                <Grid container spacing={2}>
 
-                <p>
-                  <Typography sx={{ fontWeight: "bold" }}>Érintett eszköz:</Typography> {task.deviceName} - #{task.deviceID} @ {task.deviceLocation}
-                </p>
+                  <Grid item xs={12} sm={12} md={3} lg={3}>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Érintett eszköz:</Typography> {task.deviceName} (#{task.deviceID})</p>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Helyszín:</Typography> {task.deviceLocation}</p>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Karbantartó:</Typography> {task.workerID}</p>
 
-                <p>
-                  <Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {task.state}
-                </p>
+                  </Grid>
 
-                <p>
-                  <Typography sx={{ fontWeight: "bold" }}>Hozzárendelt karbantartó:</Typography> {task.workerID}
-                </p>
+                  <Grid item xs={12} sm={12} md={7} lg={7}>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Megnevezés:</Typography> {task.maintenanceTaskName}</p>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Leírás:</Typography> &#34;{task.specification}&#34;</p>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {task.state}</p>
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={2} lg={2}>
+                    <Button size="large" variant="contained" color="success" fullWidth>Ütemez</Button>
+                  </Grid>
+
+                </Grid>
 
               </AccordionDetails>
             </Accordion>))}
@@ -147,7 +151,7 @@ return(
       </Alert>
     </Snackbar>
 
-    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }} component={Link} to="/app/newCategory">
+    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }} component={Link} to="/app/newTask">
       <AddIcon />
     </Fab>
 

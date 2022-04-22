@@ -154,7 +154,7 @@ return(
       </Alert>
     </Snackbar>
 
-    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }} component={Link} to="/app/newCategory">
+    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }} component={Link} to="/app/newWorker">
       <AddIcon />
     </Fab>
 
