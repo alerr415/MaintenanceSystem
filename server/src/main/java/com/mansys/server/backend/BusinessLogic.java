@@ -1,5 +1,7 @@
 package com.mansys.server.backend;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.LinkedList;
 
 import com.mansys.server.data.DatabaseManager;
@@ -26,15 +28,15 @@ public class BusinessLogic {
     
     private static BusinessLogic singleton_instance = null;
     
-    private BusinessLogic(){
+    private BusinessLogic() {
         databaseManager = DatabaseManager.getInstance();
 
         timerTaskList = new LinkedList<>();
         categoryList = new LinkedList<>();    
     }
  
-    public static BusinessLogic getInstance(){
-        if (singleton_instance == null){
+    public static BusinessLogic getInstance() {
+        if  (singleton_instance == null) {
             singleton_instance = new BusinessLogic();
         }
 
@@ -46,12 +48,30 @@ public class BusinessLogic {
 
 
     public void syncTimerTasksToCategories() {
-
+        for (Category.CategoryData categoryData : categoryList) {
+            if (!search(categoryData, timerTaskList)) {
+                TimerTask.TimerTaskData taskData;
+                taskData = new TimerTask.TimerTaskData();
+                taskData.categoryName = categoryData.categoryName;
+                taskData.referenceDate = new Date(System.currentTimeMillis());
+            }
+        }
     }
 
     public void scanTimerTasks() {
-        
+        deviceDataList = databaseManager.listDevice();
+
     }
 
+    private boolean search(Category.CategoryData data, LinkedList<TimerTask.TimerTaskData> list) {
+
+        for (TimerTask.TimerTaskData timerTaskData : list) {
+            if (data.categoryName.equals(timerTaskData.categoryName))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     //------------------------------------------------------------------------------------------------
 }
