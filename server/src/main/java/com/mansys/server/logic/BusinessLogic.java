@@ -2,6 +2,9 @@ package com.mansys.server.logic;
 
 import java.util.LinkedList;
 
+import com.mansys.server.data.DatabaseManager;
+import com.mansys.server.backend.Device;
+
 /**
  * This class is used for handle the timer tasks, periods..
  * 
@@ -10,6 +13,9 @@ import java.util.LinkedList;
 public class BusinessLogic {
 
     //-----------------------------------------[ VARIABLES ]------------------------------------------
+
+    private DatabaseManager databaseManager;
+    private Device.DeviceData[] deviceDataList;
 
     private LinkedList<TimerTask> timerTaskList;
     private LinkedList<Category> categoryList;
@@ -20,6 +26,8 @@ public class BusinessLogic {
     private static BusinessLogic singleton_instance = null;
     
     private BusinessLogic(){
+        databaseManager = DatabaseManager.getInstance();
+
         timerTaskList = new LinkedList<>();
         categoryList = new LinkedList<>();    
     }
@@ -41,7 +49,7 @@ public class BusinessLogic {
     }
 
     public void scanTimerTasks() {
-
+        
     }
 
     //------------------------------------------------------------------------------------------------
