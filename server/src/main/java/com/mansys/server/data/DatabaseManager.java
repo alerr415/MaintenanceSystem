@@ -67,7 +67,6 @@ public class DatabaseManager{
             System.err.println("[ERROR]: Failed to load driver class: " + ex + "\nStack trace: ");
             ex.printStackTrace();
         }
-        System.out.println("end of static block");
     }
 
     //------------------------------------------------------------------------------------------------
@@ -616,8 +615,6 @@ public class DatabaseManager{
             callableStatement.setDate("ref_date",referenceDate);
             callableStatement.setString("task_name",null);
             callableStatement.setInt("status",0);
-            callableStatement.setString("no_justification",null);
-            // TODO: this needs to be null somehow
             callableStatement.setInt("maint_specialist_ID",1);
             callableStatement.setString("task_start",null);
             callableStatement.setString("task_end",null);
@@ -626,7 +623,6 @@ public class DatabaseManager{
 
             callableStatement.execute();
             System.out.println("[DATABASE]: Called Idoszakos_feladat_hozzaadasa category name:" + categoryName + " referenceDate: " + referenceDate.toString());
-
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function addTimerTask: " + ex + "\nStack trace: ");
@@ -659,7 +655,7 @@ public class DatabaseManager{
             while (resultSet.next()) {
                 TimerTask.TimerTaskData temp = new TimerTask.TimerTaskData();
                 temp.categoryName = resultSet.getString(2);
-                temp.referenceDate = resultSet.getDate(9);
+                temp.referenceDate = resultSet.getDate(10);
                 dataList.add(temp);
             }
 

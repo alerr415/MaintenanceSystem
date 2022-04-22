@@ -4,10 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.sql.Date;
+
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Worker;
 import com.mansys.server.backend.Qualification;
+import com.mansys.server.backend.TimerTask;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -98,5 +101,20 @@ class DatabaseManagerTest {
     void callListMaintenance() {
         Maintenance.MaintenanceData[] maintenances = DatabaseManager.getInstance().listMaintenance();
         assertNotNull(maintenances);
+    }
+
+
+    @Test
+    void callAddTimerTask() {
+        DatabaseManager.getInstance().addTimerTask("lampak",new Date(System.currentTimeMillis()));
+    }
+
+    @Test
+    void callListTimerTask() {
+        TimerTask.TimerTaskData[] timerTasks = DatabaseManager.getInstance().listTimerTasks();
+        for (TimerTask.TimerTaskData data : timerTasks) {
+            System.out.println("Timer Task (" + data.categoryName + "," + data.referenceDate.toString() + ")");
+        }
+        assertNotNull(timerTasks);
     }
 }
