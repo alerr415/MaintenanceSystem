@@ -16,6 +16,7 @@ import Alert from '@mui/material/Alert';
 //import { useCookies } from "react-cookie";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { red, blue, teal, amber, lime, grey } from '@mui/material/colors';
 
 
 import Accordion from '@mui/material/Accordion';
@@ -70,8 +71,106 @@ function ListOperatorTask(props) {
     });
   };
 
+  const [workerList, setWorkerList] = React.useState(["d"]);
+  const [workerListFetched, setWorkerListFetched] =  React.useState(false);
+
+  function fetchWorkerList() {
+    fetch(serveraddress + '/worker')
+    .then(response => response.json())
+    .then(data => {
+
+      console.log('Success:', data);
+
+      if (data.errorCode === 0) {
+        console.log("Sikeres lekérdezés :D");
+        console.log(data.data);
+        setWorkerList(data.data);
+        setWorkerListFetched(true);
+
+      } else {
+        console.log("Sikertelen lekérdezés! :(");
+        console.log(data.errorMessage);
+        setFeedbackText(data.errorMessage);
+        hitError(true);
+      }
+
+      setWorkerListFetched(true);
+
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
+    });
+  };
+
+
+  function getTaskColor(state) {
+    if (state === 0 ) {
+      // utemezesre var
+      return ({ backgroundColor : red[100] });
+
+    } else if (state === 1) {
+      // utemezve
+      return ({ backgroundColor : blue[100] });
+
+    } else if (state === 2) {
+      // elfogadva
+      return ({ backgroundColor : teal[100] });
+
+    } else if (state === 3) {
+      // elutasitva
+      return ({ backgroundColor : amber[100] });
+
+    } else if (state === 4) {
+      // megkezdve
+      return ({ backgroundColor : lime[100] });
+
+    } else if (state === 5) {
+      // befejezve
+      return ({ backgroundColor : grey[100] });
+    }
+
+  }
+
+  function resolveStateNames(state) {
+    if (state === 0 ) {
+      // utemezesre var
+      return "Ütemezésre vár";
+
+    } else if (state === 1) {
+      // utemezve
+      return "Ütemezve";
+
+    } else if (state === 2) {
+      // elfogadva
+      return "Elfogadva";
+
+    } else if (state === 3) {
+      // elutasitva
+      return "Elutasítva";
+
+    } else if (state === 4) {
+      // megkezdve
+      return "Megkezdve";
+
+    } else if (state === 5) {
+      // befejezve
+      return "Befejezve";
+    }
+  }
+
+  function resolveWorkerNames(id) {
+    //let currentWorker = workerList.find((worker) => {return worker.id == id});
+    //if (currentWorker !== undefined) {
+    //  return currentWorker.lastName.concat(currentWorker.firstName);
+    //}
+    return "TODO";
+  }
+
   useEffect(() => {
     if (!taskListFetched) fetchTaskList();
+    if (!workerListFetched) fetchWorkerList();
   });
 
 return(
@@ -88,7 +187,7 @@ return(
             <Divider  sx={{ mb : 2 }}/>
 
             {taskList.map((task, index) => (
-            <Accordion key={index}>
+            <Accordion key={index} sx={ getTaskColor(task.state) } >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
               </AccordionSummary>
@@ -99,14 +198,14 @@ return(
                   <Grid item xs={12} sm={12} md={3} lg={3}>
                     <p><Typography sx={{ fontWeight: "bold" }}>Érintett eszköz:</Typography> {task.deviceName} (#{task.deviceID})</p>
                     <p><Typography sx={{ fontWeight: "bold" }}>Helyszín:</Typography> {task.deviceLocation}</p>
-                    <p><Typography sx={{ fontWeight: "bold" }}>Karbantartó:</Typography> {task.workerID}</p>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Karbantartó:</Typography> {resolveWorkerNames(task.workerID)}</p>
 
                   </Grid>
 
                   <Grid item xs={12} sm={12} md={7} lg={7}>
                     <p><Typography sx={{ fontWeight: "bold" }}>Megnevezés:</Typography> {task.maintenanceTaskName}</p>
                     <p><Typography sx={{ fontWeight: "bold" }}>Leírás:</Typography> &#34;{task.specification}&#34;</p>
-                    <p><Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {task.state}</p>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {resolveStateNames(task.state)}</p>
                   </Grid>
 
                   <Grid item xs={12} sm={12} md={2} lg={2}>
