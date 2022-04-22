@@ -655,6 +655,7 @@ public class DatabaseManager{
             
             while (resultSet.next()) {
                 TimerTask.TimerTaskData temp = new TimerTask.TimerTaskData();
+                temp.id = resultSet.getInt(1);
                 temp.categoryName = resultSet.getString(2);
                 temp.referenceDate = resultSet.getDate(10);
                 dataList.add(temp);
@@ -725,6 +726,37 @@ public class DatabaseManager{
             }
         }   
         return res;       
+    }
+
+    public void setReferenceDate(int taskId, Date updatedReference) {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "UPDATE IdoszakosFeladat SET Referencia_datum=? WHERE IdoszakosFeladat_ID = ?";
+            CallableStatement callableStatement = connection.prepareCall(call);
+
+            callableStatement.setInt(2,taskId);
+            callableStatement.setDate(1,updatedReference);
+
+            callableStatement.execute();
+
+            System.out.println("[DATABASE]: Called Feladatok_listazasa");
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
     }
 
 }

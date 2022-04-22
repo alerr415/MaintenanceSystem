@@ -130,4 +130,9 @@ class DatabaseManagerTest {
                                             + data.parent + ")");
         }
     }
+
+    @Test
+    void callSetReferenceDate() {
+        DatabaseManager.getInstance().setReferenceDate(1, new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 10)));
+    }
 }
