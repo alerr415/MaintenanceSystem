@@ -122,6 +122,7 @@ function AddMaintenanceTask(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.errorMessage);
+        setFeedbackText("Az eszközök lekérdezése sikertelen! " + data.errorMessage);
         hitError(true);
       }
 

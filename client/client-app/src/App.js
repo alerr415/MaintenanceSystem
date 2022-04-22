@@ -8,6 +8,7 @@ import AddCategoryScreen from './AddCategoryScreen.js';
 import ListCategoryScreen from './ListCategoryScreen.js';
 
 import AddMaintenanceTask from './AddMaintenanceTask.js';
+import ListOperatorTask from './ListOperatorTask.js';
 
 import AddMaintenanceWorker from './AddMaintenanceWorker.js';
 
@@ -35,6 +36,7 @@ function App() {
                 <Route path="newCategory" element={<AddCategoryScreen />} />
                 <Route path="categories" element={<ListCategoryScreen />} />
                 <Route path="newTask" element={<AddMaintenanceTask />} />
+                <Route path="listOpTasks" element={<ListOperatorTask />} />
                 <Route path="newWorker" element={<AddMaintenanceWorker />} />
 
             </Route>

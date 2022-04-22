@@ -96,7 +96,7 @@ function AddMaintenanceWorker(props) {
         console.log('Success:', data);
         if (data.errorCode === 0) {
           console.log("Sikeres Hozzáadás :D");
-          setFeedbackText("A feladat hozzáadása megtörtént!");
+          setFeedbackText("Karbantartó hozzáadása megtörtént!");
           hitSuccess(true);
 
           clearForm();
@@ -104,7 +104,7 @@ function AddMaintenanceWorker(props) {
         } else {
           console.log("Sikertelen Hozzáadás! :(");
           console.log(data.errorMessage);
-          setFeedbackText("A feladat hozzáadása sikertelen! " + data.errorMessage);
+          setFeedbackText("Karbantartó hozzáadása sikertelen! " + data.errorMessage);
           hitError(true);
         }
       })
@@ -139,6 +139,7 @@ function AddMaintenanceWorker(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.errorMessage);
+        setFeedbackText("Képesítések lekérdezése sikertelen! " + data.errorMessage);
         hitError(true);
       }
 

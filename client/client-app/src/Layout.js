@@ -26,7 +26,7 @@ import Typography from '@mui/material/Typography';
 import { UserContext } from "./User.js";
 import { Outlet , Link} from "react-router-dom"
 import { useCookies } from "react-cookie";
-
+import Menu from './Menu.js';
 
 
 
@@ -49,86 +49,6 @@ function Layout(props) {
   const logout = () => {
     setUser("off");
   };
-
-  const operatormenu = (
-    <div>
-      <Toolbar />
-
-      <List>
-        <ListItemButton component={Link} to="/app/newTask">
-          <ListItemIcon><AddIcon /></ListItemIcon>
-          <ListItemText>Feladat hozzáadása</ListItemText>
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon><BuildIcon /></ListItemIcon>
-          <ListItemText>Feladatok megjelenítése</ListItemText>
-        </ListItemButton>
-      </List>
-
-      <Divider />
-
-      <List>
-        <ListItemButton component={Link} to="/app/newWorker">
-          <ListItemIcon><AddIcon /></ListItemIcon>
-          <ListItemText>Karbantartó hozzáadása</ListItemText>
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon><EngineeringIcon /></ListItemIcon>
-          <ListItemText>Karbantartók megjelenítése</ListItemText>
-        </ListItemButton>
-      </List>
-
-      <Divider />
-
-      <List>
-        <ListItemButton component={Link} to="/" onClick={logout}>
-          <ListItemIcon><LogoutIcon /></ListItemIcon>
-          <ListItemText>Kijelentkezés</ListItemText>
-        </ListItemButton>
-      </List>
-    </div>
-  );
-
-  const drawer = (
-    <div>
-      <Toolbar />
-
-      <List>
-        <ListItemButton component={Link} to="/app/newDevice">
-          <ListItemIcon><AddIcon /></ListItemIcon>
-          <ListItemText>Eszköz hozzáadása</ListItemText>
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon><FormatListBulletedIcon /></ListItemIcon>
-          <ListItemText>Eszközök megjelenítése</ListItemText>
-        </ListItemButton>
-      </List>
-
-      <Divider />
-
-      <List>
-        <ListItemButton component={Link} to="/app/newCategory">
-          <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-          <ListItemText>Kategória hozzáadása</ListItemText>
-        </ListItemButton>
-        <ListItemButton component={Link} to="/app/categories">
-          <ListItemIcon><FormatListBulletedIcon /></ListItemIcon>
-          <ListItemText>Kategóriák megjelenítése</ListItemText>
-        </ListItemButton>
-      </List>
-
-      <Divider />
-
-      <List>
-        <ListItemButton component={Link} to="/" onClick={logout}>
-          <ListItemIcon><LogoutIcon /></ListItemIcon>
-          <ListItemText>Kijelentkezés</ListItemText>
-        </ListItemButton>
-      </List>
-
-
-    </div>
-  );
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -156,7 +76,7 @@ function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Karbantartási Rendszer {JSON.stringify(user)}
+            Karbantartási Rendszer
           </Typography>
         </Toolbar>
       </AppBar>
@@ -181,7 +101,7 @@ function Layout(props) {
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
         >
-          {user.role === "eszkozfelelos" ? drawer : operatormenu}
+          {<Menu userType={user.role} />}
         </Drawer>
 
         {/* Desktop. */}
@@ -193,7 +113,7 @@ function Layout(props) {
           }}
           open
         >
-          {user.role === "eszkozfelelos" ? drawer : operatormenu}
+        {<Menu userType={user.role} />}
         </Drawer>
       </Box>
 

@@ -159,10 +159,11 @@ function AddCategoryScreen(props) {
         console.log(data.categoryList);
 
         setCategoryList(data.categoryList);
+        setCatListFetched(true);
 
       } else {
         console.log("Sikertelen lekérdezés! :(");
-        console.log(data.errorMessage);
+        console.log(data.resultMessage);
         hitError(true);
       }
 
@@ -188,10 +189,11 @@ function AddCategoryScreen(props) {
         console.log(data.qualificationList);
 
         setQualificationList(data.qualificationList);
+        setQualListFetched(true);
 
       } else {
         console.log("Sikertelen lekérdezés! :(");
-        console.log(data.errorMessage);
+        console.log(data.resultMessage);
         hitError(true);
       }
 
@@ -252,7 +254,7 @@ return(
                     <InputLabel id="qualLabel">Képesítés</InputLabel>
                     <Select labelId="qualLabel" id="qualSelect" value={qualSelectValue} onChange={qualChange} label="Képesítés">
                       {qualificationList.map((qualification, index) => (
-                        <MenuItem value={qualification} key={index}>{qualification}</MenuItem>
+                        <MenuItem value={qualification.qualificationID} key={index}>{qualification.qualificationName}</MenuItem>
                       ))}
                     </Select>
                   </FormControl>

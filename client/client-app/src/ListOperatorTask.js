@@ -25,7 +25,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
-function ListDeviceScreen(props) {
+function ListOperatorTask(props) {
 
   const { window } = props;
 
@@ -36,29 +36,30 @@ function ListDeviceScreen(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const [categoryList, setCategoryList] = React.useState(["d"]);
-  const [listFetched, setListFetched] =  React.useState(false);
+  const [taskList, setTaskList] = React.useState(["d"]);
+  const [taskListFetched, setTaskListFetched] =  React.useState(false);
 
-  function fetchList() {
-    fetch(serveraddress + '/category')
+  function fetchTaskList() {
+    fetch(serveraddress + '/maintenance')
     .then(response => response.json())
     .then(data => {
 
       console.log('Success:', data);
 
-      if (data.resultCode === 0) {
+      if (data.errorCode === 0) {
         console.log("Sikeres lekérdezés :D");
-        console.log(data.categoryList);
-
-        setCategoryList(data.categoryList);
+        console.log(data.data);
+        setTaskList(data.data);
+        setTaskListFetched(true);
 
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.errorMessage);
+        setFeedbackText(data.errorMessage);
         hitError(true);
       }
 
-      setListFetched(true);
+      setTaskListFetched(true);
 
     })
     .catch((error) => {
@@ -69,16 +70,11 @@ function ListDeviceScreen(props) {
   };
 
   useEffect(() => {
-    if (!listFetched) fetchList();
+    if (!taskListFetched) fetchTaskList();
   });
 
 return(
-  <Box
-    component="main"
-    sx={{ flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - 240px)` }}}
-  >
+  <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - 240px)` }}}>
     <Toolbar />
 
     <Grid container spacing={2}>
@@ -87,20 +83,34 @@ return(
       <Grid item xs={12} sm={12} lg={10}>
         <Card sx={{ mt: { xs : 0 , lg : 4 } }}>
           <CardContent>
-            <Typography variant="h5">Kategóriák</Typography>
+            <Typography variant="h5">Karbantartási feladatok</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {categoryList.map((category, index) => (
+            {taskList.map((task, index) => (
             <Accordion key={index}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{category}</Typography>
+              <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
               </AccordionSummary>
 
               <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                  malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </Typography>
+                <p>
+                  <Typography sx={{ fontWeight: "bold" }}>{task.deviceLocation}</Typography> helyszínen
+                  <Typography sx={{ fontWeight: "bold" }}>{task.deviceName} (ID:{task.deviceID})</Typography> eszköz karbantartása vált szükségessé. <br />
+                  &#34;{task.specification}&#34;
+                </p>
+
+                <p>
+                  <Typography sx={{ fontWeight: "bold" }}>Érintett eszköz:</Typography> {task.deviceName} - #{task.deviceID} @ {task.deviceLocation}
+                </p>
+
+                <p>
+                  <Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {task.state}
+                </p>
+
+                <p>
+                  <Typography sx={{ fontWeight: "bold" }}>Hozzárendelt karbantartó:</Typography> {task.workerID}
+                </p>
+
               </AccordionDetails>
             </Accordion>))}
 
@@ -146,4 +156,4 @@ return(
 
 }
 
-export default ListDeviceScreen;
+export default ListOperatorTask;
