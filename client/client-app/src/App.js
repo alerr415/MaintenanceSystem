@@ -11,6 +11,7 @@ import AddMaintenanceTask from './AddMaintenanceTask.js';
 import ListOperatorTask from './ListOperatorTask.js';
 
 import AddMaintenanceWorker from './AddMaintenanceWorker.js';
+import ListMaintenanceWorker from './ListMaintenanceWorker.js';
 
 
 import Welcome from './Welcome.js';
@@ -38,6 +39,7 @@ function App() {
                 <Route path="newTask" element={<AddMaintenanceTask />} />
                 <Route path="listOpTasks" element={<ListOperatorTask />} />
                 <Route path="newWorker" element={<AddMaintenanceWorker />} />
+                <Route path="listWorkers" element={<ListMaintenanceWorker />} />
 
             </Route>
             </Routes>

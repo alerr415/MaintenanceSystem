@@ -89,7 +89,7 @@ function Menu(props) {
           <ListItemIcon><AddIcon /></ListItemIcon>
           <ListItemText>Karbantartó hozzáadása</ListItemText>
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/app/listWorkers">
           <ListItemIcon><EngineeringIcon /></ListItemIcon>
           <ListItemText>Karbantartók megjelenítése</ListItemText>
         </ListItemButton>
