@@ -1,4 +1,4 @@
-package com.mansys.server.logic;
+package com.mansys.server.backend;
 
 import java.util.LinkedList;
 
@@ -11,8 +11,8 @@ public class BusinessLogic {
 
     //-----------------------------------------[ VARIABLES ]------------------------------------------
 
-    private LinkedList<TimerTask> timerTaskList;
-    private LinkedList<Category> categoryList;
+    private LinkedList<TimerTask.TimerTaskData> timerTaskList;
+    private LinkedList<Category.CategoryData> categoryList;
 
     //------------------------------------------------------------------------------------------------
     //----------------------------------[ SINGLETON DESIGN PATTERN ]----------------------------------
