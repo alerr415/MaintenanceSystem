@@ -2,6 +2,11 @@ package com.mansys.server.logic;
 
 import java.util.LinkedList;
 
+/**
+ * This class is used for handle the timer tasks, periods..
+ * 
+ * @author Tálas Martin
+ */
 public class BusinessLogic {
 
     //-----------------------------------------[ VARIABLES ]------------------------------------------
