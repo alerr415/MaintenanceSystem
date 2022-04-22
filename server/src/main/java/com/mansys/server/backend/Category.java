@@ -132,8 +132,6 @@ public class Category {
     } 
 
     public static class CategoryData {
-
-
         // CURSED
         public static class Period {
             public static final String DAILY = "napi";
