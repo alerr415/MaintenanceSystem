@@ -11,6 +11,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Qualification;
@@ -680,6 +681,50 @@ public class DatabaseManager{
             }
         }   
         return res;
+    }
+
+    public Category.CategoryData[] listCategoryData() {
+        Category.CategoryData[] res;
+        List<Category.CategoryData> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "SELECT * FROM EszkozKategoria";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Category.CategoryData temp = new Category.CategoryData();
+                temp.categoryName = resultSet.getString(1);
+                temp.period = resultSet.getString(2);
+                temp.qualification = resultSet.getInt(2);
+                temp.stepsDescription = resultSet.getString(5);
+                temp.parent = resultSet.getString(6);
+                dataList.add(temp);
+            }
+
+            res = new Category.CategoryData[dataList.size()];
+            res = dataList.toArray(res);
+            System.out.println("[DATABASE]: Listing category attributes");
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new Category.CategoryData[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return res;       
     }
 
 }

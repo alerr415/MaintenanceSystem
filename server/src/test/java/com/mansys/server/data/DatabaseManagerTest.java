@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
 
+import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Worker;
@@ -112,9 +113,21 @@ class DatabaseManagerTest {
     @Test
     void callListTimerTask() {
         TimerTask.TimerTaskData[] timerTasks = DatabaseManager.getInstance().listTimerTasks();
+        assertNotNull(timerTasks);
         for (TimerTask.TimerTaskData data : timerTasks) {
             System.out.println("Timer Task (" + data.categoryName + "," + data.referenceDate.toString() + ")");
         }
-        assertNotNull(timerTasks);
+    }
+
+    @Test
+    void callListCategoryData() {
+        Category.CategoryData[] categoryData = DatabaseManager.getInstance().listCategoryData();
+        assertNotNull(categoryData);
+        for (Category.CategoryData data : categoryData) {
+            System.out.println("Category (" + data.categoryName + ", " 
+                                            + data.period + ", " 
+                                            + data.qualification + ","
+                                            + data.parent + ")");
+        }
     }
 }
