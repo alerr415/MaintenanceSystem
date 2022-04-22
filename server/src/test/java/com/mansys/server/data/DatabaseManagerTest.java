@@ -126,7 +126,7 @@ class DatabaseManagerTest {
         for (Category.CategoryData data : categoryData) {
             System.out.println("Category (" + data.categoryName + ", " 
                                             + data.period + ", " 
-                                            + data.qualification + ","
+                                            + data.normTime + ","
                                             + data.parent + ")");
         }
     }

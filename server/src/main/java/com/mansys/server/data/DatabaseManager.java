@@ -699,7 +699,7 @@ public class DatabaseManager{
                 Category.CategoryData temp = new Category.CategoryData();
                 temp.categoryName = resultSet.getString(1);
                 temp.period = resultSet.getString(2);
-                temp.qualification = resultSet.getInt(2);
+                temp.normTime = resultSet.getTime(4).getHours();
                 temp.stepsDescription = resultSet.getString(5);
                 temp.parent = resultSet.getString(6);
                 dataList.add(temp);
