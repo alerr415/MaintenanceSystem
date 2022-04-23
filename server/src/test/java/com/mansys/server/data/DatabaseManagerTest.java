@@ -84,7 +84,7 @@ class DatabaseManagerTest {
 
     @Test
     void callAddQualification() {
-        int ok = DatabaseManager.getInstance().addQualication("szexuális segédmunkás");
+        int ok = DatabaseManager.getInstance().addQualication("Szexuális segédeszköz síkosító szakember");
         assertEquals(ok,0);
     }
 

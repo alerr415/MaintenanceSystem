@@ -89,7 +89,7 @@ public class Qualification {
 
     public static class QualificationData
     {
-        private int qualificationID;
+        private String qualificationID;
         private String qualificationName;
 
         public QualificationData(){
@@ -97,7 +97,7 @@ public class Qualification {
         }
 
         public int getQualificationID(){
-            return this.qualificationID;
+            return Integer.parseInt(this.qualificationID);
         }
         
         public String getQualificationName(){
@@ -105,7 +105,7 @@ public class Qualification {
         }
 
         public void setQualificationID(int value){
-            this.qualificationID = value;
+            this.qualificationID = Integer.toString(value);
         }
 
         public void setQualificationName(String value){

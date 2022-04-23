@@ -77,14 +77,14 @@ public class Device {
     }
 
     public static class DeviceData {
-        private int deviceID;
+        private String deviceID;
         private String deviceName;
         private String deviceCategoryName;
         private String deviceDescription;
         private String deviceLocation;
 
         public int getDeviceID(){
-            return this.deviceID;
+            return Integer.parseInt(this.deviceID);
         }
 
         public String getDeviceName(){
@@ -104,7 +104,7 @@ public class Device {
         }
         
         public void setDeviceID(int value){
-            this.deviceID = value;
+            this.deviceID = Integer.toString(value);
         }
 
         public void setDeviceName(String value){
