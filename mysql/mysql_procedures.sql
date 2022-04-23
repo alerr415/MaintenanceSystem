@@ -7,6 +7,7 @@ DELIMITER //
 CREATE PROCEDURE Bejelentkezes (IN username VARCHAR(50), 
 								IN pass VARCHAR(20), 
                                 OUT qualification VARCHAR(50),
+								OUT maint_specialist_id INT,
                                 OUT resultcode INT)
 BEGIN
     DECLARE van INT;
@@ -18,6 +19,11 @@ BEGIN
 		SELECT Szerepkor INTO qualification
 			FROM Felhasznalo
 			WHERE Felhasznalonev = username AND Jelszo = pass;
+		SELECT Karbantarto_ID INTO maint_specialist_id
+			FROM Karbantarto
+			WHERE Felhasznalo_ID = (SELECT Felhasznalo_ID
+									FROM Felhasznalo
+									WHERE Felhasznalonev = username AND Jelszo = pass);
 		SET resultcode = 0;
     ELSEIF van != 1 THEN
 		-- Nincs olyan felhasznalo
@@ -28,14 +34,10 @@ DELIMITER ;
 
 -- Testing log in procedure
 -- SELECT * FROM Felhasznalo;
--- CALL Bejelentkezes('marika', 'marika321', @qualification, @resultcode);
--- SELECT @qualification AS Szerepkor, @resultcode AS Resultcode;
--- CALL Bejelentkezes('ferike', 'ferike321', @qualification, @resultcode);
--- SELECT @qualification AS Szerepkor, @resultcode AS Resultcode;
--- CALL Bejelentkezes('kovacs', 'kovacs321', @qualification, @resultcode);
--- SELECT @qualification AS Szerepkor, @resultcode AS Resultcode;
--- CALL Bejelentkezes('valami', 'valami321', @qualification, @resultcode);
--- SELECT @qualification AS Szerepkor, @resultcode AS Resultcode;
+-- CALL Bejelentkezes('gonzalez', 'gonzalez321', @qualification, @maint_specialist_id, @resultcode);
+-- SELECT @qualification AS Szerepkor, @maint_specialist_id AS Karbantarto_ID, @resultcode AS Resultcode;
+-- CALL Bejelentkezes('lusta', 'lusta321', @qualification, @maint_specialist_id, @resultcode);
+-- SELECT @qualification AS Szerepkor, @maint_specialist_id AS Karbantarto_ID, @resultcode AS Resultcode;
 
 -- ---------------------------------------------
 -- Add device procedure
@@ -133,7 +135,7 @@ DELIMITER //
 
 CREATE PROCEDURE Kategoriak_listazasa()
 BEGIN
-	SELECT Eszkoz_kategoria_neve
+	SELECT *
 		FROM EszkozKategoria;
 END//
 DELIMITER ;
@@ -214,9 +216,18 @@ DELIMITER //
 CREATE PROCEDURE Karbantarto_hozzaadasa(IN last_name VARCHAR(50),
 										IN first_name VARCHAR(50),
 										IN qualification INT,
-										IN userid INT,
+										IN username VARCHAR(50),
+										IN password VARCHAR(20),
 										OUT resultcode INT)
 BEGIN
+	DECLARE userid INT;
+	INSERT
+		INTO Felhasznalo (Felhasznalonev, Jelszo, Szerepkor)
+		VALUES (username, password, 'karbantarto');
+
+	SELECT MAX(Felhasznalo_ID) INTO userid
+		FROM Felhasznalo;
+
 	INSERT
 		INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID, Felhasznalo_ID)
 		VALUES (last_name, first_name, qualification, userid);
@@ -226,7 +237,7 @@ DELIMITER ;
 
 -- Testing add maintenance specialist procedure
 -- SELECT * FROM Karbantarto;
--- CALL Karbantarto_hozzaadasa('Lipot', 'Szilveszter', 'autoszerelo', @resultcode);
+-- CALL Karbantarto_hozzaadasa('Kovacs', 'Mate', '2', 'mate', 'mate321', @resultcode);
 -- SELECT @resultcode AS Resultcode;
 
 -- ----------------------------------------
@@ -323,8 +334,8 @@ DELIMITER //
 
 CREATE PROCEDURE Feladatok_listazasa()
 BEGIN
-	SELECT *, Elhelyezkedes
-		FROM Feladat JOIN Eszkoz USING (Eszkoz_ID);
+	SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto
+		FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) JOIN Karbantarto AS k USING (Karbantarto_ID);
 END//
 DELIMITER ;
 

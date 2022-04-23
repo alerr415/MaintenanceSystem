@@ -35,6 +35,10 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Karbantarto (
   FOREIGN KEY (Kepesites_ID) 
     REFERENCES MaintenanceSystem2.Kepesites (Kepesites_ID)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (Felhasznalo_ID) 
+    REFERENCES MaintenanceSystem2.Felhasznalo (Felhasznalo_ID)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
 -- ----------------------------------------------------------------------------
@@ -128,14 +132,6 @@ INSERT
            ('gazvezetektechnikus'),
            ('vizvezetekszerelo');
 
-INSERT
-    INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID, Felhasznalo_ID)
-    VALUES ('Gonzalez', 'Laszlo', 1, 1),
-           ('Kovacs', 'Pista', 2, 2),
-           ('Lakatos', 'Brendon', 3, 3),
-           ('Lusta', 'Aranka', 4, 4),
-           ('Felipe', 'Quinto', 5, 5);
-
 INSERT 
 	INTO Felhasznalo (Felhasznalonev, Jelszo, Szerepkor)
     VALUES ('marika', 'marika321', 'operator'),
@@ -145,6 +141,14 @@ INSERT
            ('lakatos', 'lakatos321', 'karbantarto'),
            ('lusta', 'lusta321', 'karbantarto'),
            ('felipe', 'felipe321', 'karbantarto');
+
+INSERT
+    INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID, Felhasznalo_ID)
+    VALUES ('Gonzalez', 'Laszlo', 1, 3),
+           ('Kovacs', 'Pista', 2, 4),
+           ('Lakatos', 'Brendon', 3, 5),
+           ('Lusta', 'Aranka', 4, 6),
+           ('Felipe', 'Quinto', 5, 7);
 
 INSERT 
     INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_ID, Periodus, Norma_ido, Eloiras, Szulo)
