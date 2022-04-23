@@ -382,7 +382,7 @@ public class DatabaseManager{
         int resCode;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            String call = "{CALL Karbantarto_hozzaadasa(?,?,?,?)}";
+            String call = "{CALL Karbantarto_hozzaadasa(?,?,?,?,?,?)}";
 
             CallableStatement callableStatement = connection.prepareCall(call);
             callableStatement.setString("last_name", lastName); // INCOMPLETE PROCEDURE
