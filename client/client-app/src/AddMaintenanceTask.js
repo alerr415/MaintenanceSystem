@@ -204,7 +204,7 @@ return (
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/* normaidő */}
-                <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} id="normTime" label="Normaidő" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
+                <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} id="normTime" label="Normaidő (óra)" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
               </Grid>
 
 

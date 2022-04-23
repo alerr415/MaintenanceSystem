@@ -110,6 +110,12 @@ function Menu(props) {
     <div>
       <Toolbar />
 
+        <List>
+          <ListItemButton component={Link} to="/app/listWorkerTasks">
+            <ListItemIcon><BuildIcon /></ListItemIcon>
+            <ListItemText>Saját feladataim</ListItemText>
+          </ListItemButton>
+        </List>
 
       <Divider />
 

@@ -13,6 +13,9 @@ import ListOperatorTask from './ListOperatorTask.js';
 import AddMaintenanceWorker from './AddMaintenanceWorker.js';
 import ListMaintenanceWorker from './ListMaintenanceWorker.js';
 
+import ListWorkerTask from './ListWorkerTask.js';
+
+
 
 import Welcome from './Welcome.js';
 
@@ -36,10 +39,14 @@ function App() {
                 <Route path="newDevice" element={<AddDeviceScreen />} />
                 <Route path="newCategory" element={<AddCategoryScreen />} />
                 <Route path="categories" element={<ListCategoryScreen />} />
+
                 <Route path="newTask" element={<AddMaintenanceTask />} />
                 <Route path="listOpTasks" element={<ListOperatorTask />} />
                 <Route path="newWorker" element={<AddMaintenanceWorker />} />
                 <Route path="listWorkers" element={<ListMaintenanceWorker />} />
+
+                <Route path="listWorkerTasks" element={<ListWorkerTask />} />
+
 
             </Route>
             </Routes>

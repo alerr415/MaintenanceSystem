@@ -18,21 +18,27 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { red, blue, teal, amber, lime, grey } from '@mui/material/colors';
 
-
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
-function ListOperatorTask(props) {
+function ListWorkerTask(props) {
 
   const { window } = props;
 
   const {user, setUser} = useContext(UserContext);
-  //const [cookies, setCookie] = useCookies();
+  const [selfID, setSelfID] = useState(1);
 
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
@@ -104,6 +110,25 @@ function ListOperatorTask(props) {
     });
   };
 
+  const [declineDialogOpen, setDeclineDialogOpen] =  React.useState(false);
+
+  const openDeclineReassure = () => {
+    setDeclineDialogOpen(true);
+  }
+
+  const handleDeclineDialogClose = () => {
+    setDeclineDialogOpen(false);
+  }
+
+  const cancelDecline = () => {
+    // TODO
+    setDeclineDialogOpen(false);
+  }
+
+  const reassureDecline = () => {
+    // TODO
+    setDeclineDialogOpen(false);
+  }
 
   function getTaskColor(state) {
     if (state === 0 ) {
@@ -160,6 +185,10 @@ function ListOperatorTask(props) {
     }
   }
 
+  function ownTask(task) {
+    return (task.workerID === selfID);
+  }
+
   function resolveWorkerNames(id) {
     //let currentWorker = workerList.find((worker) => {return worker.id == id});
     //if (currentWorker !== undefined) {
@@ -183,10 +212,10 @@ return(
       <Grid item xs={12} sm={12} lg={10}>
         <Card sx={{ mt: { xs : 0 , lg : 4 } }}>
           <CardContent>
-            <Typography variant="h5">Karbantartási feladatok</Typography>
+            <Typography variant="h5">Saját feladataim</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {taskList.map((task, index) => (
+            {taskList.filter(ownTask).map((task, index) => (
             <Accordion key={index} sx={ getTaskColor(task.state) } >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
@@ -198,8 +227,6 @@ return(
                   <Grid item xs={12} sm={12} md={3} lg={3}>
                     <p><Typography sx={{ fontWeight: "bold" }}>Érintett eszköz:</Typography> {task.deviceName} (#{task.deviceID})</p>
                     <p><Typography sx={{ fontWeight: "bold" }}>Helyszín:</Typography> {task.deviceLocation}</p>
-                    <p><Typography sx={{ fontWeight: "bold" }}>Karbantartó:</Typography> {resolveWorkerNames(task.workerID)}</p>
-
                   </Grid>
 
                   <Grid item xs={12} sm={12} md={7} lg={7}>
@@ -208,9 +235,58 @@ return(
                     <p><Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {resolveStateNames(task.state)}</p>
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={2} lg={2}>
-                    <Button size="large" variant="contained" color="success" fullWidth>Ütemez</Button>
-                  </Grid>
+                  {task.state === 1 &&
+                    // ha ütemezett állapotban van
+                    <Grid item xs={12} sm={12} md={2} lg={2}>
+                      <Button size="large" variant="contained" color="success" fullWidth>Elfogad</Button>
+                      <Button size="large" variant="outlined" color="error" onClick={openDeclineReassure} fullWidth>Elutasít</Button>
+                    </Grid>
+                  }
+
+                  <Dialog open={declineDialogOpen} onClose={handleDeclineDialogClose}>
+                    <DialogTitle>Elutasítás</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        Ha valóban el kívánja utasítani a feladatot, adja meg az elutasítás indoklását!
+                      </DialogContentText>
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        id="reason"
+                        label="Indok"
+                        type="text"
+                        required
+                        fullWidth
+                        variant="standard"
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={cancelDecline}>Mégsem</Button>
+                      <Button onClick={reassureDecline}>Elutasítás</Button>
+                    </DialogActions>
+                  </Dialog>
+
+
+                  {task.state === 2 &&
+                    // ha elfogadott állapotban van
+                    <Grid item xs={12} sm={12} md={2} lg={2}>
+                      <Button size="large" variant="contained" color="success" fullWidth>Kezdés</Button>
+                    </Grid>
+                  }
+
+
+                  {task.state === 4 &&
+                    // ha megkezdett állapotban van
+                    <>
+                      <Grid item xs={12} sm={12} md={2} lg={2}>
+                        <Button size="large" variant="contained" color="success" fullWidth>Befejezés</Button>
+                      </Grid>
+
+                      <Grid item xs={12} sm={12} md={12} lg={12}>
+                        <p><Typography sx={{ fontWeight: "bold" }}>Előírás:</Typography> {task.specification} </p>
+                      </Grid>
+                    </>
+                  }
 
                 </Grid>
 
@@ -250,13 +326,9 @@ return(
       </Alert>
     </Snackbar>
 
-    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }} component={Link} to="/app/newTask">
-      <AddIcon />
-    </Fab>
-
   </Box>
 );
 
 }
 
-export default ListOperatorTask;
+export default ListWorkerTask;
