@@ -16,6 +16,7 @@ import static com.mansys.server.backend.Category.CategoryData.Period;
  * This class is used for handle the timer tasks, periods..
  * 
  * @author Tálas Martin
+ * @author Tóth Bálint
  */
 public class BusinessLogic {
 
@@ -148,8 +149,7 @@ public class BusinessLogic {
     private boolean search(CategoryData data,TimerTaskData[] list) {
 
         for (TimerTaskData timerTaskData : list) {
-            if (data.categoryName.equals(timerTaskData.categoryName))
-            {
+            if (data.categoryName.equals(timerTaskData.categoryName)) {
                 return true;
             }
         }
