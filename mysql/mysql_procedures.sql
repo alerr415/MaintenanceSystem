@@ -88,7 +88,6 @@ CREATE PROCEDURE EszkozKategoria_hozzaadasa(IN device_category_name VARCHAR(50),
 BEGIN
 	DECLARE check_esz_kat_nev INT;
     DECLARE parent_period VARCHAR(50);
-	DECLARE qualif_ID INT;
 
     SELECT COUNT(*) INTO check_esz_kat_nev
 		FROM EszkozKategoria
@@ -99,22 +98,18 @@ BEGIN
         SET resultcode = 400;
 	ELSE
 		-- Nem volt olyan kategoria
-		SELECT Kepesites_ID INTO qualif_ID
-			FROM Kepesites
-			WHERE Kepesites_neve = qualification;
-
         IF period IS NULL THEN
 			SELECT Periodus INTO parent_period
 				FROM EszkozKategoria
                 WHERE Szulo = parent;
 			INSERT
 				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_ID, Periodus, Norma_ido, Eloiras, Szulo)
-				VALUES (device_category_name, qualif_ID, parent_period, SEC_TO_TIME(norm_time * 3600), steps_descrip, parent);
+				VALUES (device_category_name, qualification, parent_period, SEC_TO_TIME(norm_time * 3600), steps_descrip, parent);
 			SET resultcode = 0;
 		ELSE
 			INSERT
 				INTO EszkozKategoria (Eszkoz_kategoria_neve, Kepesites_ID, Periodus, Norma_ido, Eloiras, Szulo)
-				VALUES (device_category_name, qualif_ID, period, SEC_TO_TIME(norm_time * 3600), steps_descrip, parent);
+				VALUES (device_category_name, qualification, period, SEC_TO_TIME(norm_time * 3600), steps_descrip, parent);
 			SET resultcode = 0;
         END IF;
     END IF;
