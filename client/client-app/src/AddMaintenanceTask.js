@@ -58,11 +58,17 @@ function AddMaintenanceTask(props) {
     let specification = document.getElementById("taskDescription").value;
     let normTime = document.getElementById("normTime").value;
 
+    console.log("ADDTASK_PARAMS");
+    console.log("deviceID: " + deviceID + " of type " + typeof deviceID);
+    console.log("taskName: " + taskName + " of type " + typeof taskName);
+    console.log("specification: " + specification + " of type " + typeof specification);
+    console.log("normTime: " + normTime + " of type " + typeof normTime);
+
     if (taskName !== "" && deviceID!== "" && specification !== "") {
-      let toSend  = {"deviceID" : deviceID,
-                     "taskName" : taskName,
-                     "specification" : specification,
-                     "normTime" : normTime
+      let toSend  = {"deviceID" : deviceID.toString() ,
+                     "taskName" : taskName ,
+                     "specification" : specification ,
+                     "normTime" : normTime.toString()
                    }
 
       console.log(toSend);

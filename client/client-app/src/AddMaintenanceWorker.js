@@ -77,10 +77,17 @@ function AddMaintenanceWorker(props) {
       qualificationID = qualSelectValue;
     }
 
+    console.log("ADDWORKER_PARAMS");
+    console.log("lastName: " + lastName + " of type " + typeof lastName);
+    console.log("firstName: " + firstName + " of type " + typeof firstName);
+    console.log("qualificationID: " + qualificationID + " of type " + typeof qualificationID);
+
+
     if (lastName !== "" && firstName !== "" && qualificationID !== "") {
-      let toSend  = {"lastName" : lastName,
-                     "firstName" : firstName,
-                     "qualificationID" : qualificationID,}
+      let toSend  = {"lastName" : lastName ,
+                     "firstName" : firstName ,
+                     "qualificationID" : qualificationID.toString()
+                   }
 
       console.log(toSend);
 
