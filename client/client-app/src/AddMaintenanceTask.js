@@ -46,9 +46,9 @@ function AddMaintenanceTask(props) {
   function clearForm() {
     // TODO
     document.getElementById("taskName").value = "";
-    setDeviceID(undefined);
-    document.getElementById('categoryAddingCell').value = "";
-    document.getElementById("deviceDescription").value = "";
+    setDeviceID('');
+    document.getElementById('taskDescription').value = "";
+    document.getElementById("normTime").value = "";
 
   };
 
