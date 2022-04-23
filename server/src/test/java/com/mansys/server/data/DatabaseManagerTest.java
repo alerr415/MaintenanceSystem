@@ -4,10 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.sql.Date;
+
+import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Worker;
 import com.mansys.server.backend.Qualification;
+import com.mansys.server.backend.TimerTask;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -98,5 +102,37 @@ class DatabaseManagerTest {
     void callListMaintenance() {
         Maintenance.MaintenanceData[] maintenances = DatabaseManager.getInstance().listMaintenance();
         assertNotNull(maintenances);
+    }
+
+
+    @Test
+    void callAddTimerTask() {
+        DatabaseManager.getInstance().addTimerTask("lampak",new Date(System.currentTimeMillis()));
+    }
+
+    @Test
+    void callListTimerTask() {
+        TimerTask.TimerTaskData[] timerTasks = DatabaseManager.getInstance().listTimerTasks();
+        assertNotNull(timerTasks);
+        for (TimerTask.TimerTaskData data : timerTasks) {
+            System.out.println("Timer Task (" + data.categoryName + "," + data.referenceDate.toString() + ")");
+        }
+    }
+
+    @Test
+    void callListCategoryData() {
+        Category.CategoryData[] categoryData = DatabaseManager.getInstance().listCategoryData();
+        assertNotNull(categoryData);
+        for (Category.CategoryData data : categoryData) {
+            System.out.println("Category (" + data.categoryName + ", " 
+                                            + data.period + ", " 
+                                            + data.normTime + ","
+                                            + data.parent + ")");
+        }
+    }
+
+    @Test
+    void callSetReferenceDate() {
+        DatabaseManager.getInstance().setReferenceDate(1, new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 10)));
     }
 }

@@ -130,4 +130,22 @@ public class Category {
             this.resultCode = value;
         }
     } 
+
+    public static class CategoryData {
+        // CURSED
+        public static class Period {
+            public static final String DAILY = "napi";
+            public static final String WEEKLY = "heti";
+            public static final String MONTHLY = "havi";
+            public static final String QUARTER_YEARLY = "negyedeves";
+            public static final String HALF_YEARLY = "feleves";
+            public static final String YEARLY = "eves";
+        }
+
+        public String categoryName; // ID
+        public String period;       // extremely delicate variable
+        public String stepsDescription; // a.k.a. ur Stepsis
+        public int normTime;
+        public String parent;
+    }
 }

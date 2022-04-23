@@ -1,6 +1,7 @@
 package com.mansys.server.data;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,9 +11,11 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Qualification;
+import com.mansys.server.backend.TimerTask;
 import com.mansys.server.backend.Worker;
 
 import javafx.util.Pair;
@@ -65,7 +68,6 @@ public class DatabaseManager{
             System.err.println("[ERROR]: Failed to load driver class: " + ex + "\nStack trace: ");
             ex.printStackTrace();
         }
-        System.out.println("end of static block");
     }
 
     //------------------------------------------------------------------------------------------------
@@ -603,4 +605,158 @@ public class DatabaseManager{
         return res;
         
     }
+
+    public void addTimerTask(String categoryName, Date referenceDate) {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "{CALL Idoszakos_feladat_hozzaadasa(?,?,?,?,?,?,?,?,?)}";
+
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setString("device_category_name",categoryName);
+            callableStatement.setDate("ref_date",referenceDate);
+            callableStatement.setString("task_name",null);
+            callableStatement.setInt("status",0);
+            callableStatement.setInt("maint_specialist_ID",1);
+            callableStatement.setString("task_start",null);
+            callableStatement.setString("task_end",null);
+            callableStatement.setString("norm_time",null);
+            callableStatement.setString("steps_descrip",null);
+
+            callableStatement.execute();
+            System.out.println("[DATABASE]: Called Idoszakos_feladat_hozzaadasa category name:" + categoryName + " referenceDate: " + referenceDate.toString());
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function addTimerTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addWorker when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+    }
+
+    public TimerTask.TimerTaskData[] listTimerTasks() {
+        TimerTask.TimerTaskData[] res;
+        List<TimerTask.TimerTaskData> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "{CALL Idoszakos_feladat_listazasa()}";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                TimerTask.TimerTaskData temp = new TimerTask.TimerTaskData();
+                temp.id = resultSet.getInt(1);
+                temp.categoryName = resultSet.getString(2);
+                temp.referenceDate = resultSet.getDate(10);
+                dataList.add(temp);
+            }
+
+            res = new TimerTask.TimerTaskData[dataList.size()];
+            res = dataList.toArray(res);
+            System.out.println("[DATABASE]: Called Feladatok_listazasa");
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new TimerTask.TimerTaskData[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return res;
+    }
+
+    public Category.CategoryData[] listCategoryData() {
+        Category.CategoryData[] res;
+        List<Category.CategoryData> dataList = new ArrayList<>(); 
+
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "SELECT * FROM EszkozKategoria";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            ResultSet resultSet = callableStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Category.CategoryData temp = new Category.CategoryData();
+                temp.categoryName = resultSet.getString(1);
+                temp.period = resultSet.getString(2);
+                temp.normTime = resultSet.getTime(4).getHours();
+                temp.stepsDescription = resultSet.getString(5);
+                temp.parent = resultSet.getString(6);
+                dataList.add(temp);
+            }
+
+            res = new Category.CategoryData[dataList.size()];
+            res = dataList.toArray(res);
+            System.out.println("[DATABASE]: Listing category attributes");
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+            res = new Category.CategoryData[0];
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return res;       
+    }
+
+    public void setReferenceDate(int taskId, Date updatedReference) {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            
+            String call = "UPDATE IdoszakosFeladat SET Referencia_datum=? WHERE IdoszakosFeladat_ID = ?";
+            CallableStatement callableStatement = connection.prepareCall(call);
+
+            callableStatement.setInt(2,taskId);
+            callableStatement.setDate(1,updatedReference);
+
+            callableStatement.execute();
+
+            System.out.println("[DATABASE]: Called Feladatok_listazasa");
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+    }
+
 }
