@@ -36,7 +36,7 @@ function Menu(props) {
                     <ListItemIcon><AddIcon /></ListItemIcon>
                     <ListItemText>Eszköz hozzáadása</ListItemText>
                   </ListItemButton>
-                  <ListItemButton>
+                  <ListItemButton component={Link} to="/app/listDevices">
                     <ListItemIcon><FormatListBulletedIcon /></ListItemIcon>
                     <ListItemText>Eszközök megjelenítése</ListItemText>
                   </ListItemButton>

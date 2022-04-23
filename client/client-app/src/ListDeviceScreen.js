@@ -7,21 +7,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
 import { UserContext } from "./User.js";
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-import { useCookies } from "react-cookie";
+//import { useCookies } from "react-cookie";
+import { Link } from 'react-router-dom';
+
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -36,22 +30,36 @@ function ListDeviceScreen(props) {
   const { window } = props;
 
   const {user, setUser} = useContext(UserContext);
-  const [cookies, setCookie] = useCookies();
+  //const [cookies, setCookie] = useCookies();
 
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const [deviceList, setDeviceList] = React.useState();
+  const [deviceList, setDeviceList] = React.useState(["d"]);
+  const [deviceListFetched, setDeviceListFetched] =  React.useState(false);
 
-  useEffect(() => {
-    fetch(serveraddress + '/category')
+  function fetchDeviceList() {
+    fetch(serveraddress + '/device')
     .then(response => response.json())
     .then(data => {
 
       console.log('Success:', data);
 
-      //setDeviceList(data);
+      if (data.errorCode === 0) {
+        console.log("Sikeres lekérdezés :D");
+        console.log(data.data);
+        setDeviceList(data.data);
+        setDeviceListFetched(true);
+
+      } else {
+        console.log("Sikertelen lekérdezés! :(");
+        console.log(data.errorMessage);
+        setFeedbackText("Az eszközök lekérdezése sikertelen. " + data.errorMessage);
+        hitError(true);
+      }
+
+      setDeviceListFetched(true);
 
     })
     .catch((error) => {
@@ -59,8 +67,11 @@ function ListDeviceScreen(props) {
       setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
       hitError(true);
     });
+  };
 
-  } , []);
+  useEffect(() => {
+    if (!deviceListFetched) fetchDeviceList();
+  });
 
 return(
   <Box
@@ -80,17 +91,29 @@ return(
             <Typography variant="h5">Eszközök</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {['T','ű','z','j','e','l','z','ő', 'P','o','r','o','l','t','ó', 'K','i','l','i','n','c','s', 'P','i','l','á','c','s'].map((text, index) => (
+            {deviceList.map((device, index) => (
             <Accordion key={index}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{text}</Typography>
+              <Typography>{device.deviceName}</Typography>
               </AccordionSummary>
 
               <AccordionDetails>
                 <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                  malesuada lacus ex, sit amet blandit leo lobortis eget.
+                  ID: {device.deviceID}
                 </Typography>
+
+                <Typography>
+                  Kategória: {device.deviceCategoryName}
+                </Typography>
+
+                <Typography>
+                  Eszköz leírása: {device.deviceDescription}
+                </Typography>
+
+                <Typography>
+                  Helyszín: {device.deviceLocation}
+                </Typography>
+
               </AccordionDetails>
             </Accordion>))}
 
@@ -127,7 +150,7 @@ return(
       </Alert>
     </Snackbar>
 
-    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }}>
+    <Fab color="primary" sx={{ position : 'fixed' , right : 16 , bottom : 16 }} component={Link} to="/app/newDevice">
       <AddIcon />
     </Fab>
 

@@ -37,6 +37,7 @@ function App() {
               <Route path="/app" element={<Layout />}>
                 <Route path="welcome" element={<Welcome />} />
                 <Route path="newDevice" element={<AddDeviceScreen />} />
+                <Route path="listDevices" element={<ListDeviceScreen />} />  
                 <Route path="newCategory" element={<AddCategoryScreen />} />
                 <Route path="categories" element={<ListCategoryScreen />} />
 
