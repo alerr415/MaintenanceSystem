@@ -377,7 +377,7 @@ public class DatabaseManager{
     }
 
 
-    public int addWorker(String lastName, String firstName, int qualificationID) {
+    public int addWorker(String lastName, String firstName, int qualificationID, String username, String password) {
 
         int resCode;
         try {
@@ -388,6 +388,8 @@ public class DatabaseManager{
             callableStatement.setString("last_name", lastName); // INCOMPLETE PROCEDURE
             callableStatement.setString("first_name", firstName); // INCOMPLETE PROCEDURE
             callableStatement.setInt("qualification", qualificationID); // INCOMPLETE PROCEDURE
+            callableStatement.setString("username", username);
+            callableStatement.setString("password", password);
 
             callableStatement.registerOutParameter("resultcode", java.sql.Types.INTEGER);
 
@@ -698,7 +700,7 @@ public class DatabaseManager{
             while (resultSet.next()) {
                 Category.CategoryData temp = new Category.CategoryData();
                 temp.categoryName = resultSet.getString(1);
-                temp.period = resultSet.getString(2);
+                temp.period = resultSet.getString(3);
                 temp.normTime = resultSet.getTime(4).getHours();
                 temp.stepsDescription = resultSet.getString(5);
                 temp.parent = resultSet.getString(6);
@@ -740,7 +742,7 @@ public class DatabaseManager{
 
             callableStatement.execute();
 
-            System.out.println("[DATABASE]: Called Feladatok_listazasa");
+            System.out.println("[DATABASE]: Setting reference date of " + taskId + " to:  " + updatedReference.toString());
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");

@@ -84,11 +84,14 @@ for more consistent database.
 The qualification ids can 
 be queried with the GET /qualification resource and 
 from that point the data can be cached.
+CHANGE 2: it now requires a username and password
 
 ### Request
 - String lastName
 - String firstName
-- int qualificationID
+- String qualificationID
+- String username
+- String password
 
 ### Response
 - String errorMessage
