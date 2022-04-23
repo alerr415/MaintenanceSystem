@@ -227,7 +227,7 @@ public class Server implements ServerInterface {
 
     @Override
     public Category.Response handleCategory(Category.Request req) {
-   
+        
         if(req.getParent().equals(""))
         {
             req.setParent(null);
@@ -305,6 +305,7 @@ public class Server implements ServerInterface {
 
     @Override
     public Qualification.Response handleQualification(Qualification.Request req) {
+
         System.out.println("[SERVER]: Handle category request: QualificationName: " + req.getQualificationName());
 
         // get the device data from the database
