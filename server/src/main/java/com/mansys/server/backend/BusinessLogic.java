@@ -63,6 +63,7 @@ public class BusinessLogic {
                 taskData = new TimerTaskData();
                 taskData.categoryName = categoryData.categoryName;
                 taskData.referenceDate = new Date(System.currentTimeMillis());
+                databaseManager.addTimerTask(taskData.categoryName,taskData.referenceDate);
             }
         }
     }
@@ -88,7 +89,7 @@ public class BusinessLogic {
                 List<DeviceData> devices = devicesOfCategory(category);      
                 for (DeviceData device : devices) {
                     databaseManager.addMaintenance(device.getDeviceID()
-                                                 , "Automatikusan generált a " + category.categoryName + " kategória alapján"
+                                                 , "Automatikusan generált"
                                                  , category.stepsDescription
                                                  , String.valueOf(category.normTime)
                     );
