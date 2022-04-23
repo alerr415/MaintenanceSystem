@@ -14,6 +14,7 @@ Used for login authentication of the users. The username and password should be 
 
 ### Response
 - String role  
+- String workerID
 - String errorMessage  
 - int errorCode  
 
