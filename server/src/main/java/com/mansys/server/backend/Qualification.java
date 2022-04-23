@@ -8,26 +8,16 @@ package com.mansys.server.backend;
 
 public class Qualification {
     
-    @Deprecated
     public static class Request {
 
-        private int qualificationID;
         private String qualificationName;
 
         public Request(){
                      
         }
 
-        public int getQualificationID(){
-            return this.qualificationID;
-        }
-
         public String getQualificationName(){
             return this.qualificationName;
-        }
-
-        public void setQualificationID(int value){
-            this.qualificationID = value;
         }
 
         public void setQualificationName(String value){
@@ -35,7 +25,6 @@ public class Qualification {
         }
     }
     
-    @Deprecated
     public static class Response {
 
         private String errorMessage;
@@ -67,13 +56,13 @@ public class Qualification {
 
         private int resultCode;
         private String resultMessage;
-        private String[] qualificationList;
+        private Qualification.QualificationData[] qualificationList;
 
         public GetResponse(){
 
         }
 
-        public String[] getQualificationList(){
+        public Qualification.QualificationData[] getQualificationList(){
             return this.qualificationList;
         }
 
@@ -85,7 +74,7 @@ public class Qualification {
             return this.resultCode;
         }
 
-        public void setQualificationList(String[] value){
+        public void setQualificationList(Qualification.QualificationData[] value){
             this.qualificationList = value;
         }
 
@@ -95,6 +84,32 @@ public class Qualification {
 
         public void setResultCode(int value){
             this.resultCode = value;
+        }
+    }
+
+    public static class QualificationData
+    {
+        private String qualificationID;
+        private String qualificationName;
+
+        public QualificationData(){
+
+        }
+
+        public int getQualificationID(){
+            return Integer.parseInt(this.qualificationID);
+        }
+        
+        public String getQualificationName(){
+            return this.qualificationName;
+        }
+
+        public void setQualificationID(int value){
+            this.qualificationID = Integer.toString(value);
+        }
+
+        public void setQualificationName(String value){
+            this.qualificationName = value;
         }
     }
 

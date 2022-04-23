@@ -3,9 +3,10 @@ package com.mansys.server;
 import com.mansys.server.backend.Authenticate;
 import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
+import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Qualification;
 import com.mansys.server.backend.Server;
-import com.mansys.server.data.DatabaseManager;
+import com.mansys.server.backend.Worker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,10 +32,6 @@ public class ServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
-		
-		//LIST QUALIFICATION DEBUG
-		//DatabaseManager dbm = DatabaseManager.getInstance();
-		//dbm.listQualification();
 	}
 
 	@GetMapping("/hello")
@@ -71,7 +68,7 @@ public class ServerApplication {
 		// check if the session is valid -> we can handle the request
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / Device] Invalid session: " + sessId);
-			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
 			//TODO: implement response for invalid sessions
 		}
 
@@ -90,7 +87,7 @@ public class ServerApplication {
 									   , @CookieValue(name="session-id",defaultValue="0") String sessId) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
-			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
 		}
 
 		Category.Response response = Server.getInstance().handleCategory(request);
@@ -103,12 +100,11 @@ public class ServerApplication {
 		}
 	}
 
-	@Deprecated
 	@PostMapping("/qualification")
 	public ResponseEntity<?> addQualification(@RequestBody Qualification.Request request
 											, @CookieValue(name="session-id",defaultValue="0") String sessId) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
-			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
 		}
 
 		Qualification.Response response = Server.getInstance().handleQualification(request);
@@ -126,7 +122,7 @@ public class ServerApplication {
 	public ResponseEntity<?> getCategories(@CookieValue(name="session-id",defaultValue="0") String sessId) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
-			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
 		}
 
 		Category.GetResponse response = Server.getInstance().handleCategoryList();
@@ -143,7 +139,7 @@ public class ServerApplication {
 	public ResponseEntity<?> getQualifications(@CookieValue(name="session-id",defaultValue="0") String sessId) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / QUALIFICATIONS] Invalid session: " + sessId);
-			//return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
+			return ResponseEntity.badRequest().build(); // TEMPORARY, some general invalid session is needed
 		}
 
 		Qualification.GetResponse response = Server.getInstance().handleQualificationList();
@@ -156,4 +152,90 @@ public class ServerApplication {
 		}
 	}
 
+	@PostMapping("/worker")
+	public ResponseEntity<?> addWorker(@RequestBody Worker.Request request,
+									   @CookieValue(name="session-id", defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Worker.Response response = Server.getInstance().handleWorker(request);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@GetMapping("/worker")
+	public ResponseEntity<?> getWorkers(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Worker.GetResponse response = Server.getInstance().handleWorkerList();
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@GetMapping("/device")
+	public ResponseEntity<?> getDevice(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Device.GetResponse response = Server.getInstance().handleDeviceList();
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@PostMapping("/maintenance")
+	public ResponseEntity<?> addMaintenance(@RequestBody Maintenance.Request request,
+									        @CookieValue(name="session-id", defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION POST /maintenance] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Maintenance.Response response = Server.getInstance().handleMaintenance(request);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@GetMapping("/maintenance")
+	public ResponseEntity<?> getMaintenance(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION GET /maintenance] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Maintenance.GetResponse response = Server.getInstance().handleMaintenanceList();
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
 }
