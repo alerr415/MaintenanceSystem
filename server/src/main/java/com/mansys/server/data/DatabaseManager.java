@@ -11,6 +11,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mansys.server.backend.Authenticate;
 import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
@@ -132,31 +133,34 @@ public class DatabaseManager{
     }
     //------------------------------------------------------------------------------------------------
 
-    public Pair<Integer,String> authenticateUser(String username, String password) {
+    public Authenticate.Response authenticateUser(String username, String password) {
         
-        Pair<Integer, String> res = new Pair<>(-1,"Internal error");
+        Authenticate.Response res = new Authenticate.Response();
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            String sendProcedure = "{CALL Bejelentkezes(?, ?, ?, ?)}";
+            String sendProcedure = "{CALL Bejelentkezes(?, ?, ?, ?, ?)}";
             CallableStatement callableStatement = connection.prepareCall(sendProcedure);
 
             callableStatement.setString("username",username);
             callableStatement.setString("pass",password);
             callableStatement.registerOutParameter("qualification",java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter("maint_specialist_id",java.sql.Types.INTEGER);
             callableStatement.registerOutParameter("resultcode",java.sql.Types.INTEGER);
 
             callableStatement.execute();
 
             int resCode = callableStatement.getInt("resultcode");
             String role = callableStatement.getString("qualification");
-            System.out.println("[DATABASE]: Called Bejelentkezes, result: " + resCode + ", role: " + role);
-
-            res = new Pair<>(resCode,role);
+            int workerId = callableStatement.getInt("maint_specialist_id");
+            System.out.println("[DATABASE]: Called Bejelentkezes, result: " + resCode + ", role: " + role + " worker: " + workerId);
+            res.setErrorCode(resCode);
+            res.setRole(role);
+            res.setWorkerId(String.valueOf(workerId));
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function TEMPLATE: " + ex + "\nStack trace: ");
             ex.printStackTrace();
-            res = new Pair<>(-1,"Internal error");
+            res = null;
         } 
         finally {
             try {
@@ -167,6 +171,7 @@ public class DatabaseManager{
             catch (SQLException ex) {
                 System.err.println("[ERROR]: Error occured in function TEMPLATE when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
+                res = null;
             }
         }   
 
