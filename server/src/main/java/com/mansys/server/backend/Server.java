@@ -370,7 +370,12 @@ public class Server implements ServerInterface {
         
         int res_code = 0;
         Worker.Response res = new Worker.Response();
-        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualificationID());
+        res_code = DatabaseManager.getInstance().addWorker(
+              req.getLastName()
+            , req.getFirstName()
+            , req.getQualificationID()
+            , req.getUsername()
+            , req.getPassword());
         switch (res_code) {
             case 0: // good
             {

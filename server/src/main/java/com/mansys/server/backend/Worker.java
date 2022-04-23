@@ -5,17 +5,23 @@ public class Worker {
         private String lastName;
         private String firstName;
         private String qualificationID;
+        private String username;
+        private String password;
 
         public String getLastName() {
             return lastName;
         }
-
         public String getFirstName() {
             return firstName;
         }
-
         public int getQualificationID() {
             return Integer.parseInt(qualificationID);
+        }
+        public String getUsername() {
+            return username;
+        }
+        public String getPassword() {
+            return password;
         }
 
         public void setLastName(String value) {
@@ -26,6 +32,12 @@ public class Worker {
         }
         public void setQualificationID(int value) {
             this.qualificationID = Integer.toString(value);
+        }
+        public void setUsername(String value) {
+            this.username = value;
+        }
+        public void setPassword(String value) {
+            this.password = value;
         }
 
     }
