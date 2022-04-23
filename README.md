@@ -30,7 +30,7 @@
 <p>List all attributes of maintenance specialists</p>
 
 ### Karbantarto_hozzaadasa
-<p>IN: last_name VARCHAR(50), first_name VARCHAR(50), qualification INT</p>
+<p>IN: last_name VARCHAR(50), first_name VARCHAR(50), qualification INT, userid INT</p>
 <p>OUT: resultcode INT</p>
 
 ### Eszkozok_listazasa
