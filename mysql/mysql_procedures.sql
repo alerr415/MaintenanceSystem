@@ -219,11 +219,12 @@ DELIMITER //
 CREATE PROCEDURE Karbantarto_hozzaadasa(IN last_name VARCHAR(50),
 										IN first_name VARCHAR(50),
 										IN qualification INT,
+										IN userid INT,
 										OUT resultcode INT)
 BEGIN
 	INSERT
-		INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID)
-		VALUES (last_name, first_name, qualification);
+		INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID, Felhasznalo_ID)
+		VALUES (last_name, first_name, qualification, userid);
 	SET resultcode = 0;
 END//
 DELIMITER ;
@@ -264,18 +265,22 @@ CREATE PROCEDURE Feladat_hozzaadasa(IN device_ID INT,
 BEGIN
 	INSERT
 		INTO Feladat (Eszkoz_ID, 
+					  Eszkoz_neve, 
 					  Nev, 
 					  Allapot, 
-					  Elutasitas_indoklasa,  
+					  Elutasitas_indoklasa, 
+					  Kepesites_neve, 
 					  Karbantarto_ID,
 					  Kezdeti_idopont, 
 					  Befejezesi_idopont, 
 					  Norma_ido, 
 					  Eloiras)
-		VALUES (device_ID,  
+		VALUES (device_ID, 
+				device_name, 
 				task_name, 
 				status, 
 				no_justification, 
+				qualification, 
 				maint_specialist_ID,
 				task_start,
 				task_end, 
@@ -327,7 +332,7 @@ DELIMITER //
 
 CREATE PROCEDURE Feladatok_listazasa()
 BEGIN
-	SELECT Feladat.*, Eszkoz.Elhelyezkedes
+	SELECT *, Elhelyezkedes
 		FROM Feladat JOIN Eszkoz USING (Eszkoz_ID);
 END//
 DELIMITER ;
@@ -351,7 +356,8 @@ BEGIN
 	INSERT
 		INTO IdoszakosFeladat (Eszkoz_kategoria_neve,
 							   Nev, 
-							   Allapot,
+							   Allapot, 
+							   Kepesites_neve, 
 							   Karbantarto_ID,
 							   Kezdeti_idopont, 
 							   Befejezesi_idopont, 

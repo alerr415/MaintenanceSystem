@@ -5,6 +5,16 @@ DROP SCHEMA IF EXISTS MaintenanceSystem2;
 CREATE SCHEMA IF NOT EXISTS MaintenanceSystem2;
 USE MaintenanceSystem2;
 -- ----------------------------------------------------------------------------
+-- Table MaintenanceSystem2.Felhasznalo
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Felhasznalo (
+  Felhasznalo_ID INT NOT NULL AUTO_INCREMENT,
+  Felhasznalonev VARCHAR(50) NOT NULL,
+  Jelszo VARCHAR(50) NOT NULL,
+  Szerepkor VARCHAR(50) NOT NULL,
+  PRIMARY KEY (Felhasznalo_ID)
+);
+-- ----------------------------------------------------------------------------
 -- Table MaintenanceSystem2.Kepesites
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Kepesites (
@@ -20,6 +30,7 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Karbantarto (
   Vezeteknev VARCHAR(50) NULL,
   Keresztnev VARCHAR(50) NULL,
   Kepesites_ID INT NOT NULL,
+  Felhasznalo_ID INT NOT NULL,
   PRIMARY KEY (Karbantarto_ID),
   FOREIGN KEY (Kepesites_ID) 
     REFERENCES MaintenanceSystem2.Kepesites (Kepesites_ID)
@@ -55,7 +66,6 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.IdoszakosFeladat (
   Befejezesi_idopont DATETIME NULL,
   Norma_ido TIME NULL,
   Eloiras LONGTEXT NULL,
-  Referencia_datum DATETIME NULL,
   PRIMARY KEY (IdoszakosFeladat_ID),
   FOREIGN KEY (Eszkoz_kategoria_neve) 
     REFERENCES MaintenanceSystem2.EszkozKategoria (Eszkoz_kategoria_neve)
@@ -106,16 +116,6 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Feladat (
     ON UPDATE NO ACTION
 );
 -- ----------------------------------------------------------------------------
--- Table MaintenanceSystem2.Felhasznalo
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Felhasznalo (
-  Felhasznalo_ID INT NOT NULL AUTO_INCREMENT,
-  Felhasznalonev VARCHAR(50) NOT NULL,
-  Jelszo VARCHAR(50) NOT NULL,
-  Szerepkor VARCHAR(50) NOT NULL,
-  PRIMARY KEY (Felhasznalo_ID)
-);
--- ----------------------------------------------------------------------------
 -- Fill tables
 -- ---------------------------------------------------------------------------
 USE maintenancesystem2;
@@ -129,12 +129,12 @@ INSERT
            ('vizvezetekszerelo');
 
 INSERT
-    INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID)
-    VALUES ('Gonzalez', 'Laszlo', 1),
-           ('Kovacs', 'Pista', 2),
-           ('Lakatos', 'Brendon', 3),
-           ('Lusta', 'Aranka', 4),
-           ('Felipe', 'Quinto', 5);
+    INTO Karbantarto (Vezeteknev, Keresztnev, Kepesites_ID, Felhasznalo_ID)
+    VALUES ('Gonzalez', 'Laszlo', 1, 1),
+           ('Kovacs', 'Pista', 2, 2),
+           ('Lakatos', 'Brendon', 3, 3),
+           ('Lusta', 'Aranka', 4, 4),
+           ('Felipe', 'Quinto', 5, 5);
 
 INSERT 
 	INTO Felhasznalo (Felhasznalonev, Jelszo, Szerepkor)
