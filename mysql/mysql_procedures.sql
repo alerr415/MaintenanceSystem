@@ -264,22 +264,18 @@ CREATE PROCEDURE Feladat_hozzaadasa(IN device_ID INT,
 BEGIN
 	INSERT
 		INTO Feladat (Eszkoz_ID, 
-					  Eszkoz_neve, 
 					  Nev, 
 					  Allapot, 
-					  Elutasitas_indoklasa, 
-					  Kepesites_neve, 
+					  Elutasitas_indoklasa,  
 					  Karbantarto_ID,
 					  Kezdeti_idopont, 
 					  Befejezesi_idopont, 
 					  Norma_ido, 
 					  Eloiras)
-		VALUES (device_ID, 
-				device_name, 
+		VALUES (device_ID,  
 				task_name, 
 				status, 
 				no_justification, 
-				qualification, 
 				maint_specialist_ID,
 				task_start,
 				task_end, 
@@ -331,7 +327,7 @@ DELIMITER //
 
 CREATE PROCEDURE Feladatok_listazasa()
 BEGIN
-	SELECT *, Elhelyezkedes
+	SELECT Feladat.*, Eszkoz.Elhelyezkedes
 		FROM Feladat JOIN Eszkoz USING (Eszkoz_ID);
 END//
 DELIMITER ;
@@ -355,8 +351,7 @@ BEGIN
 	INSERT
 		INTO IdoszakosFeladat (Eszkoz_kategoria_neve,
 							   Nev, 
-							   Allapot, 
-							   Kepesites_neve, 
+							   Allapot,
 							   Karbantarto_ID,
 							   Kezdeti_idopont, 
 							   Befejezesi_idopont, 
