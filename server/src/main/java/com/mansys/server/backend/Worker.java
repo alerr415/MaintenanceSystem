@@ -4,7 +4,7 @@ public class Worker {
     public static class Request {
         private String lastName;
         private String firstName;
-        private int qualificationID;
+        private String qualificationID;
 
         public String getLastName() {
             return lastName;
@@ -15,7 +15,7 @@ public class Worker {
         }
 
         public int getQualificationID() {
-            return qualificationID;
+            return Integer.parseInt(qualificationID);
         }
 
         public void setLastName(String value) {
@@ -25,7 +25,7 @@ public class Worker {
             this.firstName = value;
         }
         public void setQualificationID(int value) {
-            this.qualificationID = value;
+            this.qualificationID = Integer.toString(value);
         }
 
     }
@@ -54,7 +54,7 @@ public class Worker {
     public static class WorkerData {
         private String lastName;
         private String firstName;
-        private int qualificationID;
+        private String qualificationID; //int
 
         public String getLastName() {
             return lastName;
@@ -65,7 +65,7 @@ public class Worker {
         }
 
         public int getQualificationID() {
-            return qualificationID;
+            return Integer.parseInt(qualificationID);
         }
 
         public void setLastName(String value) {
@@ -75,7 +75,7 @@ public class Worker {
             this.firstName = value;
         }
         public void setQualificationID(int value) {
-            this.qualificationID = value;
+            this.qualificationID = Integer.toString(value);
         }
 
     }

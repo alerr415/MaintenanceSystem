@@ -10,7 +10,7 @@ public class Category {
     public static class Request {
 
         String categoryName;
-        int qualificationID;
+        String qualificationID;
         String categoryPeriod;
         String categoryNormalTime;
         String specification;
@@ -26,7 +26,7 @@ public class Category {
         }
 
         public int getQualificationID() {
-            return this.qualificationID;
+            return Integer.parseInt(qualificationID);
         }
 
         public String getCategoryPeriod(){
@@ -50,7 +50,7 @@ public class Category {
         }
 
         public void setQualificationID(int value){
-            this.qualificationID = value;
+            this.qualificationID = Integer.toString(value);
         }
 
         public void setCategoryPeriod(String value){

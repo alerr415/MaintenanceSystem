@@ -45,8 +45,8 @@ Used to get all the categories in a list.
 
 ### Response
 - \[String\] categories
-- String errorMessage
-- int errorCode
+- String resultMessage
+- int resultCode
 
 ## Add device (POST /device)
 Used for creating new devices.
@@ -158,8 +158,8 @@ Maintenance data query method.
 (none)
 
 ### Response
-- int resultCode
-- String resultMessage
+- int errorCode
+- String errorMessage
 - \[MaintenanceData\] maintenanceList
 
 ### MaintenanceData

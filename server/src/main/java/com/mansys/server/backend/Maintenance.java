@@ -3,13 +3,13 @@ package com.mansys.server.backend;
 public class Maintenance {
 
     public static class Request{
-        private int deviceID;
+        private String deviceID;
         private String taskName;
         private String specification;
         private String normTime;
     
         public int getDeviceID() {
-            return deviceID;
+            return Integer.parseInt(deviceID);
         }
         public String getTaskName() {
             return taskName;
@@ -22,7 +22,7 @@ public class Maintenance {
         }
 
         public void setDeviceID(int value) {
-            this.deviceID = value;
+            this.deviceID = Integer.toString(value);
         }
         public void setTaskName(String value) {
             this.taskName = value;
@@ -93,14 +93,14 @@ public class Maintenance {
     }
 
     public static class MaintenanceData {
-        public int maintenanceTaskID;
-        public int deviceID;
+        public String maintenanceTaskID;
+        public String deviceID;
         public String deviceName;
         public String deviceLocation;
         public String maintenanceTaskName;
         // TODO: can change this to the string representation
-        public int state;
-        public int workerID;
+        public String state;
+        public String workerID;
         // TODO: probably other worker data mayB
         public String startDate;
         public String finishDate;

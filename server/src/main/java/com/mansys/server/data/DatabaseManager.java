@@ -566,11 +566,11 @@ public class DatabaseManager{
             
             while (resultSet.next()) {
                 Maintenance.MaintenanceData temp = new Maintenance.MaintenanceData();
-                temp.deviceID = resultSet.getInt(1);
-                temp.maintenanceTaskID = resultSet.getInt(2);
+                temp.deviceID = Integer.toString(resultSet.getInt(1));
+                temp.maintenanceTaskID = Integer.toString(resultSet.getInt(2));
                 temp.maintenanceTaskName = resultSet.getString(3);
-                temp.state = resultSet.getInt(4);
-                temp.workerID = resultSet.getInt(6);
+                temp.state = Integer.toString(resultSet.getInt(4));
+                temp.workerID = Integer.toString(resultSet.getInt(6));
                 temp.startDate = resultSet.getString(7);
                 temp.finishDate = resultSet.getString(8);
                 temp.normTime = resultSet.getString(9);
