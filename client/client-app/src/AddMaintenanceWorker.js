@@ -62,7 +62,7 @@ function AddMaintenanceWorker(props) {
     // TODO
     document.getElementById("firstName").value = "";
     document.getElementById("lastName").value = "";
-    setQualSelectValue(undefined);
+    setQualSelectValue('');
 
   };
 

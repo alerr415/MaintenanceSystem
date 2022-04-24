@@ -272,7 +272,10 @@ return(
                     <Select labelId="periodLabel" id="periodSelect" value={categoryPeriod} onChange={periodChange} label="Periódus">
                       <MenuItem value={''}>nincs</MenuItem>
                       <MenuItem value={'eves'}>Éves</MenuItem>
+                      <MenuItem value={'feleves'}>Féléves</MenuItem>
+                      <MenuItem value={'negyedeves'}>Negyedéves</MenuItem>
                       <MenuItem value={'havi'}>Havi</MenuItem>
+                      <MenuItem value={'heti'}>Heti</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

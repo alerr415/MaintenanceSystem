@@ -44,7 +44,7 @@ function AddMaintenanceTask(props) {
   const [deviceListFetched, setDeviceListFetched] =  React.useState(false);
 
   function clearForm() {
-    // TODO
+    
     document.getElementById("taskName").value = "";
     setDeviceID('');
     document.getElementById('taskDescription').value = "";
