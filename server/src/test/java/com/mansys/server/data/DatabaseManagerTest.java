@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
 
+import com.mansys.server.backend.Authenticate;
 import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
@@ -35,11 +36,11 @@ class DatabaseManagerTest {
 
     @Test
     void callLogin() {
-        Pair<Integer,String> ok = DatabaseManager.getInstance().authenticateUser("gonzalez","gonzalez321");
-        assertEquals(0,ok.getKey());
-        assertEquals("karbantarto", ok.getValue());
-        Pair<Integer,String> fail = DatabaseManager.getInstance().authenticateUser("not_me", "invalid69");
-        assertEquals(1, fail.getKey());
+        Authenticate.Response ok = DatabaseManager.getInstance().authenticateUser("gonzalez","gonzalez321");
+        assertEquals(0,ok.getErrorCode());
+        assertEquals("karbantarto", ok.getRole());
+        Authenticate.Response fail = DatabaseManager.getInstance().authenticateUser("not_me", "invalid69");
+        assertEquals(1, fail.getErrorCode());
     }
 
     @Test
@@ -70,7 +71,7 @@ class DatabaseManagerTest {
 
     @Test
     void callAddWorker() {
-        int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", 1);
+        int ok = DatabaseManager.getInstance().addWorker("Babinéni", "Sajtos", 1, "babi", "babi123");
         assertEquals(0,ok);
     }
 

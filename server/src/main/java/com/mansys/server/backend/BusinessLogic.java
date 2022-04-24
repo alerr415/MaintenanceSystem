@@ -84,7 +84,6 @@ public class BusinessLogic {
                 // at this point we should know the category
                 CategoryData category = categoryOfTask(task);
                 Date updatedDate = offset(task.referenceDate,category.period);
-                task.referenceDate = updatedDate;
                 databaseManager.setReferenceDate(task.id,updatedDate);
 
                 List<DeviceData> devices = devicesOfCategory(category);      
@@ -99,7 +98,7 @@ public class BusinessLogic {
         }
     }
 
-    private Date offset(Date reference, String increment) {
+    public Date offset(Date reference, String increment) {
         long incrementMillis = 0;
         long day = 1000 * 60 * 60 * 24;
         switch (increment) {

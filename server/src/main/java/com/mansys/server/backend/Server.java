@@ -164,19 +164,16 @@ public class Server implements ServerInterface {
         
 		System.out.println("[SERVER]: Handle login request username: " + req.getUsername() + " password: " + req.getPassword());
         // get the authentication data from the database
-        Pair<Integer,String> dataResult = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
-        int res_code = dataResult.getKey();
+        Authenticate.Response res = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
 
         // create and decode the return value into a response type
-        Authenticate.Response res = new Authenticate.Response();
-
+        int res_code = res.getErrorCode();
         // NOT THE FINAL 
-        switch (res_code) {
+        switch (res_code) { // this is useless at this point but #legacyForever
             case 0: // good
             {
                 res.setErrorCode(RESCODE_OK);
                 res.setErrorMessage("Success");
-                res.setRole(dataResult.getValue());
                 break;
             }
             default:
@@ -370,7 +367,12 @@ public class Server implements ServerInterface {
         
         int res_code = 0;
         Worker.Response res = new Worker.Response();
-        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualificationID());
+        res_code = DatabaseManager.getInstance().addWorker(
+              req.getLastName()
+            , req.getFirstName()
+            , req.getQualificationID()
+            , req.getUsername()
+            , req.getPassword());
         switch (res_code) {
             case 0: // good
             {
