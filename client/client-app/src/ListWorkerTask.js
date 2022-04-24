@@ -131,55 +131,54 @@ function ListWorkerTask(props) {
   }
 
   function getTaskColor(state) {
-    if (state === 0 ) {
+    if ( state === "0" || state === 0 ) {
       // utemezesre var
       return ({ backgroundColor : red[500] });
 
-    } else if (state === 1) {
+    } else if ( state === "1" || state === 1 ) {
       // utemezve
       return ({ backgroundColor : blue[100] });
 
-    } else if (state === 2) {
+    } else if ( state === "2" || state === 2 ) {
       // elfogadva
       return ({ backgroundColor : teal[100] });
 
-    } else if (state === 3) {
+    } else if ( state === "3" || state === 3 ) {
       // elutasitva
       return ({ backgroundColor : amber[400] });
 
-    } else if (state === 4) {
+    } else if ( state === "4" || state === 4 ) {
       // megkezdve
       return ({ backgroundColor : lime[100] });
 
-    } else if (state === 5) {
+    } else if ( state === "5" || state === 5 ) {
       // befejezve
       return ({ backgroundColor : grey[100] });
     }
-
   }
 
   function resolveStateNames(state) {
-    if (state === 0 ) {
+    if ( state === "0" || state === 0 ) {
       // utemezesre var
       return "Ütemezésre vár";
 
-    } else if (state === 1) {
+    } else if ( state === "1" || state === 1 ) {
       // utemezve
       return "Ütemezve";
 
-    } else if (state === 2) {
+    } else if ( state === "2" || state === 2 ) {
       // elfogadva
       return "Elfogadva";
 
-    } else if (state === 3) {
+    } else if ( state === "3" || state === 3 ) {
       // elutasitva
       return "Elutasítva";
 
-    } else if (state === 4) {
+    } else if ( state === "4" || state === 4 ) {
       // megkezdve
       return "Megkezdve";
 
-    } else if (state === 5) {
+    } else if ( state === "5" || state === 5 ) {
       // befejezve
       return "Befejezve";
     }
