@@ -100,13 +100,13 @@ public class Category {
 
         private int resultCode;
         private String resultMessage;
-        private String[] categoryList;
+        private CategoryData[] categoryList;
 
         public GetResponse(){
 
         }
 
-        public String[] getCategoryList(){
+        public CategoryData[] getCategoryList(){
             return this.categoryList;
         }
 
@@ -118,7 +118,7 @@ public class Category {
             return this.resultCode;
         }
 
-        public void setCategoryList(String[] value){
+        public void setCategoryList(CategoryData[] value){
             this.categoryList = value;
         }
 

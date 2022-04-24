@@ -273,10 +273,10 @@ public class Server implements ServerInterface {
     @Override
     public Category.GetResponse handleCategoryList() {
         System.out.println("[SERVER]: Handle category list request: NO PARAMETER\n[LISTING CATEGORIES...]");
-         
+        
         // get the device data from the database
         int res_code = 0;
-        String[] data = DatabaseManager.getInstance().listCategory();
+        Category.CategoryData[] data = DatabaseManager.getInstance().listCategoryData();
         res_code = ((data.length == 0) ? 1 : 0);
 
         Category.GetResponse res = new Category.GetResponse();
@@ -292,7 +292,7 @@ public class Server implements ServerInterface {
             }
             default:
             {
-                String[] errList = {"NO DATA"};
+                Category.CategoryData[] errList = new Category.CategoryData[0];
                 res.setResultCode(1);
                 res.setResultMessage("Error during listing device category: NO DATA."); // UNKNOWN ERROR or NO DATA (?)
                 res.setCategoryList(errList);
