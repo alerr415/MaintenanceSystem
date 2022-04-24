@@ -89,30 +89,34 @@ return(
             <Divider  sx={{ mb : 2 }}/>
 
             {workerList.map((worker, index) => (
-            <Accordion key={index}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Accordion key={index} sx={{ backgroundColor : "#1976d2" , color : "white"}} >
+              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
+              <PersonIcon sx={{ mr : 2 }}/>
               <Typography>{worker.lastName} {worker.firstName}</Typography>
               </AccordionSummary>
 
-              <AccordionDetails>
+              <AccordionDetails sx={{ backgroundColor : "white" , color : "black"}}>
                 <Grid container spacing={2}>
 
-                  <Grid item xs={12} sm={12} md={2} lg={2} sx={{ textAlign : 'center' }}>
-                    <PersonIcon fontSize={'large'}/>
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={7} lg={8}>
+                  <Grid item xs={12} sm={12} md={4} lg={5}>
                     <p>
                       <Typography sx={{ fontWeight: "bold" }}>Vezetéknév:</Typography> {worker.lastName}
+                    </p>
+                    <p>
                       <Typography sx={{ fontWeight: "bold" }}>Keresztnév:</Typography> {worker.firstName}
                     </p>
+                  </Grid>
 
+                  <Grid item xs={12} sm={12} md={4} lg={5}>
                     <p>
                       <Typography sx={{ fontWeight: "bold" }}>Képesítés:</Typography> {worker.qualificationID}
                     </p>
+                    <p>
+                      <Typography sx={{ fontWeight: "bold" }}>Felhasználónév:</Typography> TODO
+                    </p>
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={3} lg={2}>
+                  <Grid item xs={12} sm={12} md={4} lg={2}>
                     <Button size="large" variant="contained" color="success" fullWidth>Szerkesztés</Button>
                   </Grid>
 

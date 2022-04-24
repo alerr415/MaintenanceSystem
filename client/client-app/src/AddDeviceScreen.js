@@ -44,7 +44,7 @@ function AddDeviceScreen(props) {
   const [catListFetched, setCatListFetched] =  React.useState(false);
   const [disabledTypeSelect, setDisabledTypeSelect] =  React.useState(false);
 
-  const handleCategoryAddingCell = (event) => {
+/*  const handleCategoryAddingCell = (event) => {
     console.log("CHANGE");
     if (event.target.value !== "") {
       console.log("NOTEMPTY");
@@ -56,13 +56,14 @@ function AddDeviceScreen(props) {
 
     }
   };
+*/
 
   function clearForm() {
 
     document.getElementById("deviceName").value = "";
     document.getElementById("deviceLocation").value = "";
-    setType(undefined);
-    document.getElementById('categoryAddingCell').value = "";
+    setType('');
+    //document.getElementById('categoryAddingCell').value = "";
     document.getElementById("deviceDescription").value = "";
 
   };
@@ -74,11 +75,11 @@ function AddDeviceScreen(props) {
     let deviceLocation = document.getElementById("deviceLocation").value;
     let deviceCategoryName = "";
 
-    if (disabledTypeSelect) {
-      deviceCategoryName = document.getElementById('categoryAddingCell').value;
-    } else {
+    //if (disabledTypeSelect) {
+      //deviceCategoryName = document.getElementById('categoryAddingCell').value;
+    //} else {
       deviceCategoryName = type;
-    }
+    //}
 
     //console.log("deviceName:'" + deviceName + "'");
     //console.log("deviceLocation:'" + deviceLocation + "'");
@@ -218,8 +219,9 @@ return (
                     ))}
                   </Select>
                 </FormControl>
-                <Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
+                {/*<Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
                 <TextField id="categoryAddingCell" label="Új FÜGGETLEN kategória" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleCategoryAddingCell}/><br />
+                */}
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>

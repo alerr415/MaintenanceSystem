@@ -67,6 +67,9 @@ function AddMaintenanceWorker(props) {
   };
 
   const addWorker = () => {
+    let userName = document.getElementById("userName").value; // <----- TODO
+    let password = document.getElementById("password").value;
+
     let lastName = document.getElementById("lastName").value;
     let firstName = document.getElementById("firstName").value;
 
@@ -87,6 +90,7 @@ function AddMaintenanceWorker(props) {
       let toSend  = {"lastName" : lastName ,
                      "firstName" : firstName ,
                      "qualificationID" : qualificationID.toString()
+                      // TODO
                    }
 
       console.log(toSend);
@@ -185,6 +189,22 @@ return (
             <Typography variant="h5">Új karbantartó felvétele</Typography>
             <Divider />
             <Grid container spacing={2} sx={{ mt : 1 }}>
+
+              <Grid item xs={12} sm={12} md={6}>
+                <Typography variant="h6" sx={{ mt : 2 }}>Felhasználónév:</Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                {/* felhasználónév */}
+                <TextField id="userName" label="Felhasználónév" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={6}>
+                <Typography variant="h6" sx={{ mt : 2 }}>Jelszó:</Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                {/*  jelszó */}
+                <TextField id="password" type="password" label="Jelszó" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
+              </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
                 <Typography variant="h6" sx={{ mt : 2 }}>Vezetéknév:</Typography>

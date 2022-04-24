@@ -96,8 +96,8 @@ function ListWorkerTask(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.errorMessage);
-        setFeedbackText(data.errorMessage);
-        hitError(true);
+        //setFeedbackText(data.errorMessage);
+        //hitError(true);
       }
 
       setWorkerListFetched(true);
@@ -133,7 +133,7 @@ function ListWorkerTask(props) {
   function getTaskColor(state) {
     if ( state === "0" || state === 0 ) {
       // utemezesre var
-      return ({ backgroundColor : red[500] });
+      return ({ backgroundColor : red[500] , color : "white" });
 
     } else if ( state === "1" || state === 1 ) {
       // utemezve
@@ -145,7 +145,7 @@ function ListWorkerTask(props) {
 
     } else if ( state === "3" || state === 3 ) {
       // elutasitva
-      return ({ backgroundColor : amber[400] });
+      return ({ backgroundColor : amber[400] , color : "white" });
 
     } else if ( state === "4" || state === 4 ) {
       // megkezdve
@@ -215,12 +215,12 @@ return(
             <Divider  sx={{ mb : 2 }}/>
 
             {taskList.filter(ownTask).map((task, index) => (
-            <Accordion key={index} sx={ getTaskColor(task.state) } >
+            <Accordion key={index} sx={getTaskColor(task.state)}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
               </AccordionSummary>
 
-              <AccordionDetails>
+              <AccordionDetails sx={{ backgroundColor : "white" , color : "black"}}>
                 <Grid container spacing={2}>
 
                   <Grid item xs={12} sm={12} md={3} lg={3}>
