@@ -16,7 +16,7 @@ import Alert from '@mui/material/Alert';
 //import { useCookies } from "react-cookie";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { red, blue, teal, amber, lime, grey } from '@mui/material/colors';
+import { red, blue, teal, orange, lime, grey } from '@mui/material/colors';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -63,11 +63,11 @@ function ListWorkerTask(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.errorMessage);
-        setFeedbackText(data.errorMessage);
-        hitError(true);
+        //setFeedbackText(data.errorMessage);
+        //hitError(true);
       }
 
-      setTaskListFetched(true);
+      //setTaskListFetched(true);
 
     })
     .catch((error) => {
@@ -100,7 +100,7 @@ function ListWorkerTask(props) {
         //hitError(true);
       }
 
-      setWorkerListFetched(true);
+      //setWorkerListFetched(true);
 
     })
     .catch((error) => {
@@ -137,7 +137,7 @@ function ListWorkerTask(props) {
 
     } else if ( state === "1" || state === 1 ) {
       // utemezve
-      return ({ backgroundColor : blue[100] });
+      return ({ backgroundColor : orange[500] , color : "white" });
 
     } else if ( state === "2" || state === 2 ) {
       // elfogadva
@@ -145,7 +145,7 @@ function ListWorkerTask(props) {
 
     } else if ( state === "3" || state === 3 ) {
       // elutasitva
-      return ({ backgroundColor : amber[400] , color : "white" });
+      return ({ backgroundColor : red[500] , color : "white" });
 
     } else if ( state === "4" || state === 4 ) {
       // megkezdve
@@ -234,7 +234,7 @@ return(
                     <p><Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {resolveStateNames(task.state)}</p>
                   </Grid>
 
-                  {task.state === 1 &&
+                  {(task.state === 1 || task.state === "1") &&
                     // ha ütemezett állapotban van
                     <Grid item xs={12} sm={12} md={2} lg={2}>
                       <Button size="large" variant="contained" color="success" fullWidth>Elfogad</Button>
@@ -266,7 +266,7 @@ return(
                   </Dialog>
 
 
-                  {task.state === 2 &&
+                  {(task.state === 2 || task.state === "2") &&
                     // ha elfogadott állapotban van
                     <Grid item xs={12} sm={12} md={2} lg={2}>
                       <Button size="large" variant="contained" color="success" fullWidth>Kezdés</Button>
@@ -274,7 +274,7 @@ return(
                   }
 
 
-                  {task.state === 4 &&
+                  {(task.state === 4 || task.state === "4") &&
                     // ha megkezdett állapotban van
                     <>
                       <Grid item xs={12} sm={12} md={2} lg={2}>

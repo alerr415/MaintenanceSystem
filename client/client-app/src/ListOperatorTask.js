@@ -16,7 +16,7 @@ import Alert from '@mui/material/Alert';
 //import { useCookies } from "react-cookie";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { red, blue, teal, amber, lime, grey } from '@mui/material/colors';
+import { red, blue, teal, orange, lime, grey } from '@mui/material/colors';
 
 
 import Accordion from '@mui/material/Accordion';
@@ -57,11 +57,11 @@ function ListOperatorTask(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.errorMessage);
-        setFeedbackText(data.errorMessage);
-        hitError(true);
+        //setFeedbackText(data.errorMessage);
+        //hitError(true);
       }
 
-      setTaskListFetched(true);
+      //setTaskListFetched(true);
 
     })
     .catch((error) => {
@@ -94,7 +94,7 @@ function ListOperatorTask(props) {
         //hitError(true);
       }
 
-      setWorkerListFetched(true);
+      //setWorkerListFetched(true);
 
     })
     .catch((error) => {
@@ -111,7 +111,7 @@ function ListOperatorTask(props) {
 
     } else if ( state === "1" || state === 1 ) {
       // utemezve
-      return ({ backgroundColor : blue[100] });
+      return ({ backgroundColor : orange[100] });
 
     } else if ( state === "2" || state === 2 ) {
       // elfogadva
@@ -119,7 +119,7 @@ function ListOperatorTask(props) {
 
     } else if ( state === "3" || state === 3 ) {
       // elutasitva
-      return ({ backgroundColor : amber[400] , color : "white" });
+      return ({ backgroundColor : red[500] , color : "white" });
 
     } else if ( state === "4" || state === 4 ) {
       // megkezdve
@@ -155,6 +155,27 @@ function ListOperatorTask(props) {
     } else if ( state === "5" || state === 5 ) {
       // befejezve
       return "Befejezve";
+    }
+  }
+
+  function givePriority(task) {
+    if (task.state === "0") {
+      task.priority = 5;
+    }
+    else if (task.state === "1") {
+      task.priority = 3;
+    }
+    else if (task.state === "2") {
+      task.priority = 2;
+    }
+    else if (task.state === "3") {
+      task.priority = 4;
+    }
+    else if (task.state === "4") {
+      task.priority = 1;
+    }
+    else {
+      task.priority = 0;
     }
   }
 
@@ -206,9 +227,12 @@ return(
                     <p><Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {resolveStateNames(task.state)}</p>
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={2} lg={2}>
-                    <Button size="large" variant="contained" color="success" fullWidth>Ütemez</Button>
-                  </Grid>
+                  {(task.state === 0 || task.state === "0") &&
+                    <Grid item xs={12} sm={12} md={2} lg={2}>
+                      <Button size="large" variant="contained" color="success" fullWidth>Ütemez</Button>
+                    </Grid>
+                  }
+
 
                 </Grid>
 
