@@ -61,7 +61,6 @@ function AddCategoryScreen(props) {
 
     document.getElementById("categoryName").value = "";
     setQualSelectValue('');
-    document.getElementById("qualificationAddingCell").value = "";
     setCategoryPeriod('');
     document.getElementById("categoryNormalTime").value = "";
     document.getElementById("specification").value = "";
