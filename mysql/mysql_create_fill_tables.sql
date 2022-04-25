@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.Feladat (
   Nev VARCHAR(50) NULL,
   Allapot INT NULL,
   Elutasitas_indoklasa LONGTEXT NULL,
-  Karbantarto_ID INT NOT NULL,
+  Karbantarto_ID INT NULL,
   Kezdeti_idopont DATETIME NULL,
   Befejezesi_idopont DATETIME NULL,
   Norma_ido TIME NULL,
