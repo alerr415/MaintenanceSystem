@@ -286,7 +286,7 @@ BEGIN
 				maint_specialist_ID,
 				task_start,
 				task_end, 
-				norm_time, 
+				SEC_TO_TIME(norm_time * 3600), 
 				steps_descrip);
 END//
 DELIMITER ;
@@ -371,7 +371,7 @@ BEGIN
 				maint_specialist_ID, 
 				task_start,
 				task_end, 
-				norm_time, 
+				SEC_TO_TIME(norm_time * 3600), 
 				steps_descrip,
 				ref_date);
 END//
