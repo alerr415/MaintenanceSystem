@@ -47,6 +47,11 @@ public class Server implements ServerInterface {
     private final String COOKIE_ID = "session-id";
 
     /**
+     * Update frequency modifier for the timer tasks.
+     */
+    public static final long UPDATE_DELAY = 1000L * 60L * 60L; // 1 hour
+
+    /**
      * Container to store the valid sessions.
      * Basic session: <br>
      *  - during successful authentication the server generates a (big) random number, that will be the id<br>
@@ -500,6 +505,15 @@ public class Server implements ServerInterface {
             }
         }
         return res;
+    }
+
+    @Override
+    public void updateTimerTasks() {
+        // sync
+        BusinessLogic.getInstance().syncTimerTasksToCategories();
+
+        // update
+        BusinessLogic.getInstance().scanTimerTasks();
     }
 
 }

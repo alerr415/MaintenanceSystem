@@ -57,6 +57,7 @@ public class BusinessLogic {
 
 
     public void syncTimerTasksToCategories() {
+        System.out.println("[LOGIC]: Synchronizing timer tasks to categories.");
         syncData();
         for (Category.CategoryData categoryData : categoryList) {
             if (!search(categoryData, timerTaskList)) {
@@ -70,6 +71,7 @@ public class BusinessLogic {
     }
 
     public void scanTimerTasks() {
+        System.out.println("[LOGIC]: Scaning timer tasks.");
         syncData();
         // da algorithm:
         // 1. iterate through the timer tasks
@@ -81,6 +83,7 @@ public class BusinessLogic {
         for (TimerTaskData task : timerTaskList) {
             SimpleDateFormat cmpFormat = new SimpleDateFormat("yyyyMMdd");
             if (cmpFormat.format(new Date(System.currentTimeMillis())).equals(cmpFormat.format(task.referenceDate))) {
+                System.out.println("[LOGIC]: Found timer task.");
                 // at this point we should know the category
                 CategoryData category = categoryOfTask(task);
                 Date updatedDate = offset(task.referenceDate,category.period);

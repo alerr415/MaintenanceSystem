@@ -575,8 +575,8 @@ public class DatabaseManager{
             
             while (resultSet.next()) {
                 Maintenance.MaintenanceData temp = new Maintenance.MaintenanceData();
-                temp.deviceID = Integer.toString(resultSet.getInt(1));
-                temp.maintenanceTaskID = Integer.toString(resultSet.getInt(2));
+                temp.deviceID = Integer.toString(resultSet.getInt(2));
+                temp.maintenanceTaskID = Integer.toString(resultSet.getInt(1));
                 temp.maintenanceTaskName = resultSet.getString(3);
                 temp.state = Integer.toString(resultSet.getInt(4));
                 temp.workerID = Integer.toString(resultSet.getInt(6));
@@ -584,8 +584,9 @@ public class DatabaseManager{
                 temp.finishDate = resultSet.getString(8);
                 temp.normTime = resultSet.getString(9);
                 temp.specification = resultSet.getString(10);
-                temp.deviceName = resultSet.getString(11);
-                temp.deviceLocation = resultSet.getString(14);
+                temp.deviceName = null; // needs fixing database side
+                temp.deviceLocation = resultSet.getString(11);
+                temp.workerFullName = resultSet.getString(12);
                 dataList.add(temp);
             }
 
