@@ -16,6 +16,7 @@ import { UserContext } from "./User.js";
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 
@@ -70,7 +71,10 @@ function Login() {
           });
         }
 
-        navigate("/app/welcome");
+        document.getElementById('bulb').style.color = "yellow";
+        document.getElementById('bulb').style.textShadow = "5px 5px 3px yellow";
+        setTimeout(() => {navigate("/app/welcome")}, 3000);
+
       } else {
         console.log("Hibás jelszó");
         setFeedbackText("Hibás jelszó!");
@@ -94,6 +98,7 @@ function Login() {
         <Card sx={{ mt : { xs : 2 , lg : 12 } , mx : "auto", p : 2, textAlign: 'center'}}>
 
           <CardMedia>
+              <Typography variant="h4"><EmojiObjectsIcon sx={{ fontSize : "7rem" , transition : "color .25s" }} id="bulb"/></Typography>
               <Typography variant="h4">Karbantartási<br />Rendszer</Typography>
           </CardMedia>
 
