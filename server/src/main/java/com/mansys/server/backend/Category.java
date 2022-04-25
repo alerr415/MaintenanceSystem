@@ -100,13 +100,13 @@ public class Category {
 
         private int resultCode;
         private String resultMessage;
-        private String[] categoryList;
+        private CategoryData[] categoryList;
 
         public GetResponse(){
 
         }
 
-        public String[] getCategoryList(){
+        public CategoryData[] getCategoryList(){
             return this.categoryList;
         }
 
@@ -118,7 +118,7 @@ public class Category {
             return this.resultCode;
         }
 
-        public void setCategoryList(String[] value){
+        public void setCategoryList(CategoryData[] value){
             this.categoryList = value;
         }
 
@@ -130,4 +130,22 @@ public class Category {
             this.resultCode = value;
         }
     } 
+
+    public static class CategoryData {
+        // CURSED
+        public static class Period {
+            public static final String DAILY = "napi";
+            public static final String WEEKLY = "heti";
+            public static final String MONTHLY = "havi";
+            public static final String QUARTER_YEARLY = "negyedeves";
+            public static final String HALF_YEARLY = "feleves";
+            public static final String YEARLY = "eves";
+        }
+
+        public String categoryName; // ID
+        public String period;       // extremely delicate variable
+        public String stepsDescription; // a.k.a. ur Stepsis
+        public int normTime;
+        public String parent;
+    }
 }

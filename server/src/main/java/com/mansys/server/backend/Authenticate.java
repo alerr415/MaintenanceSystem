@@ -46,6 +46,7 @@ public class Authenticate {
         private String errorMessage;
         private int errorCode;
         //private Cookie cookie;
+        private String workerId;
 
         public Response(){
 
@@ -66,6 +67,10 @@ public class Authenticate {
             return this.errorCode;
         }
 
+        public String getWorkerId() {
+            return this.workerId;
+        }
+
         // public Cookie getCookie(){
         //     return this.cookie;
         // }
@@ -81,6 +86,10 @@ public class Authenticate {
 
         public void setErrorCode(int value){
             this.errorCode = value;
+        }
+
+        public void setWorkerId(String value) {
+            this.workerId = value;
         }
 
         // public void setCookie(Cookie value){

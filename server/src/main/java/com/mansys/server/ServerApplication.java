@@ -1,5 +1,8 @@
 package com.mansys.server;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.mansys.server.backend.Authenticate;
 import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
@@ -31,6 +34,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServerApplication {
 
 	public static void main(String[] args) {
+
+		// sart the timer
+		TimerTask updateTask = new TimerTask() {
+			public void run() {
+				System.out.println("[SCHEDULER] Updating timer tasks");
+				Server.getInstance().updateTimerTasks();
+			}
+		};
+		Timer t = new Timer("Scheduler");
+		t.scheduleAtFixedRate(updateTask, 1000*5,Server.UPDATE_DELAY);
+
+
 		SpringApplication.run(ServerApplication.class, args);
 	}
 
