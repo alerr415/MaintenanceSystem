@@ -13,7 +13,6 @@ import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-//import { useCookies } from "react-cookie";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { red, blue, teal, orange, lime, grey } from '@mui/material/colors';
@@ -38,7 +37,6 @@ function ListWorkerTask(props) {
   const { window } = props;
 
   const {user, setUser} = useContext(UserContext);
-  const [selfID, setSelfID] = useState(1);
 
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
@@ -185,7 +183,10 @@ function ListWorkerTask(props) {
   }
 
   function ownTask(task) {
-    return (task.workerID === selfID);
+    console.log("selfID:" + user.workerID);
+    console.log("workerID:" + task.workerID);
+    if (task.workerID === user.workerID) console.log("HOPPÁ!");
+    return (task.workerID === user.workerID);
   }
 
   function resolveWorkerNames(id) {
@@ -282,7 +283,7 @@ return(
                       </Grid>
 
                       <Grid item xs={12} sm={12} md={12} lg={12}>
-                        <p><Typography sx={{ fontWeight: "bold" }}>Előírás:</Typography> {task.specification} </p>
+                        <p><Typography sx={{ fontWeight: "bold" }}>Előírás:</Typography> {task.specification} TODO !!! </p>
                       </Grid>
                     </>
                   }

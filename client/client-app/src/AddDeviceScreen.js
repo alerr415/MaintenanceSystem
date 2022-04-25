@@ -21,14 +21,12 @@ import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-//import { useCookies } from "react-cookie";
 
 function AddDeviceScreen(props) {
 
   const { window } = props;
 
   const {user, setUser} = useContext(UserContext);
-  //const [cookies, setCookie] = useCookies();
 
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
@@ -43,20 +41,6 @@ function AddDeviceScreen(props) {
   const [categoryList, setCategoryList] = React.useState(["d"]);
   const [catListFetched, setCatListFetched] =  React.useState(false);
   const [disabledTypeSelect, setDisabledTypeSelect] =  React.useState(false);
-
-/*  const handleCategoryAddingCell = (event) => {
-    console.log("CHANGE");
-    if (event.target.value !== "") {
-      console.log("NOTEMPTY");
-      setDisabledTypeSelect(true);
-
-    } else {
-      console.log("EMPTY");
-      setDisabledTypeSelect(false);
-
-    }
-  };
-*/
 
   function clearForm() {
 
@@ -73,13 +57,7 @@ function AddDeviceScreen(props) {
     let deviceName = document.getElementById("deviceName").value;
     let deviceDescription = document.getElementById("deviceDescription").value;
     let deviceLocation = document.getElementById("deviceLocation").value;
-    let deviceCategoryName = "";
-
-    //if (disabledTypeSelect) {
-      //deviceCategoryName = document.getElementById('categoryAddingCell').value;
-    //} else {
-      deviceCategoryName = type;
-    //}
+    let deviceCategoryName = type;
 
     //console.log("deviceName:'" + deviceName + "'");
     //console.log("deviceLocation:'" + deviceLocation + "'");
@@ -132,8 +110,6 @@ function AddDeviceScreen(props) {
     }
   }
 
-
-
   function fetchCatList() {
     fetch(serveraddress + '/category')
     .then(response => response.json())
@@ -163,12 +139,9 @@ function AddDeviceScreen(props) {
     });
   };
 
-
   useEffect(() => {
     if (!catListFetched) fetchCatList();
   });
-
-
 
 return (
   <Box
@@ -215,13 +188,10 @@ return (
                   <InputLabel id="typeLabel">Létező kategória</InputLabel>
                   <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Létező kategória">
                     {categoryList.map((category, index) => (
-                      <MenuItem value={category} key={index}>{category}</MenuItem>
+                      <MenuItem value={category.categoryName} key={index}>{category.categoryName}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-                {/*<Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
-                <TextField id="categoryAddingCell" label="Új FÜGGETLEN kategória" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleCategoryAddingCell}/><br />
-                */}
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>

@@ -21,11 +21,12 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ClassIcon from '@mui/icons-material/Class';
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
-function ListDeviceScreen(props) {
+function ListCategoryScreen(props) {
 
   const { window } = props;
 
@@ -91,16 +92,33 @@ return(
             <Divider  sx={{ mb : 2 }}/>
 
             {categoryList.map((category, index) => (
-            <Accordion key={index}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{category}</Typography>
+            <Accordion key={index} sx={{ backgroundColor : "#1976d2" , color : "white"}} >
+              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
+              <ClassIcon sx={{ mr : 2 }}/>
+              <Typography>{category.categoryName}</Typography>
               </AccordionSummary>
 
-              <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                  malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </Typography>
+              <AccordionDetails sx={{ backgroundColor : "white" , color : "black"}}>
+                <Grid container spacing={2}>
+
+                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                    <p>
+                      <Typography sx={{ fontWeight: "bold" }}>Normaidő:</Typography> {category.normTime}
+                    </p>
+                    <p>
+                      <Typography sx={{ fontWeight: "bold" }}>Periódikus karbantartás:</Typography> {category.period}
+                    </p>
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                    { category.parent !== null &&
+                      <p>
+                        <Typography sx={{ fontWeight: "bold" }}>Szülő:</Typography> {category.parent}
+                      </p>
+                    }
+                  </Grid>
+
+                </Grid>
               </AccordionDetails>
             </Accordion>))}
 
@@ -146,4 +164,4 @@ return(
 
 }
 
-export default ListDeviceScreen;
+export default ListCategoryScreen;

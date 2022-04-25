@@ -89,13 +89,20 @@ function AddMaintenanceWorker(props) {
     if (lastName !== "" && firstName !== "" && qualificationID !== "") {
       let toSend  = {"lastName" : lastName ,
                      "firstName" : firstName ,
-                     "qualificationID" : qualificationID.toString()
-                      // TODO
+                     "qualificationID" : qualificationID.toString() ,
+                     "username" : userName ,
+                     "password" : password
                    }
+
+/*String lastName
+String firstName
+String qualificationID
+String username
+String password*/
 
       console.log(toSend);
 
-      fetch(serveraddress + '/maintenance', {
+      fetch(serveraddress + '/worker', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

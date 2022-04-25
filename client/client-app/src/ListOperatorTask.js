@@ -13,11 +13,9 @@ import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-//import { useCookies } from "react-cookie";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { red, blue, teal, orange, lime, grey } from '@mui/material/colors';
-
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -32,7 +30,6 @@ function ListOperatorTask(props) {
   const { window } = props;
 
   const {user, setUser} = useContext(UserContext);
-  //const [cookies, setCookie] = useCookies();
 
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
