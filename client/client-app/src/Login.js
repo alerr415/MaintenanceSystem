@@ -72,7 +72,7 @@ function Login() {
         }
 
         setTimeout(() => {
-          document.getElementById('bulb').style.color = "#f5df4d";
+          document.getElementById('bulb').style.color = "yellow";
         }, 500);
         setTimeout(() => {navigate("/app/welcome")}, 1000);
 
