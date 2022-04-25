@@ -319,7 +319,7 @@ return(
                   <InputLabel id="parentLabel">Szülő kategória</InputLabel>
                   <Select labelId="parentLabel" id="parentSelect" value={parent} onChange={parentChange} label="Szülő kategória">
                     {categoryList.map((category, index) => (
-                      <MenuItem value={category} key={index}>{category}</MenuItem>
+                      <MenuItem value={category.categoryName} key={index}>{category.categoryName}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
