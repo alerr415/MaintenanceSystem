@@ -21,14 +21,12 @@ import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-//import { useCookies } from "react-cookie";
 
 function AddMaintenanceWorker(props) {
 
   const { window } = props;
 
   const {user, setUser} = useContext(UserContext);
-  //const [cookies, setCookie] = useCookies();
 
   const [error, hitError] = React.useState(false);
   const [success, hitSuccess] = React.useState(false);
@@ -42,33 +40,17 @@ function AddMaintenanceWorker(props) {
 
   const [qualificationList, setQualificationList] = React.useState(["d"]);
   const [qualListFetched, setQualListFetched] =  React.useState(false);
-  const [disabledQualSelect, setDisabledQualSelect] =  React.useState(false);
-
-  const handleQualificationAddingCell = (event) => {
-    console.log("CHANGE");
-    if (event.target.value !== "") {
-      console.log("NOTEMPTY");
-      setDisabledQualSelect(true);
-
-    } else {
-      console.log("EMPTY");
-      setDisabledQualSelect(false);
-
-    }
-  };
 
   function clearForm() {
-
     document.getElementById("userName").value = "";
     document.getElementById("password").value = "";
     document.getElementById("firstName").value = "";
     document.getElementById("lastName").value = "";
     setQualSelectValue('');
-
   };
 
   const addWorker = () => {
-    let userName = document.getElementById("userName").value; // <----- TODO
+    let userName = document.getElementById("userName").value;
     let password = document.getElementById("password").value;
 
     let lastName = document.getElementById("lastName").value;
@@ -135,7 +117,6 @@ function AddMaintenanceWorker(props) {
     }
   }
 
-
   function fetchQualList() {
     fetch(serveraddress + '/qualification')
     .then(response => response.json())
@@ -166,11 +147,9 @@ function AddMaintenanceWorker(props) {
     });
   };
 
-
   useEffect(() => {
     if (!qualListFetched) fetchQualList();
   });
-
 
 return (
   <Box
@@ -192,31 +171,34 @@ return (
             <Grid container spacing={2} sx={{ mt : 1 }}>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Felhasználónév:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Felhasználónév:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/* felhasználónév */}
                 <TextField id="userName" label="Felhasználónév" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
               </Grid>
 
+
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Jelszó:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Jelszó:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/*  jelszó */}
                 <TextField id="password" type="password" label="Jelszó" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
               </Grid>
 
+
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Vezetéknév:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Vezetéknév:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/*  vezetéknév */}
                 <TextField id="lastName" label="Vezetéknév" sx={{ mx : 'auto' , width : 1 }} variant="outlined"/><br />
               </Grid>
 
+
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Keresztnév:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Keresztnév:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/* Keresztnév */}
@@ -227,10 +209,9 @@ return (
               <Grid item xs={12} sm={12} md={6}>
                 <Typography variant="h6" sx={{ mt : 2 }}>* Képesítés:</Typography>
               </Grid>
-
               <Grid item xs={12} sm={12} md={6}>
                 {/* Képesítés */}
-                <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="qualSelectControl" disabled={disabledQualSelect}>
+                <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="qualSelectControl">
                   <InputLabel id="qualLabel">Képesítés</InputLabel>
                   <Select labelId="qualLabel" id="qualSelect" value={qualSelectValue} onChange={qualChange} label="Képesítés">
                     {qualificationList.map((qualification, index) => (
@@ -238,8 +219,6 @@ return (
                     ))}
                   </Select>
                 </FormControl>
-                <Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
-                <TextField id="qualificationAddingCell" label="Új képesítés" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleQualificationAddingCell}/><br />
               </Grid>
 
 
@@ -291,7 +270,6 @@ return (
 
   </Box>
 );
-
 }
 
 export default AddMaintenanceWorker;

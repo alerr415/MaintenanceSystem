@@ -64,7 +64,7 @@ function AddDeviceScreen(props) {
     //console.log("deviceDescription:'" + deviceDescription + "'");
     //console.log("deviceCategoryName:'" + deviceCategoryName + "'");
 
-    if (deviceName !== "" && type!== "" && deviceDescription !== "" && deviceLocation !== "") {
+    if (deviceName !== "" && type !== "" && deviceDescription !== "" && deviceLocation !== "") {
       let toSend  = {"deviceName" : deviceName,
                      "deviceCategoryName" : deviceCategoryName,
                      "deviceDescription" : deviceDescription,
@@ -164,7 +164,7 @@ return (
             <Grid container spacing={2} sx={{ mt : 1 }}>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Eszköz neve:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Eszköz neve:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/*  Eszköz neve */}
@@ -172,7 +172,7 @@ return (
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Eszköz helye:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Eszköz helye:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/*  Eszköz helye */}
@@ -180,9 +180,8 @@ return (
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Eszköz kategóriája:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Eszköz kategóriája:</Typography>
               </Grid>
-
               <Grid item xs={12} sm={12} md={6}>
                 {/*  Eszköz kategóriája */}
                 <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="typeSelectControl" disabled={disabledTypeSelect}>
@@ -196,7 +195,7 @@ return (
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Leírás:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Leírás:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/*  Eszköz leírása */}

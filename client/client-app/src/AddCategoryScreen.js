@@ -56,20 +56,6 @@ function AddCategoryScreen(props) {
 
   const [qualificationList, setQualificationList] = React.useState(["d"]);
   const [qualListFetched, setQualListFetched] =  React.useState(false);
-  const [disabledQualSelect, setDisabledQualSelect] =  React.useState(false);
-
-  const handleQualificationAddingCell = (event) => {
-    console.log("CHANGE");
-    if (event.target.value !== "") {
-      console.log("NOTEMPTY");
-      setDisabledQualSelect(true);
-
-    } else {
-      console.log("EMPTY");
-      setDisabledQualSelect(false);
-
-    }
-  };
 
   function clearForm() {
 
@@ -90,15 +76,9 @@ function AddCategoryScreen(props) {
     let categoryNormalTime = document.getElementById("categoryNormalTime").value;
     let specification = document.getElementById("specification").value;
 
-    let qualification = "";
-    if (document.getElementById("qualificationAddingCell").value !== "") {
-      qualification = document.getElementById("qualificationAddingCell").value;
-    } else {
-      qualification = qualSelectValue;
-    }
+    let qualification = qualSelectValue;
 
-
-    if (categoryName !== "" && qualification !== "") {
+    if (categoryName !== "" && qualification !== "" && categoryPeriod !== "" && categoryNormalTime !== "" && specification !== "") {
       let toSend  = {"categoryName" : categoryName,
                      "qualification" : qualification,
                      "categoryPeriod" : categoryPeriod,
@@ -252,20 +232,18 @@ return(
 
                 <Grid item xs={12} sm={12} md={6}>
                   {/* Képesítés */}
-                  <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="qualSelectControl" disabled={disabledQualSelect}>
-                    <InputLabel id="qualLabel">Képesítés</InputLabel>
+                  <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="qualSelectControl">
+                    <InputLabel id="qualLabel">* Képesítés</InputLabel>
                     <Select labelId="qualLabel" id="qualSelect" value={qualSelectValue} onChange={qualChange} label="Képesítés">
                       {qualificationList.map((qualification, index) => (
                         <MenuItem value={qualification.qualificationID} key={index}>{qualification.qualificationName}</MenuItem>
                       ))}
                     </Select>
                   </FormControl>
-                  <Typography sx={{ mt : 2 , width : 1 , textAlign : 'center' }}>VAGY</Typography>
-                  <TextField id="qualificationAddingCell" label="Új képesítés" sx={{ mx : 'auto' , width : 1 , mt : 2}} variant="outlined" onChange={handleQualificationAddingCell}/><br />
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6}>
-                  <Typography variant="h6" sx={{ mt : 2 }}>Rendszeres karbantartás:</Typography>
+                  <Typography variant="h6" sx={{ mt : 2 }}>* Rendszeres karbantartás:</Typography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   {/* periódusidő */}
@@ -283,7 +261,7 @@ return(
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6}>
-                  <Typography variant="h6" sx={{ mt : 2 }}>Karbantartás normaideje (óra):</Typography>
+                  <Typography variant="h6" sx={{ mt : 2 }}>* Karbantartás normaideje (óra):</Typography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   {/*  normaidő */}
@@ -298,7 +276,7 @@ return(
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6}>
-                  <Typography variant="h6" sx={{ mt : 2 }}>Kategória leírása:</Typography>
+                  <Typography variant="h6" sx={{ mt : 2 }}>* Kategória leírása:</Typography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   {/* specification */}
@@ -311,7 +289,7 @@ return(
                 </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Alkategória kategóriája:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>Szülő kategória:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/* parent */}

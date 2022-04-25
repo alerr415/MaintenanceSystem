@@ -169,7 +169,7 @@ return (
             <Grid container spacing={2} sx={{ mt : 1 }}>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Feladat megnevezése:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Feladat megnevezése:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/*  Feladat neve */}
@@ -178,7 +178,7 @@ return (
 
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Eszköz hozzárendelése:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Eszköz hozzárendelése:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/* Az eszköz */}
@@ -193,7 +193,7 @@ return (
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h6" sx={{ mt : 2 }}>Leírás:</Typography>
+                <Typography variant="h6" sx={{ mt : 2 }}>* Leírás:</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 {/*  Feladat leírása */}

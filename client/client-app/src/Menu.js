@@ -8,6 +8,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import AddIcon from '@mui/icons-material/Add';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';4
+import SchoolIcon from '@mui/icons-material/School';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import PeopleIcon from '@mui/icons-material/People';
 import BuildIcon from '@mui/icons-material/Build';
@@ -54,6 +56,10 @@ function Menu(props) {
                     <ListItemIcon><FormatListBulletedIcon /></ListItemIcon>
                     <ListItemText>Kategóriák megjelenítése</ListItemText>
                   </ListItemButton>
+                  <ListItemButton component={Link} to="/app/newQualification">
+                    <ListItemIcon><SchoolIcon /></ListItemIcon>
+                    <ListItemText>Új képesítés</ListItemText>
+                  </ListItemButton>
                 </List>
 
                 <Divider />
@@ -93,6 +99,10 @@ function Menu(props) {
         <ListItemButton component={Link} to="/app/listWorkers">
           <ListItemIcon><PeopleIcon /></ListItemIcon>
           <ListItemText>Karbantartók megjelenítése</ListItemText>
+        </ListItemButton>
+        <ListItemButton component={Link} to="/app/newQualification">
+          <ListItemIcon><SchoolIcon /></ListItemIcon>
+          <ListItemText>Új képesítés</ListItemText>
         </ListItemButton>
       </List>
 

@@ -4,6 +4,8 @@ import Layout from './Layout.js';
 import AddDeviceScreen from './AddDeviceScreen.js';
 import ListDeviceScreen from './ListDeviceScreen.js';
 
+import AddQualificationScreen from './AddQualificationScreen.js';
+
 import AddCategoryScreen from './AddCategoryScreen.js';
 import ListCategoryScreen from './ListCategoryScreen.js';
 
@@ -36,8 +38,12 @@ function App() {
               <Route index element={<Login />} />
               <Route path="/app" element={<Layout />}>
                 <Route path="welcome" element={<Welcome />} />
+
                 <Route path="newDevice" element={<AddDeviceScreen />} />
-                <Route path="listDevices" element={<ListDeviceScreen />} />  
+                <Route path="listDevices" element={<ListDeviceScreen />} />
+
+                <Route path="newQualification" element={<AddQualificationScreen />} />
+
                 <Route path="newCategory" element={<AddCategoryScreen />} />
                 <Route path="categories" element={<ListCategoryScreen />} />
 
