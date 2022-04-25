@@ -56,18 +56,12 @@ function AddMaintenanceWorker(props) {
     let lastName = document.getElementById("lastName").value;
     let firstName = document.getElementById("firstName").value;
 
-    let qualificationID = "";
-    if (document.getElementById("qualificationAddingCell").value !== "") {
-      qualificationID = document.getElementById("qualificationAddingCell").value;
-    } else {
-      qualificationID = qualSelectValue;
-    }
+    let qualificationID = qualSelectValue;
 
     console.log("ADDWORKER_PARAMS");
     console.log("lastName: " + lastName + " of type " + typeof lastName);
     console.log("firstName: " + firstName + " of type " + typeof firstName);
     console.log("qualificationID: " + qualificationID + " of type " + typeof qualificationID);
-
 
     if (lastName !== "" && firstName !== "" && qualificationID !== "" && password !== "" && userName !== "") {
       let toSend  = {"lastName" : lastName ,
