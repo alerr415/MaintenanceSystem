@@ -58,7 +58,7 @@ function ListOperatorTask(props) {
         //hitError(true);
       }
 
-      //setTaskListFetched(true);
+      setTaskListFetched(true);
 
     })
     .catch((error) => {

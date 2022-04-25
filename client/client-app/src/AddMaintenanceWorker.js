@@ -156,7 +156,7 @@ function AddMaintenanceWorker(props) {
         //hitError(true);
       }
 
-      //setQualListFetched(true);
+      setQualListFetched(true);
 
     })
     .catch((error) => {

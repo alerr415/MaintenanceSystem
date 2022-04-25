@@ -60,7 +60,7 @@ function ListCategoryScreen(props) {
         //hitError(true);
       }
 
-      //setListFetched(true);
+      setListFetched(true);
 
     })
     .catch((error) => {
