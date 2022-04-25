@@ -130,7 +130,7 @@ function AddDeviceScreen(props) {
         hitError(true);
       }
 
-      //setCatListFetched(true);
+      setCatListFetched(true);
 
     })
     .catch((error) => {

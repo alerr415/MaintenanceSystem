@@ -110,7 +110,7 @@ return(
 
                   <Grid item xs={12} sm={12} md={4} lg={5}>
                     <p>
-                      <Typography sx={{ fontWeight: "bold" }}>Képesítés:</Typography> {worker.qualificationID}
+                      <Typography sx={{ fontWeight: "bold" }}>Képesítés:</Typography> {worker.qualificationID} TODO
                     </p>
                     {/*<p>
                       <Typography sx={{ fontWeight: "bold" }}>Felhasználónév:</Typography> TODO

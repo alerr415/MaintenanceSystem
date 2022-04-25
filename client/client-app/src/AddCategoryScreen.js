@@ -168,7 +168,7 @@ function AddCategoryScreen(props) {
         //hitError(true);
       }
 
-      //setCatListFetched(true);
+      setCatListFetched(true);
 
     })
     .catch((error) => {
@@ -199,7 +199,7 @@ function AddCategoryScreen(props) {
         //hitError(true);
       }
 
-      //setQualListFetched(true);
+      setQualListFetched(true);
 
     })
     .catch((error) => {

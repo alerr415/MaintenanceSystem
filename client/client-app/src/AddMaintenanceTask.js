@@ -132,7 +132,7 @@ function AddMaintenanceTask(props) {
         //hitError(true);
       }
 
-      //setDeviceListFetched(true);
+      setDeviceListFetched(true);
 
     })
     .catch((error) => {

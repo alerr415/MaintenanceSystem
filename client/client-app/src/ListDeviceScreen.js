@@ -57,7 +57,7 @@ function ListDeviceScreen(props) {
         //hitError(true);
       }
 
-      //setDeviceListFetched(true);
+      setDeviceListFetched(true);
 
     })
     .catch((error) => {
