@@ -44,7 +44,7 @@ function AddMaintenanceTask(props) {
   const [deviceListFetched, setDeviceListFetched] =  React.useState(false);
 
   function clearForm() {
-    
+
     document.getElementById("taskName").value = "";
     setDeviceID('');
     document.getElementById('taskDescription').value = "";
@@ -128,11 +128,11 @@ function AddMaintenanceTask(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.errorMessage);
-        setFeedbackText("Az eszközök lekérdezése sikertelen! " + data.errorMessage);
-        hitError(true);
+        //setFeedbackText("Az eszközök lekérdezése sikertelen! " + data.errorMessage);
+        //hitError(true);
       }
 
-      setDeviceListFetched(true);
+      //setDeviceListFetched(true);
 
     })
     .catch((error) => {

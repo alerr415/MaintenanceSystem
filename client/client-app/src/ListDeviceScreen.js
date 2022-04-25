@@ -19,6 +19,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -52,11 +53,11 @@ function ListDeviceScreen(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.errorMessage);
-        setFeedbackText("Az eszközök lekérdezése sikertelen. " + data.errorMessage);
-        hitError(true);
+        //setFeedbackText("Az eszközök lekérdezése sikertelen. " + data.errorMessage);
+        //hitError(true);
       }
 
-      setDeviceListFetched(true);
+      //setDeviceListFetched(true);
 
     })
     .catch((error) => {
@@ -89,28 +90,36 @@ return(
             <Divider  sx={{ mb : 2 }}/>
 
             {deviceList.map((device, index) => (
-            <Accordion key={index}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Accordion key={index} sx={{ backgroundColor : "#1976d2" , color : "white"}}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon  sx={{ color : "white" }} color="white"/>}>
+              <EmojiObjectsIcon sx={{ mr : 2 }}/>
               <Typography>{device.deviceName}</Typography>
               </AccordionSummary>
 
-              <AccordionDetails>
-                <Typography>
-                  ID: {device.deviceID}
-                </Typography>
+              <AccordionDetails sx={{ backgroundColor : "white" , color : "black"}}>
+                <Grid container spacing={2}>
 
-                <Typography>
-                  Kategória: {device.deviceCategoryName}
-                </Typography>
+                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                    <p>
+                      <Typography sx={{ fontWeight: "bold" }}>ID:</Typography> {device.deviceID}
+                    </p>
 
-                <Typography>
-                  Eszköz leírása: {device.deviceDescription}
-                </Typography>
+                    <p>
+                      <Typography sx={{ fontWeight: "bold" }}>Kategória:</Typography> <Link to="/app/categories">{device.deviceCategoryName}</Link>
+                    </p>
+                  </Grid>
 
-                <Typography>
-                  Helyszín: {device.deviceLocation}
-                </Typography>
+                  <Grid item xs={12} sm={12} md={5} lg={5}>
+                    <p>
+                      <Typography sx={{ fontWeight: "bold" }}>Eszköz leírása:</Typography> {device.deviceDescription}
+                    </p>
 
+                    <p>
+                      <Typography sx={{ fontWeight: "bold" }}>Helyszín:</Typography> {device.deviceLocation}
+                    </p>
+                  </Grid>
+
+              </Grid>
               </AccordionDetails>
             </Accordion>))}
 

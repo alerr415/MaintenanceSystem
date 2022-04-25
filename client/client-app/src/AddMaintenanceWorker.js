@@ -59,7 +59,8 @@ function AddMaintenanceWorker(props) {
 
   function clearForm() {
 
-    // TODO
+    document.getElementById("userName").value = "";
+    document.getElementById("password").value = "";
     document.getElementById("firstName").value = "";
     document.getElementById("lastName").value = "";
     setQualSelectValue('');
@@ -86,19 +87,13 @@ function AddMaintenanceWorker(props) {
     console.log("qualificationID: " + qualificationID + " of type " + typeof qualificationID);
 
 
-    if (lastName !== "" && firstName !== "" && qualificationID !== "") {
+    if (lastName !== "" && firstName !== "" && qualificationID !== "" && password !== "" && userName !== "") {
       let toSend  = {"lastName" : lastName ,
                      "firstName" : firstName ,
                      "qualificationID" : qualificationID.toString() ,
                      "username" : userName ,
                      "password" : password
                    }
-
-/*String lastName
-String firstName
-String qualificationID
-String username
-String password*/
 
       console.log(toSend);
 
@@ -156,12 +151,12 @@ String password*/
 
       } else {
         console.log("Sikertelen lekérdezés! :(");
-        console.log(data.errorMessage);
-        setFeedbackText("Képesítések lekérdezése sikertelen! " + data.errorMessage);
-        hitError(true);
+        console.log(data.resultMessage);
+        //setFeedbackText("Képesítések lekérdezése sikertelen! " + data.resultMessage);
+        //hitError(true);
       }
 
-      setQualListFetched(true);
+      //setQualListFetched(true);
 
     })
     .catch((error) => {
@@ -175,7 +170,6 @@ String password*/
   useEffect(() => {
     if (!qualListFetched) fetchQualList();
   });
-
 
 
 return (

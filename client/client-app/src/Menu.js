@@ -9,6 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import EngineeringIcon from '@mui/icons-material/Engineering';
+import PeopleIcon from '@mui/icons-material/People';
 import BuildIcon from '@mui/icons-material/Build';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Toolbar from '@mui/material/Toolbar';
@@ -90,7 +91,7 @@ function Menu(props) {
           <ListItemText>Karbantartó hozzáadása</ListItemText>
         </ListItemButton>
         <ListItemButton component={Link} to="/app/listWorkers">
-          <ListItemIcon><EngineeringIcon /></ListItemIcon>
+          <ListItemIcon><PeopleIcon /></ListItemIcon>
           <ListItemText>Karbantartók megjelenítése</ListItemText>
         </ListItemButton>
       </List>

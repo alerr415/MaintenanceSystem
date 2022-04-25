@@ -157,21 +157,27 @@ function ListOperatorTask(props) {
 
   function givePriority(task) {
     if (task.state === "0") {
+      // utemezesre var
       task.priority = 5;
     }
     else if (task.state === "1") {
+      // utemezve
       task.priority = 3;
     }
     else if (task.state === "2") {
+      // elfogadva
       task.priority = 2;
     }
     else if (task.state === "3") {
+      // elutasitva
       task.priority = 4;
     }
     else if (task.state === "4") {
+      // megkezdve
       task.priority = 1;
     }
     else {
+      // befejezve vagy hibás
       task.priority = 0;
     }
   }
@@ -204,7 +210,7 @@ return(
 
             {taskList.map((task, index) => (
             <Accordion key={index} sx={getTaskColor(task.state)}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
               <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
               </AccordionSummary>
 
@@ -224,7 +230,7 @@ return(
                     <p><Typography sx={{ fontWeight: "bold" }}>Állapot:</Typography> {resolveStateNames(task.state)}</p>
                   </Grid>
 
-                  {(task.state === 0 || task.state === "0") &&
+                  {(task.state === 0 || task.state === "0" || task.state === 3 || task.state === "3") &&
                     <Grid item xs={12} sm={12} md={2} lg={2}>
                       <Button size="large" variant="contained" color="success" fullWidth>Ütemez</Button>
                     </Grid>

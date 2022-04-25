@@ -17,6 +17,7 @@ import Alert from '@mui/material/Alert';
 import { Link } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 import Button from '@mui/material/Button';
+import EngineeringIcon from '@mui/icons-material/Engineering';
 
 
 import Accordion from '@mui/material/Accordion';
@@ -91,7 +92,7 @@ return(
             {workerList.map((worker, index) => (
             <Accordion key={index} sx={{ backgroundColor : "#1976d2" , color : "white"}} >
               <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
-              <PersonIcon sx={{ mr : 2 }}/>
+              <EngineeringIcon sx={{ mr : 2 }}/>
               <Typography>{worker.lastName} {worker.firstName}</Typography>
               </AccordionSummary>
 
@@ -111,13 +112,13 @@ return(
                     <p>
                       <Typography sx={{ fontWeight: "bold" }}>Képesítés:</Typography> {worker.qualificationID}
                     </p>
-                    <p>
+                    {/*<p>
                       <Typography sx={{ fontWeight: "bold" }}>Felhasználónév:</Typography> TODO
-                    </p>
+                    </p>*/}
                   </Grid>
 
                   <Grid item xs={12} sm={12} md={4} lg={2}>
-                    <Button size="large" variant="contained" color="success" fullWidth>Szerkesztés</Button>
+                    {/*  TODO <Button size="large" variant="contained" color="success" fullWidth>Szerkesztés</Button>*/}
                   </Grid>
 
                 </Grid>

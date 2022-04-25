@@ -183,9 +183,9 @@ function ListWorkerTask(props) {
   }
 
   function ownTask(task) {
-    console.log("selfID:" + user.workerID);
-    console.log("workerID:" + task.workerID);
-    if (task.workerID === user.workerID) console.log("HOPPÁ!");
+    //console.log("selfID:" + user.workerID);
+    //console.log("workerID:" + task.workerID);
+    //if (task.workerID === user.workerID) console.log("HOPPÁ!");
     return (task.workerID === user.workerID);
   }
 
@@ -217,7 +217,7 @@ return(
 
             {taskList.filter(ownTask).map((task, index) => (
             <Accordion key={index} sx={getTaskColor(task.state)}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
               <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
               </AccordionSummary>
 

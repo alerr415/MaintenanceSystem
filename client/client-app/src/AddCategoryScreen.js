@@ -164,10 +164,11 @@ function AddCategoryScreen(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.resultMessage);
-        hitError(true);
+        //setFeedbackText("A kategóriák lekérdezése sikertelen. " + data.resultMessage);
+        //hitError(true);
       }
 
-      setCatListFetched(true);
+      //setCatListFetched(true);
 
     })
     .catch((error) => {
@@ -194,10 +195,11 @@ function AddCategoryScreen(props) {
       } else {
         console.log("Sikertelen lekérdezés! :(");
         console.log(data.resultMessage);
-        hitError(true);
+        //setFeedbackText("A képesítések lekérdezése sikertelen. " + data.resultMessage);
+        //hitError(true);
       }
 
-      setQualListFetched(true);
+      //setQualListFetched(true);
 
     })
     .catch((error) => {

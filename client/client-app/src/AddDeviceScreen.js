@@ -125,11 +125,12 @@ function AddDeviceScreen(props) {
 
       } else {
         console.log("Sikertelen lekérdezés! :(");
-        console.log(data.errorMessage);
+        console.log(data.resultMessage);
+        setFeedbackText("A kategóriák lekérdezése sikertelen. " + data.resultMessage);
         hitError(true);
       }
 
-      setCatListFetched(true);
+      //setCatListFetched(true);
 
     })
     .catch((error) => {

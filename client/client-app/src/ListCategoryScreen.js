@@ -55,11 +55,12 @@ function ListCategoryScreen(props) {
 
       } else {
         console.log("Sikertelen lekérdezés! :(");
-        console.log(data.errorMessage);
-        hitError(true);
+        console.log(data.resultMessage);
+        //setFeedbackText("A kategóriák lekérdezése sikertelen. " + data.resultMessage);
+        //hitError(true);
       }
 
-      setListFetched(true);
+      //setListFetched(true);
 
     })
     .catch((error) => {
