@@ -71,9 +71,11 @@ function Login() {
           });
         }
 
-        document.getElementById('bulb').style.color = "yellow";
-        document.getElementById('bulb').style.textShadow = "5px 5px 3px yellow";
-        setTimeout(() => {navigate("/app/welcome")}, 3000);
+        setTimeout(() => {
+          document.getElementById('bulb').style.color = "yellow";
+          document.getElementById('bulb').style.textShadow = "5px 5px 3px yellow";
+        }, 1000);
+        setTimeout(() => {navigate("/app/welcome")}, 2000);
 
       } else {
         console.log("Hibás jelszó");
