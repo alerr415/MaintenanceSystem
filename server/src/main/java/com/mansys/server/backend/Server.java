@@ -47,6 +47,11 @@ public class Server implements ServerInterface {
     private final String COOKIE_ID = "session-id";
 
     /**
+     * Update frequency modifier for the timer tasks.
+     */
+    public static final long UPDATE_DELAY = 1000L * 60L * 60L; // 1 hour
+
+    /**
      * Container to store the valid sessions.
      * Basic session: <br>
      *  - during successful authentication the server generates a (big) random number, that will be the id<br>
@@ -164,19 +169,16 @@ public class Server implements ServerInterface {
 
 		System.out.println("[SERVER]: Handle login request username: " + req.getUsername() + " password: " + req.getPassword());
         // get the authentication data from the database
-        Pair<Integer,String> dataResult = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
-        int res_code = dataResult.getKey();
+        Authenticate.Response res = DatabaseManager.getInstance().authenticateUser(req.getUsername(),req.getPassword());
 
         // create and decode the return value into a response type
-        Authenticate.Response res = new Authenticate.Response();
-
-        // NOT THE FINAL
-        switch (res_code) {
+        int res_code = res.getErrorCode();
+        // NOT THE FINAL 
+        switch (res_code) { // this is useless at this point but #legacyForever
             case 0: // good
             {
                 res.setErrorCode(RESCODE_OK);
                 res.setErrorMessage("Success");
-                res.setRole(dataResult.getValue());
                 break;
             }
             default:
@@ -274,10 +276,9 @@ public class Server implements ServerInterface {
     @Override
     public Category.GetResponse handleCategoryList() {
         System.out.println("[SERVER]: Handle category list request: NO PARAMETER\n[LISTING CATEGORIES...]");
-
         // get the device data from the database
         int res_code = 0;
-        String[] data = DatabaseManager.getInstance().listCategory();
+        Category.CategoryData[] data = DatabaseManager.getInstance().listCategoryData();
         res_code = ((data.length == 0) ? 1 : 0);
 
         Category.GetResponse res = new Category.GetResponse();
@@ -293,7 +294,7 @@ public class Server implements ServerInterface {
             }
             default:
             {
-                String[] errList = {"NO DATA"};
+                Category.CategoryData[] errList = new Category.CategoryData[0];
                 res.setResultCode(1);
                 res.setResultMessage("Error during listing device category: NO DATA."); // UNKNOWN ERROR or NO DATA (?)
                 res.setCategoryList(errList);
@@ -372,7 +373,12 @@ public class Server implements ServerInterface {
         
         int res_code = 0;
         Worker.Response res = new Worker.Response();
-        res_code = DatabaseManager.getInstance().addWorker(req.getLastName(),req.getFirstName(),req.getQualificationID());
+        res_code = DatabaseManager.getInstance().addWorker(
+              req.getLastName()
+            , req.getFirstName()
+            , req.getQualificationID()
+            , req.getUsername()
+            , req.getPassword());
         switch (res_code) {
             case 0: // good
             {
@@ -500,6 +506,15 @@ public class Server implements ServerInterface {
             }
         }
         return res;
+    }
+
+    @Override
+    public void updateTimerTasks() {
+        // sync
+        BusinessLogic.getInstance().syncTimerTasksToCategories();
+
+        // update
+        BusinessLogic.getInstance().scanTimerTasks();
     }
 
 }

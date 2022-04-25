@@ -101,6 +101,7 @@ public class Maintenance {
         // TODO: can change this to the string representation
         public String state;
         public String workerID;
+        public String workerFullName;
         // TODO: probably other worker data mayB
         public String startDate;
         public String finishDate;
