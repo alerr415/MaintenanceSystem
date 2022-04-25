@@ -158,7 +158,7 @@ public class DatabaseManager{
             res.setWorkerId(String.valueOf(workerId));
         } 
         catch (SQLException ex) {
-            System.err.println("[ERROR]: Error occured in function TEMPLATE: " + ex + "\nStack trace: ");
+            System.err.println("[ERROR]: Error occured in function authenticateUser: " + ex + "\nStack trace: ");
             ex.printStackTrace();
             res = null;
         } 
@@ -169,7 +169,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function TEMPLATE when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function  authenticateUser when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
                 res = null;
             }
@@ -527,7 +527,7 @@ public class DatabaseManager{
             callableStatement.setInt("status",0);
             callableStatement.setString("no_justification",null);
             // TODO: this needs to be null somehow
-            callableStatement.setInt("maint_specialist_ID",1);
+            callableStatement.setNull("maint_specialist_ID",java.sql.Types.INTEGER);
             callableStatement.setString("task_start",null);
             callableStatement.setString("task_end",null);
             callableStatement.setString("norm_time",normTime);
@@ -542,7 +542,7 @@ public class DatabaseManager{
 
         } 
         catch (SQLException ex) {
-            System.err.println("[ERROR]: Error occured in function addTask: " + ex + "\nStack trace: ");
+            System.err.println("[ERROR]: Error occured in function addMaintenance: " + ex + "\nStack trace: ");
             ex.printStackTrace();
             resCode = 1;
         } 
@@ -553,7 +553,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function addWorker when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function addMaintenance when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
                 resCode = 1;
             }
@@ -606,7 +606,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function listMaintenance when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
             }
         }   
@@ -644,7 +644,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function addWorker when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function addTimerTask when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
             }
         }   
@@ -674,7 +674,7 @@ public class DatabaseManager{
             System.out.println("[DATABASE]: Called Feladatok_listazasa");
         } 
         catch (SQLException ex) {
-            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            System.err.println("[ERROR]: Error occured in function listTimerTasks: " + ex + "\nStack trace: ");
             ex.printStackTrace();
             res = new TimerTask.TimerTaskData[0];
         } 
@@ -685,7 +685,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function listTimerTasks when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
             }
         }   
@@ -718,7 +718,7 @@ public class DatabaseManager{
             System.out.println("[DATABASE]: Listing category attributes");
         } 
         catch (SQLException ex) {
-            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            System.err.println("[ERROR]: Error occured in function listCategoryData: " + ex + "\nStack trace: ");
             ex.printStackTrace();
             res = new Category.CategoryData[0];
         } 
@@ -729,7 +729,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in functionCategoryData when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
             }
         }   
@@ -751,7 +751,7 @@ public class DatabaseManager{
             System.out.println("[DATABASE]: Setting reference date of " + taskId + " to:  " + updatedReference.toString());
         } 
         catch (SQLException ex) {
-            System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
+            System.err.println("[ERROR]: Error occured in function setReferenceDate: " + ex + "\nStack trace: ");
             ex.printStackTrace();
         } 
         finally {
@@ -761,7 +761,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function listDevice when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function setReferenceDate when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
             }
         }   
