@@ -74,8 +74,8 @@ function Login() {
         setTimeout(() => {
           document.getElementById('bulb').style.color = "yellow";
           document.getElementById('bulb').style.textShadow = "5px 5px 3px yellow";
-        }, 1000);
-        setTimeout(() => {navigate("/app/welcome")}, 2000);
+        }, 500);
+        setTimeout(() => {navigate("/app/welcome")}, 1000);
 
       } else {
         console.log("Hibás jelszó");
@@ -100,7 +100,7 @@ function Login() {
         <Card sx={{ mt : { xs : 2 , lg : 12 } , mx : "auto", p : 2, textAlign: 'center'}}>
 
           <CardMedia>
-              <Typography variant="h4"><EmojiObjectsIcon sx={{ fontSize : "7rem" , transition : "color .25s" }} id="bulb"/></Typography>
+              <Typography variant="h4"><EmojiObjectsIcon sx={{ fontSize : "7rem" , transition : "color .1s" }} id="bulb"/></Typography>
               <Typography variant="h4">Karbantartási<br />Rendszer</Typography>
           </CardMedia>
 
