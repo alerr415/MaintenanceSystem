@@ -72,8 +72,7 @@ function Login() {
         }
 
         setTimeout(() => {
-          document.getElementById('bulb').style.color = "yellow";
-          document.getElementById('bulb').style.textShadow = "5px 5px 3px yellow";
+          document.getElementById('bulb').style.color = "#f5df4d";
         }, 500);
         setTimeout(() => {navigate("/app/welcome")}, 1000);
 
@@ -94,13 +93,16 @@ function Login() {
 
   return (
     <>
+    <div style={{ width : "100%" , textAlign : "center" , mt : 2 , mb : 2 }}>
+      <EmojiObjectsIcon sx={{ fontSize : "7rem" , transition : "color .1s" , mx : "auto"}} id="bulb"/>
+    </div>
     <Grid container spacing={2}>
       <Grid item xs={0} sm={2} lg={4}></Grid>
       <Grid item xs={12} sm={8} lg={4}>
-        <Card sx={{ mt : { xs : 2 , lg : 12 } , mx : "auto", p : 2, textAlign: 'center'}}>
+        <Card sx={{ mx : "auto", p : 2, textAlign: 'center'}}>
 
           <CardMedia>
-              <Typography variant="h4"><EmojiObjectsIcon sx={{ fontSize : "7rem" , transition : "color .1s" }} id="bulb"/></Typography>
+              <Typography variant="h4"></Typography>
               <Typography variant="h4">Karbantartási<br />Rendszer</Typography>
           </CardMedia>
 
