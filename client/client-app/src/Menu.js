@@ -8,7 +8,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import AddIcon from '@mui/icons-material/Add';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';4
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import SchoolIcon from '@mui/icons-material/School';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import PeopleIcon from '@mui/icons-material/People';
@@ -16,7 +16,7 @@ import BuildIcon from '@mui/icons-material/Build';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Toolbar from '@mui/material/Toolbar';
 import { UserContext } from "./User.js";
-import { Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 
 function Menu(props) {
 
