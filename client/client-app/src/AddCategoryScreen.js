@@ -61,7 +61,6 @@ function AddCategoryScreen(props) {
 
     document.getElementById("categoryName").value = "";
     setQualSelectValue('');
-    document.getElementById("qualificationAddingCell").value = "";
     setCategoryPeriod('');
     document.getElementById("categoryNormalTime").value = "";
     document.getElementById("specification").value = "";
@@ -80,7 +79,7 @@ function AddCategoryScreen(props) {
 
     if (categoryName !== "" && qualification !== "" && categoryPeriod !== "" && categoryNormalTime !== "" && specification !== "") {
       let toSend  = {"categoryName" : categoryName,
-                     "qualification" : qualification,
+                     "qualificationID" : qualification.toString() ,
                      "categoryPeriod" : categoryPeriod,
                      "categoryNormalTime" : categoryNormalTime,
                      "specification" : specification,
