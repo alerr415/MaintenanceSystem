@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS MaintenanceSystem2.IdoszakosFeladat (
   Befejezesi_idopont DATETIME NULL,
   Norma_ido TIME NULL,
   Eloiras LONGTEXT NULL,
+  Referencia_datum DATETIME NULL,
   PRIMARY KEY (IdoszakosFeladat_ID),
   FOREIGN KEY (Eszkoz_kategoria_neve) 
     REFERENCES MaintenanceSystem2.EszkozKategoria (Eszkoz_kategoria_neve)
