@@ -335,7 +335,7 @@ DELIMITER //
 CREATE PROCEDURE Feladatok_listazasa()
 BEGIN
 	SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto
-		FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) JOIN Karbantarto AS k USING (Karbantarto_ID);
+		FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID);
 END//
 DELIMITER ;
 
