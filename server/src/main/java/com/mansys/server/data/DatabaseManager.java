@@ -578,8 +578,15 @@ public class DatabaseManager{
                 temp.deviceID = Integer.toString(resultSet.getInt(2));
                 temp.maintenanceTaskID = Integer.toString(resultSet.getInt(1));
                 temp.maintenanceTaskName = resultSet.getString(3);
-                temp.state = Integer.toString(resultSet.getInt(4));
-                temp.workerID = Integer.toString(resultSet.getInt(6));
+                temp.state =  Integer.toString(resultSet.getInt(4));
+                // temp.workerID = resultSet.getInt(6) ? "" : Integer.toString(resultSet.getInt(6));
+                System.out.println(resultSet.getInt(6));
+                if (resultSet.wasNull()) {
+                    temp.workerID = "0";
+                } else {
+                    temp.workerID = Integer.toString(resultSet.getInt(6));
+                }
+
                 temp.startDate = resultSet.getString(7);
                 temp.finishDate = resultSet.getString(8);
                 temp.normTime = resultSet.getString(9);
