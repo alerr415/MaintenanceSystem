@@ -98,7 +98,7 @@ function ListWorkerTask(props) {
         //hitError(true);
       }
 
-      //setWorkerListFetched(true);
+      setWorkerListFetched(true);
 
     })
     .catch((error) => {
@@ -107,6 +107,74 @@ function ListWorkerTask(props) {
       hitError(true);
     });
   };
+
+
+  const [deviceList, setDeviceList] = React.useState(["d"]);
+  const [deviceListFetched, setDeviceListFetched] =  React.useState(false);
+
+  function fetchDeviceList() {
+    fetch(serveraddress + '/device')
+    .then(response => response.json())
+    .then(data => {
+
+      console.log('Success:', data);
+
+      if (data.errorCode === 0) {
+        console.log("Sikeres lekérdezés :D");
+        console.log(data.data);
+        setDeviceList(data.data);
+        setDeviceListFetched(true);
+
+      } else {
+        console.log("Sikertelen lekérdezés! :(");
+        console.log(data.errorMessage);
+        //setFeedbackText(data.errorMessage);
+        //hitError(true);
+      }
+
+      setDeviceListFetched(true);
+
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
+    });
+  };
+
+  const [categoryList, setCategoryList] = React.useState(["d"]);
+  const [categoryListFetched, setCategoryListFetched] =  React.useState(false);
+
+  function fetchCategoryList() {
+    fetch(serveraddress + '/category')
+    .then(response => response.json())
+    .then(data => {
+
+      console.log('Success:', data);
+
+      if (data.resultCode === 0) {
+        console.log("Sikeres lekérdezés :D");
+        console.log(data.categoryList);
+        setCategoryList(data.categoryList);
+        setCategoryListFetched(true);
+
+      } else {
+        console.log("Sikertelen lekérdezés! :(");
+        console.log(data.resultMessage);
+        //setFeedbackText(data.resultMessage);
+        //hitError(true);
+      }
+
+      setCategoryListFetched(true);
+
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
+    });
+  };
+
 
   const [declineDialogOpen, setDeclineDialogOpen] =  React.useState(false);
 
@@ -197,9 +265,38 @@ function ListWorkerTask(props) {
     return "TODO";
   }
 
+  function getTaskDescription(task) {
+    let deviceID = task.deviceID;
+    let category = "";
+    console.log("DEVICE:" + deviceID);
+    console.log("CAT:" + category);
+
+    for (var i = 0; i < deviceList.length; i++) {
+      if (deviceList[i].deviceID.toString() === deviceID.toString()) {
+        category = deviceList[i].deviceCategoryName;
+        console.log("DEVICE:" + deviceID + deviceList[i].deviceName);
+        console.log("CAT:" + deviceList[i].deviceCategoryName);
+        console.log(" '--> cat:" + category);
+      }
+    }
+
+    for (var i = 0; i < categoryList.length; i++) {
+      if (categoryList[i].categoryName.toString() === category.toString()) {
+        console.log("FINALLY");
+        console.log("DEVICE:" + deviceID);
+        console.log("CAT:" + category);
+        console.log("DESC:" + categoryList[i].stepsDescription);
+        return categoryList[i].stepsDescription;
+      }
+    }
+
+  }
+
   useEffect(() => {
     if (!taskListFetched) fetchTaskList();
     if (!workerListFetched) fetchWorkerList();
+    if (!deviceListFetched) fetchDeviceList();
+    if (!categoryListFetched) fetchCategoryList();
   });
 
 return(
@@ -283,7 +380,7 @@ return(
                       </Grid>
 
                       <Grid item xs={12} sm={12} md={12} lg={12}>
-                        <p><Typography sx={{ fontWeight: "bold" }}>Előírás:</Typography> {task.specification} TODO !!! </p>
+                        <p><Typography sx={{ fontWeight: "bold" }}>Előírás:</Typography> {getTaskDescription(task)} </p>
                       </Grid>
                     </>
                   }
