@@ -22,6 +22,17 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -91,7 +102,7 @@ function ListOperatorTask(props) {
         //hitError(true);
       }
 
-      //setWorkerListFetched(true);
+      setWorkerListFetched(true);
 
     })
     .catch((error) => {
@@ -190,6 +201,23 @@ function ListOperatorTask(props) {
     return "TODO";
   }
 
+  const [scheduleDialogOpen, setScheduleDialogOpen] = React.useState(false);
+
+  const handleScheduleButton = () => {
+    setScheduleDialogOpen(true);
+  };
+
+  const handleScheduleDialogClose = () => {
+    setScheduleDialogOpen(false);
+  };
+
+  const [workerToSchedule, setWorkerToSchedule] = React.useState('');
+
+  const workerSelectChange = (event) => {
+    setWorkerToSchedule(event.target.value);
+    // TODO workerID hiányzik a workerből
+  };
+
   useEffect(() => {
     if (!taskListFetched) fetchTaskList();
     if (!workerListFetched) fetchWorkerList();
@@ -232,7 +260,33 @@ return(
 
                   {(task.state === 0 || task.state === "0" || task.state === 3 || task.state === "3") &&
                     <Grid item xs={12} sm={12} md={2} lg={2}>
-                      <Button size="large" variant="contained" color="success" fullWidth>Ütemez</Button>
+                      <Button size="large" variant="contained" color="success" onClick={handleScheduleButton} fullWidth>Ütemez</Button>
+
+                        <div>
+                          <Dialog open={scheduleDialogOpen} onClose={handleScheduleDialogClose}>
+                            <DialogTitle>Ütemezés</DialogTitle>
+                            <DialogContent>
+                              <DialogContentText>
+                                A kiválasztott feladat ütemezéséhez válassza ki a hozzárendelni kivánt karbantartót!
+                              </DialogContentText>
+
+                              <FormControl sx={{ mx : 'auto' , mt : 2 ,  width : 1 }}>
+
+                                <InputLabel id="selectWorkerLabel">Karbantartó</InputLabel>
+                                <Select labelId="selectWorkerLabel" id="workerSelect" value={workerToSchedule} onChange={workerSelectChange} label="Karbantartó">
+                                  {workerList.map((worker, index) => (
+                                    <MenuItem value={worker.workerID} key={index}>{worker.lastName} {worker.firstName}</MenuItem>
+                                  ))}
+                                </Select>
+                              </FormControl>
+
+                            </DialogContent>
+                            <DialogActions>
+                              <Button onClick={handleScheduleDialogClose}>Cancel</Button>
+                              <Button onClick={handleScheduleDialogClose}>Subscribe</Button>
+                            </DialogActions>
+                          </Dialog>
+                        </div>
                     </Grid>
                   }
 
