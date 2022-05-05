@@ -780,4 +780,36 @@ public class DatabaseManager{
         }   
     }
 
+    public int setAssignment(String maintenanceID, String workerID) {
+        int resCode = 0;
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "UPDATE Feladat SET Karbantarto_ID = ? WHERE Feladat_ID = ?;";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setInt(1,Integer.parseInt(workerID));
+            callableStatement.setInt(2,Integer.parseInt(maintenanceID));
+
+            callableStatement.execute();
+            System.out.println("[DATABASE] setting assignment\nmaintenance id: " + maintenanceID + "\nworker id: " + workerID);
+        } 
+        catch (SQLException ex) {
+            resCode = 1;
+            System.err.println("[ERROR]: Error occured in function addTimerTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addTimerTask when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return resCode;
+    }
+
+
 }
