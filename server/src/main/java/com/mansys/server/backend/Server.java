@@ -521,5 +521,25 @@ public class Server implements ServerInterface {
         // update
         BusinessLogic.getInstance().scanTimerTasks();
     }
-
+    @Override
+    public Assignment.Response handleAssignment(Assignment.Request req) {
+        System.out.println("[SERVER] handle assignment request\ntask: " + req.getMaintenanceID() + "\nworker: " + req.getWorkerID());
+        int resCode = DatabaseManager.getInstance().setAssignment(req.getMaintenanceID(),req.getWorkerID());
+        Assignment.Response res = new Assignment.Response();
+        switch (resCode) {
+            case 0:
+            {
+                res.setErrorCode(0);
+                res.setErrorMessage("Success");
+                break;
+            }
+            default:
+            {
+                res.setErrorCode(1);
+                res.setErrorMessage("ServerError");
+                break;
+            }
+        }
+        return res;
+    }
 }

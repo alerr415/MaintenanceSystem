@@ -18,4 +18,5 @@ public interface ServerInterface {
     public Maintenance.Response handleMaintenance(Maintenance.Request req);
     public Maintenance.GetResponse handleMaintenanceList(String workerID);
     public void updateTimerTasks();
+    public Assignment.Response handleAssignment(Assignment.Request req);
 }
