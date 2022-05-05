@@ -187,13 +187,14 @@ public class ServerApplication {
 	}
 
 	@GetMapping("/worker")
-	public ResponseEntity<?> getWorkers(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+	public ResponseEntity<?> getWorkers(@CookieValue(name="session-id",defaultValue="0") String sessId
+									  , @RequestParam(name="qualificationID",defaultValue="") String qualificationID) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
 			return ResponseEntity.badRequest().build(); 
 		}
 
-		Worker.GetResponse response = Server.getInstance().handleWorkerList();
+		Worker.GetResponse response = Server.getInstance().handleWorkerList(qualificationID);
 
 		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
@@ -240,13 +241,14 @@ public class ServerApplication {
 
 	@GetMapping("/maintenance")
 	public ResponseEntity<?> getMaintenance(@CookieValue(name="session-id",defaultValue="0") String sessId
-										  , @RequestParam(name="workerID",defaultValue="") String workerID) {
+										 , @RequestParam(name="workerID",defaultValue="") String workerID
+										 , @RequestParam(name="qualificationID",defaultValue="") String qualificationID) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION GET /maintenance] Invalid session: " + sessId);
 			return ResponseEntity.badRequest().build(); 
 		}
 
-		Maintenance.GetResponse response = Server.getInstance().handleMaintenanceList(workerID);
+		Maintenance.GetResponse response = Server.getInstance().handleMaintenanceList(workerID,qualificationID);
 
 		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));

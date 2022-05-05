@@ -395,11 +395,11 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public GetResponse handleWorkerList() {
-        System.out.println("[SERVER]: Handle worker list request: NO PARAMETER\n[LISTING WORKERS...]");
+    public GetResponse handleWorkerList(String qualificationID) {
+        System.out.println("[SERVER]: Handle worker list request\nqualification id: " + qualificationID + "\n[LISTING WORKERS...]");
         int res_code = 0;
         Worker.WorkerData[] data = {};
-        data = DatabaseManager.getInstance().listWorker();
+        data = DatabaseManager.getInstance().listWorker(qualificationID);
         res_code = data.length == 0 ? 1 : 0;
 
         Worker.GetResponse res = new Worker.GetResponse();
@@ -410,6 +410,12 @@ public class Server implements ServerInterface {
                 res.setErrorMessage("Success");
                 res.setErrorCode(RESCODE_OK);
                 res.setData(data);
+                break;
+            }
+            case 1:
+            {
+                res.setErrorCode(0);
+                res.setErrorMessage("No workers with qualification");
                 break;
             }
             default:
@@ -480,11 +486,11 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList(String workerID) {
+    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList(String workerID, String qualificationID) {
         System.out.println("[SERVER]: Handle maintenance list request:\nid: "+workerID+"\n[LISTING MAINTENANCE TASKS...]");
         int res_code = 0;
         Maintenance.MaintenanceData[] data = {};
-        data = DatabaseManager.getInstance().listMaintenance(workerID);
+        data = DatabaseManager.getInstance().listMaintenance(workerID,qualificationID);
         res_code = data.length == 0 ? 1 : 0;
 
         Maintenance.GetResponse res = new Maintenance.GetResponse();
@@ -500,7 +506,11 @@ public class Server implements ServerInterface {
             case 1:
             {
                 res.setErrorCode(0);
-                res.setErrorMessage("No tasks for worker " + workerID);
+                res.setErrorMessage("Internal error");
+                if (!workerID.equals(""))
+                    res.setErrorMessage("No tasks for worker " + workerID);
+                if (!qualificationID.equals(""))
+                    res.setErrorMessage("No avaliable tasks for qualification " + qualificationID);
                 break;
             }
             default:
