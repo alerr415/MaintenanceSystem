@@ -552,4 +552,26 @@ public class Server implements ServerInterface {
         }
         return res;
     }
+
+    @Override
+    public State.Response handleState(State.Request req) {
+        System.out.println("[SERVER] handle state change\ntask: " + req.getMaintenanceID() + "\nstate: " + req.getState());
+        int resCode = DatabaseManager.getInstance().modifyState(req.getMaintenanceID(),req.getState(),req.getDenialJustification());
+        State.Response res = new State.Response();
+        switch (resCode) {
+            case 0:
+            {
+                res.setErrorCode(0);
+                res.setErrorMessage("Success");
+                break;
+            }
+            default:
+            {
+                res.setErrorCode(1);
+                res.setErrorMessage("ServerError");
+                break;
+            }
+        }
+        return res;
+    }
 }
