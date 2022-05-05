@@ -574,7 +574,7 @@ public class DatabaseManager{
             if (workerID.equals(""))
                 call = "{CALL Feladatok_listazasa()}";
             else 
-                call = "SELECT * FROM Feladat WHERE Karbantarto_ID = " + workerID + ";"; 
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) WHERE Karbantarto_ID = " + workerID + ";"; 
 
             CallableStatement callableStatement = connection.prepareCall(call);
             ResultSet resultSet = callableStatement.executeQuery();
