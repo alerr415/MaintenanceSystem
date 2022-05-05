@@ -480,11 +480,11 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList() {
+    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList(String workerID) {
         System.out.println("[SERVER]: Handle maintenance list request: NO PARAMETER\n[LISTING MAINTENANCE TASKS...]");
         int res_code = 0;
         Maintenance.MaintenanceData[] data = {};
-        data = DatabaseManager.getInstance().listMaintenance();
+        data = DatabaseManager.getInstance().listMaintenance(workerID);
         res_code = data.length == 0 ? 1 : 0;
 
         Maintenance.GetResponse res = new Maintenance.GetResponse();

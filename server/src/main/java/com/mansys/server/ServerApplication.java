@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -238,13 +239,14 @@ public class ServerApplication {
 	}
 
 	@GetMapping("/maintenance")
-	public ResponseEntity<?> getMaintenance(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+	public ResponseEntity<?> getMaintenance(@CookieValue(name="session-id",defaultValue="0") String sessId
+										  , @RequestParam(name="workerID",defaultValue="") String workerID) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION GET /maintenance] Invalid session: " + sessId);
 			return ResponseEntity.badRequest().build(); 
 		}
 
-		Maintenance.GetResponse response = Server.getInstance().handleMaintenanceList();
+		Maintenance.GetResponse response = Server.getInstance().handleMaintenanceList(workerID);
 
 		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
