@@ -827,5 +827,39 @@ public class DatabaseManager{
         return resCode;
     }
 
+    public int modifyState(String maintenanceID, String state, String denial) {
+        int resCode = 0;
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "UPDATE Feladat SET Allapot = ?, Elutasitas_indoklasa = ? WHERE Feladat_ID = ?";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setInt(1,Integer.parseInt(state));
+            if (denial == null || denial.equals(""))    
+                callableStatement.setNull(2,java.sql.Types.VARCHAR);
+            else
+                callableStatement.setString(2,denial);
+            callableStatement.setInt(3,Integer.parseInt(maintenanceID));
+           callableStatement.execute();
+           System.out.println("[DATABASE] setting state task: " + maintenanceID + "\nstate: " + state + "\ndenial justification: " + denial);
+        } 
+        catch (SQLException ex) {
+            resCode = 1;
+            System.err.println("[ERROR]: Error occured in function addTimerTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addTimerTask when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return resCode;
+    }
+
 
 }
