@@ -10,6 +10,7 @@ import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Qualification;
 import com.mansys.server.backend.Server;
+import com.mansys.server.backend.State;
 import com.mansys.server.backend.Worker;
 
 import org.springframework.boot.SpringApplication;
@@ -268,6 +269,24 @@ public class ServerApplication {
 		}
 
 		Assignment.Response response = Server.getInstance().handleAssignment(request);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@PostMapping("/state")
+	public ResponseEntity<?> setState(@RequestBody State.Request request,
+									        @CookieValue(name="session-id", defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION POST /state] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		State.Response response = Server.getInstance().handleState(request);
 
 		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
