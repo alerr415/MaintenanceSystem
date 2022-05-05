@@ -3,6 +3,7 @@ package com.mansys.server;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.mansys.server.backend.Assignment;
 import com.mansys.server.backend.Authenticate;
 import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
