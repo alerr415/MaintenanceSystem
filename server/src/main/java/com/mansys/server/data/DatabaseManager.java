@@ -439,6 +439,7 @@ public class DatabaseManager{
             
             while (resultSet.next()) {
                 Worker.WorkerData temp = new Worker.WorkerData();
+                temp.setWorkerID(String.valueOf(resultSet.getInt(1)));
                 temp.setLastName(resultSet.getString(2));
                 temp.setFirstName(resultSet.getString(3));
                 temp.setQualificationID(resultSet.getInt(4)); // INCOMPLETE PROCEDURE

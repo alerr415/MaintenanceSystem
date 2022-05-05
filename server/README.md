@@ -104,16 +104,18 @@ worker's qualification. The qualification names can
 be queried with the GET /qualification resource and 
 from that point the data can be cached.
 NOTE: cache refresh response not implemented yet.
+CHANGE: added workerID to WorkerData
 
 ### Request
 (none for now)
 
 ### Response
-- \[Worker\] data
+- \[WorkerData\] data
 - String errorMessage
 - int errorCode
 
 ### WorkerData
+- String workerID
 - String lastName
 - String firstName
 - int qualificationID
