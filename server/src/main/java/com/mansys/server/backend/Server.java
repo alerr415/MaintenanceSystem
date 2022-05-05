@@ -395,11 +395,11 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public GetResponse handleWorkerList() {
-        System.out.println("[SERVER]: Handle worker list request: NO PARAMETER\n[LISTING WORKERS...]");
+    public GetResponse handleWorkerList(String qualificationID) {
+        System.out.println("[SERVER]: Handle worker list request\nqualification id: " + qualificationID + "\n[LISTING WORKERS...]");
         int res_code = 0;
         Worker.WorkerData[] data = {};
-        data = DatabaseManager.getInstance().listWorker();
+        data = DatabaseManager.getInstance().listWorker(qualificationID);
         res_code = data.length == 0 ? 1 : 0;
 
         Worker.GetResponse res = new Worker.GetResponse();
@@ -410,6 +410,12 @@ public class Server implements ServerInterface {
                 res.setErrorMessage("Success");
                 res.setErrorCode(RESCODE_OK);
                 res.setData(data);
+                break;
+            }
+            case 1:
+            {
+                res.setErrorCode(0);
+                res.setErrorMessage("No workers with qualification");
                 break;
             }
             default:

@@ -425,16 +425,25 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public Worker.WorkerData[] listWorker()
+    public Worker.WorkerData[] listWorker(String qualificationID)
     {
         Worker.WorkerData[] res;
         List<Worker.WorkerData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            
-            String call = "{CALL Karbantartok_listazasa()}";
-            CallableStatement callableStatement = connection.prepareCall(call);
+            String call;
+            CallableStatement callableStatement;
+            if (qualificationID.equals("")) {
+                call = "{CALL Karbantartok_listazasa()}";
+                callableStatement = connection.prepareCall(call);
+            }
+            else {
+                call = "SELECT * FROM karbantarto WHERE Kepesites_ID = ?;";
+                callableStatement = connection.prepareCall(call);
+                callableStatement.setInt(1,Integer.parseInt(qualificationID));
+            }
+            System.out.println("[DATABASE listing workers\nqualification id: " + qualificationID);
             ResultSet resultSet = callableStatement.executeQuery();
             
             while (resultSet.next()) {
