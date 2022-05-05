@@ -3,6 +3,7 @@ package com.mansys.server;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.mansys.server.backend.Assignment;
 import com.mansys.server.backend.Authenticate;
 import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
@@ -249,6 +250,24 @@ public class ServerApplication {
 		}
 
 		Maintenance.GetResponse response = Server.getInstance().handleMaintenanceList(workerID,qualificationID);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@PostMapping("/assign")
+	public ResponseEntity<?> setAssignment(@RequestBody Assignment.Request request,
+									        @CookieValue(name="session-id", defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION POST /assign] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Assignment.Response response = Server.getInstance().handleAssignment(request);
 
 		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
