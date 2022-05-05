@@ -101,7 +101,7 @@ class DatabaseManagerTest {
 
     @Test
     void callListMaintenance() {
-        Maintenance.MaintenanceData[] maintenances = DatabaseManager.getInstance().listMaintenance();
+        Maintenance.MaintenanceData[] maintenances = DatabaseManager.getInstance().listMaintenance(null);
         assertNotNull(maintenances);
     }
 

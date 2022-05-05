@@ -563,14 +563,19 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public Maintenance.MaintenanceData[] listMaintenance() {
+    public Maintenance.MaintenanceData[] listMaintenance(String workerID) {
         Maintenance.MaintenanceData[] res;
         List<Maintenance.MaintenanceData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            
-            String call = "{CALL Feladatok_listazasa()}";
+            String call;
+
+            if (workerID.equals(""))
+                call = "{CALL Feladatok_listazasa()}";
+            else 
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) WHERE Karbantarto_ID = " + workerID + ";"; 
+
             CallableStatement callableStatement = connection.prepareCall(call);
             ResultSet resultSet = callableStatement.executeQuery();
             

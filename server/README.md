@@ -161,7 +161,8 @@ a maintenance task. Might change later.
 Maintenance data query method.
 
 ### Request
-(none)
+Optional, the worker id can query the tasks of the specified worker
+- String workerID
 
 ### Response
 - int errorCode

@@ -480,11 +480,11 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList() {
-        System.out.println("[SERVER]: Handle maintenance list request: NO PARAMETER\n[LISTING MAINTENANCE TASKS...]");
+    public com.mansys.server.backend.Maintenance.GetResponse handleMaintenanceList(String workerID) {
+        System.out.println("[SERVER]: Handle maintenance list request:\nid: "+workerID+"\n[LISTING MAINTENANCE TASKS...]");
         int res_code = 0;
         Maintenance.MaintenanceData[] data = {};
-        data = DatabaseManager.getInstance().listMaintenance();
+        data = DatabaseManager.getInstance().listMaintenance(workerID);
         res_code = data.length == 0 ? 1 : 0;
 
         Maintenance.GetResponse res = new Maintenance.GetResponse();
@@ -495,6 +495,12 @@ public class Server implements ServerInterface {
                 res.setErrorMessage("Success");
                 res.setErrorCode(RESCODE_OK);
                 res.setData(data);
+                break;
+            }
+            case 1:
+            {
+                res.setErrorCode(0);
+                res.setErrorMessage("No tasks for worker " + workerID);
                 break;
             }
             default:
