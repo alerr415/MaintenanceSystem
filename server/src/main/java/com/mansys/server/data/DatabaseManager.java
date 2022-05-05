@@ -572,20 +572,28 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public Maintenance.MaintenanceData[] listMaintenance(String workerID) {
+    public Maintenance.MaintenanceData[] listMaintenance(String workerID, String qualificationID) {
         Maintenance.MaintenanceData[] res;
         List<Maintenance.MaintenanceData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String call;
+            CallableStatement callableStatement;
 
-            if (workerID.equals(""))
+            if (workerID.equals("") && qualificationID.equals("")) {
                 call = "{CALL Feladatok_listazasa()}";
-            else 
-                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) WHERE Karbantarto_ID = " + workerID + ";"; 
-
-            CallableStatement callableStatement = connection.prepareCall(call);
+                callableStatement = connection.prepareCall(call);
+            } else if (qualificationID.equals("")) {
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) WHERE Karbantarto_ID = ?"; 
+                callableStatement = connection.prepareCall(call);
+                callableStatement.setInt(1,Integer.parseInt(workerID));
+            } else {
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) INNER JOIN Eszkozkategoria AS ek USING (Eszkoz_kategoria_neve) WHERE f.Karbantarto_ID IS NULL AND ek.Kepesites_ID = ?";
+                callableStatement = connection.prepareCall(call);
+                callableStatement.setInt(1,Integer.parseInt(qualificationID));
+            }
+            System.out.println("[DATABASE]: Called Feladatok_listazasa\nworker id: " + workerID + "\nqualification: " + qualificationID);
             ResultSet resultSet = callableStatement.executeQuery();
             
             while (resultSet.next()) {
@@ -614,7 +622,6 @@ public class DatabaseManager{
 
             res = new Maintenance.MaintenanceData[dataList.size()];
             res = dataList.toArray(res);
-            System.out.println("[DATABASE]: Called Feladatok_listazasa");
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
