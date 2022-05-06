@@ -389,3 +389,49 @@ BEGIN
 		FROM IdoszakosFeladat;
 END//
 DELIMITER ;
+
+-- ------------------------------------------------
+-- Assign task to maintenance specialist procedure
+-- ------------------------------------------------
+DROP PROCEDURE IF EXISTS Karbantarto_hozzarendeles_feladathoz;
+DELIMITER //
+
+CREATE PROCEDURE Karbantarto_hozzarendeles_feladathoz(IN task_ID INT,
+													  IN maint_specialist_ID INT)
+BEGIN
+	UPDATE Feladat
+		SET Karbantarto_ID = maint_specialist_ID
+		WHERE Feladat_ID = task_ID;
+END//
+DELIMITER ;
+
+-- ------------------------------------------------
+-- List task assigned to maintenance specialist
+-- ------------------------------------------------
+DROP PROCEDURE IF EXISTS Karbantarto_feladatai_listazasa;
+DELIMITER //
+
+CREATE PROCEDURE Karbantarto_feladatai_listazasa(IN maint_specialist_ID INT
+											     IN task_ID INT)
+BEGIN
+	SELECT *
+		FROM Feladat
+		WHERE Karbantarto_ID = maint_specialist_ID
+		AND Feladat_ID = task_ID;
+END//
+DELIMITER ;
+
+-- ------------------------------------------------
+-- Change status of task procedure
+-- ------------------------------------------------
+DROP PROCEDURE IF EXISTS Feladat_allapot_megvaltoztatasa;
+DELIMITER //
+
+CREATE PROCEDURE Feladat_allapot_megvaltoztatasa(IN task_ID INT,
+												 IN status INT)
+BEGIN
+	UPDATE Feladat
+		SET Allapot = status
+		WHERE Feladat_ID = task_ID;
+END//
+DELIMITER ;
