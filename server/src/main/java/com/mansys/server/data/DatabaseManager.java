@@ -582,14 +582,14 @@ public class DatabaseManager{
             CallableStatement callableStatement;
 
             if (workerID.equals("") && qualificationID.equals("")) {
-                call = "{CALL Feladatok_listazasa()}";
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto, ek.Kepesites_ID FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) INNER JOIN Eszkozkategoria AS ek USING (Eszkoz_kategoria_neve)";
                 callableStatement = connection.prepareCall(call);
             } else if (qualificationID.equals("")) {
-                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) WHERE Karbantarto_ID = ?"; 
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto, ek.Kepesites_ID FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) INNER JOIN Eszkozkategoria AS ek USING (Eszkoz_kategoria_neve) WHERE Karbantarto_ID = ?"; 
                 callableStatement = connection.prepareCall(call);
                 callableStatement.setInt(1,Integer.parseInt(workerID));
             } else {
-                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) INNER JOIN Eszkozkategoria AS ek USING (Eszkoz_kategoria_neve) WHERE f.Karbantarto_ID IS NULL AND ek.Kepesites_ID = ?";
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto, ek.Kepesites_ID FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) INNER JOIN Eszkozkategoria AS ek USING (Eszkoz_kategoria_neve) WHERE f.Karbantarto_ID IS NULL AND ek.Kepesites_ID = ?";
                 callableStatement = connection.prepareCall(call);
                 callableStatement.setInt(1,Integer.parseInt(qualificationID));
             }
@@ -617,6 +617,7 @@ public class DatabaseManager{
                 temp.deviceName = null; // needs fixing database side
                 temp.deviceLocation = resultSet.getString(11);
                 temp.workerFullName = resultSet.getString(12);
+                temp.qualificationID = resultSet.getInt(13);
                 dataList.add(temp);
             }
 
