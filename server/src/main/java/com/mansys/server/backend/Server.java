@@ -412,12 +412,12 @@ public class Server implements ServerInterface {
                 res.setData(data);
                 break;
             }
-            case 1:
+            /*case 1:
             {
                 res.setErrorCode(0);
                 res.setErrorMessage("No workers with qualification");
                 break;
-            }
+            }*/
             default:
             {
                 res.setErrorMessage("Server error");
@@ -503,7 +503,7 @@ public class Server implements ServerInterface {
                 res.setData(data);
                 break;
             }
-            case 1:
+            /*case 1:
             {
                 res.setErrorCode(0);
                 res.setErrorMessage("Internal error");
@@ -512,7 +512,7 @@ public class Server implements ServerInterface {
                 if (!qualificationID.equals(""))
                     res.setErrorMessage("No avaliable tasks for qualification " + qualificationID);
                 break;
-            }
+            }*/
             default:
             {
                 res.setErrorMessage("Server error");
