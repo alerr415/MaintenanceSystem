@@ -77,7 +77,7 @@ class DatabaseManagerTest {
 
     @Test
     void callListWorker() {
-        Worker.WorkerData[] workers = DatabaseManager.getInstance().listWorker();
+        Worker.WorkerData[] workers = DatabaseManager.getInstance().listWorker(null);
         assertNotNull(workers);
     }
 
@@ -101,7 +101,7 @@ class DatabaseManagerTest {
 
     @Test
     void callListMaintenance() {
-        Maintenance.MaintenanceData[] maintenances = DatabaseManager.getInstance().listMaintenance();
+        Maintenance.MaintenanceData[] maintenances = DatabaseManager.getInstance().listMaintenance(null,null);
         assertNotNull(maintenances);
     }
 

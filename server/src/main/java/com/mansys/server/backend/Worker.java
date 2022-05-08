@@ -64,9 +64,14 @@ public class Worker {
     }
 
     public static class WorkerData {
+        private String workerID;
         private String lastName;
         private String firstName;
         private String qualificationID; //int
+
+        public String getWorkerID() {
+            return workerID;
+        }
 
         public String getLastName() {
             return lastName;
@@ -78,6 +83,10 @@ public class Worker {
 
         public int getQualificationID() {
             return Integer.parseInt(qualificationID);
+        }
+
+        public void setWorkerID(String value) {
+            this.workerID = value;
         }
 
         public void setLastName(String value) {

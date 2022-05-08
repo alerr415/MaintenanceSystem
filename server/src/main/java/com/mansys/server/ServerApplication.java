@@ -3,12 +3,14 @@ package com.mansys.server;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.mansys.server.backend.Assignment;
 import com.mansys.server.backend.Authenticate;
 import com.mansys.server.backend.Category;
 import com.mansys.server.backend.Device;
 import com.mansys.server.backend.Maintenance;
 import com.mansys.server.backend.Qualification;
 import com.mansys.server.backend.Server;
+import com.mansys.server.backend.State;
 import com.mansys.server.backend.Worker;
 
 import org.springframework.boot.SpringApplication;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -186,13 +189,14 @@ public class ServerApplication {
 	}
 
 	@GetMapping("/worker")
-	public ResponseEntity<?> getWorkers(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+	public ResponseEntity<?> getWorkers(@CookieValue(name="session-id",defaultValue="0") String sessId
+									  , @RequestParam(name="qualificationID",defaultValue="") String qualificationID) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION / CATEGORY] Invalid session: " + sessId);
 			return ResponseEntity.badRequest().build(); 
 		}
 
-		Worker.GetResponse response = Server.getInstance().handleWorkerList();
+		Worker.GetResponse response = Server.getInstance().handleWorkerList(qualificationID);
 
 		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
@@ -238,13 +242,51 @@ public class ServerApplication {
 	}
 
 	@GetMapping("/maintenance")
-	public ResponseEntity<?> getMaintenance(@CookieValue(name="session-id",defaultValue="0") String sessId) {
+	public ResponseEntity<?> getMaintenance(@CookieValue(name="session-id",defaultValue="0") String sessId
+										 , @RequestParam(name="workerID",defaultValue="") String workerID
+										 , @RequestParam(name="qualificationID",defaultValue="") String qualificationID) {
 		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
 			System.out.println("[SERVER APPLICATION GET /maintenance] Invalid session: " + sessId);
 			return ResponseEntity.badRequest().build(); 
 		}
 
-		Maintenance.GetResponse response = Server.getInstance().handleMaintenanceList();
+		Maintenance.GetResponse response = Server.getInstance().handleMaintenanceList(workerID,qualificationID);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@PostMapping("/assign")
+	public ResponseEntity<?> setAssignment(@RequestBody Assignment.Request request,
+									        @CookieValue(name="session-id", defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION POST /assign] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		Assignment.Response response = Server.getInstance().handleAssignment(request);
+
+		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
+			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,refreshed.toString()).body(response);
+		} else {
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	@PostMapping("/state")
+	public ResponseEntity<?> setState(@RequestBody State.Request request,
+									        @CookieValue(name="session-id", defaultValue="0") String sessId) {
+		if (!Server.getInstance().isSessionValid(Integer.parseInt(sessId))) {
+			System.out.println("[SERVER APPLICATION POST /state] Invalid session: " + sessId);
+			return ResponseEntity.badRequest().build(); 
+		}
+
+		State.Response response = Server.getInstance().handleState(request);
 
 		if (response.getErrorCode() == Server.getInstance().getRescodeOK()) {
 			ResponseCookie refreshed = Server.getInstance().refreshSession(Integer.parseInt(sessId));

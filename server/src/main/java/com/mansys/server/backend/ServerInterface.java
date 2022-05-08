@@ -14,8 +14,10 @@ public interface ServerInterface {
     public Qualification.GetResponse handleQualificationList();
     public Qualification.Response handleQualification(Qualification.Request req);
     public Worker.Response handleWorker(Worker.Request req);
-    public Worker.GetResponse handleWorkerList();
+    public Worker.GetResponse handleWorkerList(String qualificationID);
     public Maintenance.Response handleMaintenance(Maintenance.Request req);
-    public Maintenance.GetResponse handleMaintenanceList();
+    public Maintenance.GetResponse handleMaintenanceList(String workerID, String qualificationID);
     public void updateTimerTasks();
+    public Assignment.Response handleAssignment(Assignment.Request req);
+    public State.Response handleState(State.Request req);
 }

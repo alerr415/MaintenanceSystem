@@ -425,20 +425,30 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public Worker.WorkerData[] listWorker()
+    public Worker.WorkerData[] listWorker(String qualificationID)
     {
         Worker.WorkerData[] res;
         List<Worker.WorkerData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            
-            String call = "{CALL Karbantartok_listazasa()}";
-            CallableStatement callableStatement = connection.prepareCall(call);
+            String call;
+            CallableStatement callableStatement;
+            if (qualificationID.equals("")) {
+                call = "{CALL Karbantartok_listazasa()}";
+                callableStatement = connection.prepareCall(call);
+            }
+            else {
+                call = "SELECT * FROM karbantarto WHERE Kepesites_ID = ?;";
+                callableStatement = connection.prepareCall(call);
+                callableStatement.setInt(1,Integer.parseInt(qualificationID));
+            }
+            System.out.println("[DATABASE listing workers\nqualification id: " + qualificationID);
             ResultSet resultSet = callableStatement.executeQuery();
             
             while (resultSet.next()) {
                 Worker.WorkerData temp = new Worker.WorkerData();
+                temp.setWorkerID(String.valueOf(resultSet.getInt(1)));
                 temp.setLastName(resultSet.getString(2));
                 temp.setFirstName(resultSet.getString(3));
                 temp.setQualificationID(resultSet.getInt(4)); // INCOMPLETE PROCEDURE
@@ -562,15 +572,28 @@ public class DatabaseManager{
         return resCode;
     }
 
-    public Maintenance.MaintenanceData[] listMaintenance() {
+    public Maintenance.MaintenanceData[] listMaintenance(String workerID, String qualificationID) {
         Maintenance.MaintenanceData[] res;
         List<Maintenance.MaintenanceData> dataList = new ArrayList<>(); 
 
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            
-            String call = "{CALL Feladatok_listazasa()}";
-            CallableStatement callableStatement = connection.prepareCall(call);
+            String call;
+            CallableStatement callableStatement;
+
+            if (workerID.equals("") && qualificationID.equals("")) {
+                call = "{CALL Feladatok_listazasa()}";
+                callableStatement = connection.prepareCall(call);
+            } else if (qualificationID.equals("")) {
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) WHERE Karbantarto_ID = ?"; 
+                callableStatement = connection.prepareCall(call);
+                callableStatement.setInt(1,Integer.parseInt(workerID));
+            } else {
+                call = "SELECT f.*, Elhelyezkedes, CONCAT(k.Vezeteknev, ' ', k.Keresztnev) AS Karbantarto FROM Feladat AS f JOIN Eszkoz USING (Eszkoz_ID) LEFT JOIN Karbantarto AS k USING (Karbantarto_ID) INNER JOIN Eszkozkategoria AS ek USING (Eszkoz_kategoria_neve) WHERE f.Karbantarto_ID IS NULL AND ek.Kepesites_ID = ?";
+                callableStatement = connection.prepareCall(call);
+                callableStatement.setInt(1,Integer.parseInt(qualificationID));
+            }
+            System.out.println("[DATABASE]: Called Feladatok_listazasa\nworker id: " + workerID + "\nqualification: " + qualificationID);
             ResultSet resultSet = callableStatement.executeQuery();
             
             while (resultSet.next()) {
@@ -599,7 +622,6 @@ public class DatabaseManager{
 
             res = new Maintenance.MaintenanceData[dataList.size()];
             res = dataList.toArray(res);
-            System.out.println("[DATABASE]: Called Feladatok_listazasa");
         } 
         catch (SQLException ex) {
             System.err.println("[ERROR]: Error occured in function listMaintenance: " + ex + "\nStack trace: ");
@@ -773,5 +795,71 @@ public class DatabaseManager{
             }
         }   
     }
+
+    public int setAssignment(String maintenanceID, String workerID) {
+        int resCode = 0;
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "UPDATE Feladat SET Karbantarto_ID = ? WHERE Feladat_ID = ?;";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setInt(1,Integer.parseInt(workerID));
+            callableStatement.setInt(2,Integer.parseInt(maintenanceID));
+
+            callableStatement.execute();
+            System.out.println("[DATABASE] setting assignment\nmaintenance id: " + maintenanceID + "\nworker id: " + workerID);
+        } 
+        catch (SQLException ex) {
+            resCode = 1;
+            System.err.println("[ERROR]: Error occured in function addTimerTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addTimerTask when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return resCode;
+    }
+
+    public int modifyState(String maintenanceID, String state, String denial) {
+        int resCode = 0;
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "UPDATE Feladat SET Allapot = ?, Elutasitas_indoklasa = ? WHERE Feladat_ID = ?";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setInt(1,Integer.parseInt(state));
+            if (denial == null || denial.equals(""))    
+                callableStatement.setNull(2,java.sql.Types.VARCHAR);
+            else
+                callableStatement.setString(2,denial);
+            callableStatement.setInt(3,Integer.parseInt(maintenanceID));
+           callableStatement.execute();
+           System.out.println("[DATABASE] setting state task: " + maintenanceID + "\nstate: " + state + "\ndenial justification: " + denial);
+        } 
+        catch (SQLException ex) {
+            resCode = 1;
+            System.err.println("[ERROR]: Error occured in function addTimerTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function addTimerTask when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+        return resCode;
+    }
+
 
 }
