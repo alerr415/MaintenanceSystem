@@ -32,7 +32,6 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { green } from '@mui/material/colors';
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -59,8 +58,7 @@ function ListOperatorTask(props) {
 
       if (data.errorCode === 0) {
         console.log("Sikeres lekérdezés :D");
-        console.log("TASK:" + data.data);
-
+        console.log(data.data);
         setTaskList(data.data);
         setTaskListFetched(true);
 
@@ -93,8 +91,7 @@ function ListOperatorTask(props) {
 
       if (data.errorCode === 0) {
         console.log("Sikeres lekérdezés :D");
-        console.log("WORKER:" + data.data);
-
+        console.log(data.data);
         setWorkerList(data.data);
         setWorkerListFetched(true);
 
@@ -114,75 +111,6 @@ function ListOperatorTask(props) {
       hitError(true);
     });
   };
-
-  const [deviceList, setDeviceList] = React.useState(["d"]);
-  const [deviceListFetched, setDeviceListFetched] =  React.useState(false);
-
-  function fetchDeviceList() {
-    fetch(serveraddress + '/device')
-    .then(response => response.json())
-    .then(data => {
-
-      console.log('Success:', data);
-
-      if (data.errorCode === 0) {
-        console.log("Sikeres lekérdezés :D");
-        console.log("DEVICE:" + data.data);
-
-        setDeviceList(data.data);
-        setDeviceListFetched(true);
-
-      } else {
-        console.log("Sikertelen lekérdezés! :(");
-        console.log(data.errorMessage);
-        //setFeedbackText("Az eszközök lekérdezése sikertelen. " + data.errorMessage);
-        //hitError(true);
-      }
-
-      setDeviceListFetched(true);
-
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
-      hitError(true);
-    });
-  };
-
-  const [categoryList, setCategoryList] = React.useState(["d"]);
-  const [categoryListFetched, setCategoryListFetched] =  React.useState(false);
-
-  function fetchCategoryList() {
-    fetch(serveraddress + '/category')
-    .then(response => response.json())
-    .then(data => {
-
-      console.log('Success:', data);
-
-      if (data.resultCode === 0) {
-        console.log("Sikeres lekérdezés :D");
-        console.log("CATEGORY:" + data.categoryList);
-
-        setCategoryList(data.categoryList);
-        setCategoryListFetched(true);
-
-      } else {
-        console.log("Sikertelen lekérdezés! :(");
-        console.log(data.resultMessage);
-        //setFeedbackText("A kategóriák lekérdezése sikertelen. " + data.resultMessage);
-        //hitError(true);
-      }
-
-      setCategoryListFetched(true);
-
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
-      hitError(true);
-    });
-  };
-
 
   function getTaskColor(state) {
     if ( state === "0" || state === 0 ) {
@@ -266,13 +194,11 @@ function ListOperatorTask(props) {
   }
 
   function resolveWorkerNames(id) {
+    //let currentWorker = workerList.find((worker) => {return worker.id == id});
+    //if (currentWorker !== undefined) {
+    //  return currentWorker.lastName.concat(currentWorker.firstName);
+    //}
     return "TODO";
-  }
-
-  function greenIfQualified(had, needed) {
-    if (had.toString() === needed.toString()) {
-      return ( { backgroundColor : "green[200]"} );
-    }
   }
 
   const [scheduleDialogOpen, setScheduleDialogOpen] = React.useState(false);
@@ -295,10 +221,6 @@ function ListOperatorTask(props) {
   useEffect(() => {
     if (!taskListFetched) fetchTaskList();
     if (!workerListFetched) fetchWorkerList();
-
-    if (!deviceListFetched) fetchDeviceList();
-    if (!categoryListFetched) fetchCategoryList();
-
   });
 
 return(
@@ -353,7 +275,7 @@ return(
                                 <InputLabel id="selectWorkerLabel">Karbantartó</InputLabel>
                                 <Select labelId="selectWorkerLabel" id="workerSelect" value={workerToSchedule} onChange={workerSelectChange} label="Karbantartó">
                                   {workerList.map((worker, index) => (
-                                    <MenuItem value={worker.workerID} sx={greenIfQualified(worker.qualificationID, task.qualificationID)} key={index}>{worker.lastName} {worker.firstName}</MenuItem>
+                                    <MenuItem value={worker.workerID} key={index}>{worker.lastName} {worker.firstName}</MenuItem>
                                   ))}
                                 </Select>
                               </FormControl>
