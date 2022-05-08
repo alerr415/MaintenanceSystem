@@ -45,9 +45,17 @@ Used to get all the categories in a list.
 (None for now)
 
 ### Response
-- \[String\] categories
+- \[CategoryData\] categories
 - String resultMessage
 - int resultCode
+
+### CategoryData
+- String categoryName
+- String period
+- String stepsDescription
+- int normTime
+- String parent
+- int qualificationID
 
 ## Add device (POST /device)
 Used for creating new devices.

@@ -735,6 +735,7 @@ public class DatabaseManager{
             while (resultSet.next()) {
                 Category.CategoryData temp = new Category.CategoryData();
                 temp.categoryName = resultSet.getString(1);
+                temp.qualificationID = resultSet.getInt(2);
                 temp.period = resultSet.getString(3);
                 temp.normTime = resultSet.getTime(4).getHours();
                 temp.stepsDescription = resultSet.getString(5);
