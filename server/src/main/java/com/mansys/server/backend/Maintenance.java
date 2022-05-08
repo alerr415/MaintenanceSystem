@@ -107,5 +107,6 @@ public class Maintenance {
         public String finishDate;
         public String normTime;
         public String specification;
+        public int qualificationID;
     }
 }
