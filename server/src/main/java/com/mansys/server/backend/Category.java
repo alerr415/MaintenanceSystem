@@ -147,5 +147,6 @@ public class Category {
         public String stepsDescription; // a.k.a. ur Stepsis
         public int normTime;
         public String parent;
+        public int qualificationID;
     }
 }
