@@ -104,16 +104,20 @@ worker's qualification. The qualification names can
 be queried with the GET /qualification resource and 
 from that point the data can be cached.
 NOTE: cache refresh response not implemented yet.
+CHANGE: added workerID to WorkerData
+CHANGE: can filter results by qualification id
 
 ### Request
-(none for now)
+Optional
+- String qualificationID
 
 ### Response
-- \[Worker\] data
+- \[WorkerData\] data
 - String errorMessage
 - int errorCode
 
 ### WorkerData
+- String workerID
 - String lastName
 - String firstName
 - int qualificationID
@@ -159,7 +163,11 @@ a maintenance task. Might change later.
 Maintenance data query method.
 
 ### Request
-(none)
+Optional, the worker id can query the tasks of the specified worker
+- String workerID
+Optional, shouldn't be used alongside workerID. This will query the 
+non-assigned tasks with the specified qualification
+- String qualificationID
 
 ### Response
 - int errorCode
@@ -178,3 +186,27 @@ Maintenance data query method.
 - String finishDate
 - String normTime
 - String specification
+
+## Set task state (POST /state)
+The state should be the integer parsed into string format. 
+Denial justification is only needed if the worker denies the task, otherwise
+it can be null.
+
+### Request
+- String maintenanceID
+- String state
+- String denialJustification 
+
+### Response
+- int errorCode
+- String errorMessage
+
+## Assign task to worker (POST /assign)
+
+### Request
+- String maintenanceID
+- String workerID
+
+### Response
+- int errorCode
+- String errorMessage
