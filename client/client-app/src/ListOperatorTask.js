@@ -266,48 +266,13 @@ function ListOperatorTask(props) {
   }
 
   function resolveWorkerNames(id) {
-    //let currentWorker = workerList.find((worker) => {return worker.id == id});
-    //if (currentWorker !== undefined) {
-    //  return currentWorker.lastName.concat(currentWorker.firstName);
-    //}
     return "TODO";
   }
 
-  function resolveQualification(task) {
-    let deviceID = task.deviceID;
-    let category = "";
-
-    console.log("DEVICE:" + deviceID);
-    console.log("CAT:" + category);
-
-    if (deviceListFetched) {
-
-      for (var i = 0; i < deviceList.length; i++) {
-        if (deviceList[i].deviceID.toString() === deviceID.toString()) {
-          category = deviceList[i].deviceCategoryName;
-          console.log("DEVICE:" + deviceID + deviceList[i].deviceName);
-          console.log("CAT:" + deviceList[i].deviceCategoryName);
-          console.log(" '--> cat:" + category);
-        }
-      }
-
-      if (categoryListFetched) {
-
-        for (var i = 0; i < categoryList.length; i++) {
-          if (categoryList[i].categoryName.toString() === category.toString()) {
-            console.log("FINALLY");
-            console.log("DEVICE:" + deviceID);
-            console.log("CAT:" + category);
-            console.log("QUAL:" + categoryList[i].qualificationID);
-            return categoryList[i].qualificationID;
-          }
-        }
-
-      }
-    } else {
-      return  "TODO";
+  function greenIfQualified(had, needed) {
+    if (had.toString() === needed.toString()) {
+      return ( { backgroundColor : "green[200]"} );
     }
-
   }
 
   const [scheduleDialogOpen, setScheduleDialogOpen] = React.useState(false);
@@ -388,7 +353,7 @@ return(
                                 <InputLabel id="selectWorkerLabel">Karbantartó</InputLabel>
                                 <Select labelId="selectWorkerLabel" id="workerSelect" value={workerToSchedule} onChange={workerSelectChange} label="Karbantartó">
                                   {workerList.map((worker, index) => (
-                                    <MenuItem value={worker.workerID} sx={worker.qualificationID === resolveQualification(task) && { backgroundColor : "green[200]" }} key={index}>{worker.lastName} {worker.firstName}</MenuItem>
+                                    <MenuItem value={worker.workerID} sx={greenIfQualified(worker.qualificationID, task.qualificationID)} key={index}>{worker.lastName} {worker.firstName}</MenuItem>
                                   ))}
                                 </Select>
                               </FormControl>
