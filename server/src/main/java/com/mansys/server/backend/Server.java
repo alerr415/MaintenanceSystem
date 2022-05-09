@@ -557,6 +557,13 @@ public class Server implements ServerInterface {
     public State.Response handleState(State.Request req) {
         System.out.println("[SERVER] handle state change\ntask: " + req.getMaintenanceID() + "\nstate: " + req.getState());
         int resCode = DatabaseManager.getInstance().modifyState(req.getMaintenanceID(),req.getState(),req.getDenialJustification());
+
+        // handle reset
+        if (req.getState().equals("3")) {
+            DatabaseManager.getInstance().resetTask(req.getMaintenanceID());
+        }
+
+
         State.Response res = new State.Response();
         switch (resCode) {
             case 0:
