@@ -889,4 +889,58 @@ public class DatabaseManager{
         }   
     }
 
+    public void startTask(String maintenanceID) {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "UPDATE Feladat SET Kezdeti_idopont = ? WHERE Feladat_ID = ?";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setDate(1,new Date(System.currentTimeMillis()));
+            callableStatement.setInt(2,Integer.parseInt(maintenanceID));
+            callableStatement.execute();
+            System.out.println("[DATABASE] Setting start timestamp for task " + maintenanceID);
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function startTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function startTask when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }  
+    }
+
+    public void finishTask(String maintenanceID) {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "UPDATE Feladat SET Befejezesi_idopont = ? WHERE Feladat_ID = ?";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setDate(1,new Date(System.currentTimeMillis()));
+            callableStatement.setInt(2,Integer.parseInt(maintenanceID));
+            callableStatement.execute();
+            System.out.println("[DATABASE] Setting finish timestamp for task " + maintenanceID);
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function finishTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function finishTask when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }  
+    }
+
 }
