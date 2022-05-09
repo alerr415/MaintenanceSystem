@@ -812,7 +812,7 @@ public class DatabaseManager{
         } 
         catch (SQLException ex) {
             resCode = 1;
-            System.err.println("[ERROR]: Error occured in function addTimerTask: " + ex + "\nStack trace: ");
+            System.err.println("[ERROR]: Error occured in function setAssignment: " + ex + "\nStack trace: ");
             ex.printStackTrace();
         } 
         finally {
@@ -822,7 +822,7 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function addTimerTask when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function setAssignment when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
             }
         }   
@@ -846,7 +846,7 @@ public class DatabaseManager{
         } 
         catch (SQLException ex) {
             resCode = 1;
-            System.err.println("[ERROR]: Error occured in function addTimerTask: " + ex + "\nStack trace: ");
+            System.err.println("[ERROR]: Error occured in function modifyState: " + ex + "\nStack trace: ");
             ex.printStackTrace();
         } 
         finally {
@@ -856,12 +856,38 @@ public class DatabaseManager{
                 }
             } 
             catch (SQLException ex) {
-                System.err.println("[ERROR]: Error occured in function addTimerTask when try to close connection: " + ex + "\nStack trace: ");
+                System.err.println("[ERROR]: Error occured in function modifyState when try to close connection: " + ex + "\nStack trace: ");
                 ex.printStackTrace();
             }
         }   
         return resCode;
     }
 
+    public void resetTask(String maintenanceID) {
+        // worker id to null automatically for the specified task
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            String call = "UPDATE Feladat SET Karbantarto_ID = NULL WHERE Feladat_ID = ?";
+            CallableStatement callableStatement = connection.prepareCall(call);
+            callableStatement.setInt(1,Integer.parseInt(maintenanceID));
+           callableStatement.execute();
+           System.out.println("[DATABASE] Resetting worker id for task " + maintenanceID);
+        } 
+        catch (SQLException ex) {
+            System.err.println("[ERROR]: Error occured in function resetTask: " + ex + "\nStack trace: ");
+            ex.printStackTrace();
+        } 
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException ex) {
+                System.err.println("[ERROR]: Error occured in function resetTask when try to close connection: " + ex + "\nStack trace: ");
+                ex.printStackTrace();
+            }
+        }   
+    }
 
 }
