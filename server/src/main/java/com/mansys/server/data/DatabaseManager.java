@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.ResultSet;
 import java.sql.CallableStatement;
 import java.sql.Types;
@@ -894,7 +895,8 @@ public class DatabaseManager{
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String call = "UPDATE Feladat SET Kezdeti_idopont = ? WHERE Feladat_ID = ?";
             CallableStatement callableStatement = connection.prepareCall(call);
-            callableStatement.setDate(1,new Date(System.currentTimeMillis()));
+            Date date = new Date(System.currentTimeMillis());
+            callableStatement.setTimestamp(1,new Timestamp(date.getTime()));
             callableStatement.setInt(2,Integer.parseInt(maintenanceID));
             callableStatement.execute();
             System.out.println("[DATABASE] Setting start timestamp for task " + maintenanceID);
@@ -921,7 +923,8 @@ public class DatabaseManager{
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String call = "UPDATE Feladat SET Befejezesi_idopont = ? WHERE Feladat_ID = ?";
             CallableStatement callableStatement = connection.prepareCall(call);
-            callableStatement.setDate(1,new Date(System.currentTimeMillis()));
+            Date date = new Date(System.currentTimeMillis());
+            callableStatement.setTimestamp(1,new Timestamp(date.getTime()));
             callableStatement.setInt(2,Integer.parseInt(maintenanceID));
             callableStatement.execute();
             System.out.println("[DATABASE] Setting finish timestamp for task " + maintenanceID);
