@@ -51,6 +51,8 @@ public class Server implements ServerInterface {
      */
     public static final long UPDATE_DELAY = 1000L * 60L * 60L; // 1 hour
 
+    private final String STATE_REJECTED = "3";
+
     /**
      * Container to store the valid sessions.
      * Basic session: <br>
@@ -559,7 +561,7 @@ public class Server implements ServerInterface {
         int resCode = DatabaseManager.getInstance().modifyState(req.getMaintenanceID(),req.getState(),req.getDenialJustification());
 
         // handle reset
-        if (req.getState().equals("3")) {
+        if (req.getState().equals(STATE_REJECTED)) {
             DatabaseManager.getInstance().resetTask(req.getMaintenanceID());
         }
 
