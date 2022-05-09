@@ -369,7 +369,7 @@ return(
 
                   {(task.state === 0 || task.state === "0" || task.state === 3 || task.state === "3") &&
                     <Grid item xs={12} sm={12} md={2} lg={2}>
-                      <Button size="large" variant="contained" color="success" onClick={() => {handleScheduleButton(task)}} fullWidth>Ütemez</Button>
+                      <Button size="large" color="success" onClick={() => {handleScheduleButton(task)}} fullWidth>Ütemez</Button>
                         <div>
                           <Dialog open={scheduleDialogOpen} onClose={handleScheduleDialogClose} >
 
@@ -393,8 +393,8 @@ return(
                             </DialogContent>
 
                             <DialogActions>
-                              <Button onClick={handleScheduleDialogClose}>Mégse</Button>
-                              <Button onClick={schedule}>Hozzárendelés</Button>
+                              <Button color="error" onClick={handleScheduleDialogClose}>Mégse</Button>
+                              <Button color="success" onClick={schedule}>Hozzárendelés</Button>
                             </DialogActions>
 
                           </Dialog>

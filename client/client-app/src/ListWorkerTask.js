@@ -438,7 +438,54 @@ const startTask = (task) => {
         console.log("Sikertelen Hozzáadás! :( ");
         console.log(data.errorMessage);
 
-        setFeedbackText("A feladat elfogadása sikertelen! " + data.errorMessage);
+        setFeedbackText("A feladat megkezdése sikertelen! " + data.errorMessage);
+        hitError(true);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
+    });
+  }
+}
+
+const endTask = (task) => {
+  console.log("STATECHANGE(END):");
+  console.log(task);
+
+  if (task !== undefined && task !== null && task !== "") {
+
+    let toSend  = {"maintenanceID" : task.maintenanceTaskID,
+                   "state" : "5",
+                   "denialJustification" : null
+                  }
+
+    console.log(toSend);
+
+    fetch(serveraddress + '/state', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(toSend),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      if (data.errorCode === 0) {
+
+        console.log("Sikeres Hozzáadás :D ");
+        setFeedbackText("A feladat befejezése sikeresen megtörtént!");
+        hitSuccess(true);
+
+        navigate("/app/scheduleDone");
+
+      } else {
+        console.log("Sikertelen Hozzáadás! :( ");
+        console.log(data.errorMessage);
+
+        setFeedbackText("A feladat befejezése sikertelen! " + data.errorMessage);
         hitError(true);
       }
     })
@@ -493,8 +540,8 @@ return(
                   {(task.state === 1 || task.state === "1") &&
                     // ha ütemezett állapotban van
                     <Grid item xs={12} sm={12} md={2} lg={2}>
-                      <Button size="large" variant="contained" color="success" onClick={() => {acceptTask(task)}} fullWidth>Elfogad</Button>
-                      <Button size="large" variant="outlined" color="error" onClick={openDeclineReassure} fullWidth>Elutasít</Button>
+                      <Button size="large" color="success" onClick={() => {acceptTask(task)}} fullWidth>Elfogad</Button>
+                      <Button size="large" color="error" onClick={openDeclineReassure} fullWidth>Elutasít</Button>
                     </Grid>
                   }
 
@@ -516,8 +563,8 @@ return(
                         />
                     </DialogContent>
                     <DialogActions>
-                      <Button onClick={cancelDecline}>Mégsem</Button>
-                      <Button onClick={() => {reassureDecline(task)}}>Elutasítás</Button>
+                      <Button color="success" onClick={cancelDecline}>Mégsem</Button>
+                      <Button color="error" onClick={() => {reassureDecline(task)}}>Elutasítás</Button>
                     </DialogActions>
                   </Dialog>
 
@@ -525,7 +572,7 @@ return(
                   {(task.state === 2 || task.state === "2") &&
                     // ha elfogadott állapotban van
                     <Grid item xs={12} sm={12} md={2} lg={2}>
-                      <Button size="large" variant="contained" color="success" onClick={() => {startTask(task)}} fullWidth>Kezdés</Button>
+                      <Button size="large" color="success" onClick={() => {startTask(task)}} fullWidth>Kezdés</Button>
                     </Grid>
                   }
 
@@ -534,7 +581,7 @@ return(
                     // ha megkezdett állapotban van
                     <>
                       <Grid item xs={12} sm={12} md={2} lg={2}>
-                        <Button size="large" variant="contained" color="success" fullWidth>Befejezés</Button>
+                        <Button size="large" color="success" onClick={() => {endTask(task)}} fullWidth>Befejezés</Button>
                       </Grid>
 
                       <Grid item xs={12} sm={12} md={12} lg={12}>
