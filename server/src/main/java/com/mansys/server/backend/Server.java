@@ -51,6 +51,8 @@ public class Server implements ServerInterface {
      */
     public static final long UPDATE_DELAY = 1000L * 60L * 60L; // 1 hour
 
+    private final String STATE_REJECTED = "3";
+
     /**
      * Container to store the valid sessions.
      * Basic session: <br>
@@ -415,8 +417,8 @@ public class Server implements ServerInterface {
             }
             case 1:
             {
-                res.setErrorCode(0);
-                res.setErrorMessage("No workers with qualification");
+                res.setErrorCode(69);
+                res.setErrorMessage("No workers with qualification " + qualificationID);
                 break;
             }
             default:
@@ -506,7 +508,7 @@ public class Server implements ServerInterface {
             }
             case 1:
             {
-                res.setErrorCode(0);
+                res.setErrorCode(69);
                 res.setErrorMessage("Internal error");
                 if (!workerID.equals(""))
                     res.setErrorMessage("No tasks for worker " + workerID);
@@ -558,6 +560,13 @@ public class Server implements ServerInterface {
     public State.Response handleState(State.Request req) {
         System.out.println("[SERVER] handle state change\ntask: " + req.getMaintenanceID() + "\nstate: " + req.getState());
         int resCode = DatabaseManager.getInstance().modifyState(req.getMaintenanceID(),req.getState(),req.getDenialJustification());
+
+        // handle reset
+        if (req.getState().equals(STATE_REJECTED)) {
+            DatabaseManager.getInstance().resetTask(req.getMaintenanceID());
+        }
+
+
         State.Response res = new State.Response();
         switch (resCode) {
             case 0:
