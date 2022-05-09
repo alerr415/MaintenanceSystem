@@ -198,14 +198,6 @@ function ListOperatorTask(props) {
     }
   }
 
-  function resolveWorkerNames(id) {
-    //let currentWorker = workerList.find((worker) => {return worker.id == id});
-    //if (currentWorker !== undefined) {
-    //  return currentWorker.lastName.concat(currentWorker.firstName);
-    //}
-    return "TODO";
-  }
-
   const [scheduleDialogOpen, setScheduleDialogOpen] = React.useState(false);
   const [openTask, setOpenTask] = React.useState('');
 
@@ -242,8 +234,7 @@ function ListOperatorTask(props) {
   };
 
   const schedule = () => {
-
-    console.log("OPENTASK:");
+    console.log("ASSIGN:");
     console.log(openTask);
 
     if (openTask !== undefined && workerToSchedule !== undefined && openTask !== "" && workerToSchedule !== "") {
@@ -265,12 +256,59 @@ function ListOperatorTask(props) {
         console.log('Success:', data);
         if (data.errorCode === 0) {
 
-          console.log("Sikeres Hozzáadás :D");
-          setFeedbackText("A karbantartás hozzárendelése megtörtént!");
-          hitSuccess(true);
+          console.log("Sikeres Hozzárendelés :D");
 
-          handleScheduleDialogClose();
-          navigate("/app/listOpTasks");
+          console.log("STATECHANGE:");
+          console.log(openTask);
+
+          if (openTask !== undefined && openTask !== "") {
+
+            let toSend  = {"maintenanceID" : openTask.maintenanceTaskID,
+                           "state" : "1",
+                           "denialJustification" : null
+                          }
+
+            console.log(toSend);
+
+            fetch(serveraddress + '/state', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(toSend),
+            })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Success:', data);
+              if (data.errorCode === 0) {
+
+                console.log("Sikeres Hozzáadás :D ");
+                setFeedbackText("A karbantartó hozzárendelése megtörtént!");
+                hitSuccess(true);
+                setScheduleDialogOpen(false);
+                navigate("/app/scheduleDone");
+
+              } else {
+                console.log("Sikertelen Hozzáadás! :( ");
+                console.log(data.errorMessage);
+
+                setFeedbackText("A karbantartás hozzárendelése sikertelen! " + data.errorMessage);
+                hitError(true);
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+              setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+              hitError(true);
+            });
+
+          } else { // ha valamelyik adat hiányzik
+            console.log("Sikertelen Hozzáadás! :(");
+            console.log("valamelyik mező üresen maradt");
+            setFeedbackText("Az hozzárendelés sikertelen! Próbálja újra!");
+            hitError(true);
+          }
+
 
         } else {
           console.log("Sikertelen Hozzáadás! :(");
@@ -319,7 +357,7 @@ return(
                   <Grid item xs={12} sm={12} md={3} lg={3}>
                     <p><Typography sx={{ fontWeight: "bold" }}>Érintett eszköz:</Typography> {task.deviceName} (#{task.deviceID})</p>
                     <p><Typography sx={{ fontWeight: "bold" }}>Helyszín:</Typography> {task.deviceLocation}</p>
-                    <p><Typography sx={{ fontWeight: "bold" }}>Karbantartó:</Typography> {resolveWorkerNames(task.workerID)}</p>
+                    <p><Typography sx={{ fontWeight: "bold" }}>Karbantartó:</Typography> {task.workerFullName !== null && task.workerFullName} </p>
 
                   </Grid>
 

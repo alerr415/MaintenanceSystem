@@ -11,6 +11,7 @@ import ListCategoryScreen from './ListCategoryScreen.js';
 
 import AddMaintenanceTask from './AddMaintenanceTask.js';
 import ListOperatorTask from './ListOperatorTask.js';
+import ScheduleDone from './ScheduleDone.js';
 
 import AddMaintenanceWorker from './AddMaintenanceWorker.js';
 import ListMaintenanceWorker from './ListMaintenanceWorker.js';
@@ -49,6 +50,8 @@ function App() {
 
                 <Route path="newTask" element={<AddMaintenanceTask />} />
                 <Route path="listOpTasks" element={<ListOperatorTask />} />
+                <Route path="scheduleDone" element={<ScheduleDone />} />
+
                 <Route path="newWorker" element={<AddMaintenanceWorker />} />
                 <Route path="listWorkers" element={<ListMaintenanceWorker />} />
 
