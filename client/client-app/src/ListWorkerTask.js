@@ -45,7 +45,7 @@ function ListWorkerTask(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const [taskList, setTaskList] = React.useState(["d"]);
+  const [taskList, setTaskList] = React.useState(undefined);
   const [taskListFetched, setTaskListFetched] =  React.useState(false);
 
   function fetchTaskList() {
@@ -55,10 +55,10 @@ function ListWorkerTask(props) {
 
       console.log('Success:', data);
 
-      if (data.errorCode === 0) {
+      if (data.errorCode === 0 && data.data !== undefined && data.data !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
-        
+
         setTaskList(data.data);
         setTaskListFetched(true);
 
@@ -79,7 +79,7 @@ function ListWorkerTask(props) {
     });
   };
 
-  const [workerList, setWorkerList] = React.useState(["d"]);
+  const [workerList, setWorkerList] = React.useState(undefined);
   const [workerListFetched, setWorkerListFetched] =  React.useState(false);
 
   function fetchWorkerList() {
@@ -89,9 +89,10 @@ function ListWorkerTask(props) {
 
       console.log('Success:', data);
 
-      if (data.errorCode === 0) {
+      if (data.errorCode === 0 && data.data !== undefined && data.data !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
+
         setWorkerList(data.data);
         setWorkerListFetched(true);
 
@@ -113,7 +114,7 @@ function ListWorkerTask(props) {
   };
 
 
-  const [deviceList, setDeviceList] = React.useState(["d"]);
+  const [deviceList, setDeviceList] = React.useState(undefined);
   const [deviceListFetched, setDeviceListFetched] =  React.useState(false);
 
   function fetchDeviceList() {
@@ -123,9 +124,10 @@ function ListWorkerTask(props) {
 
       console.log('Success:', data);
 
-      if (data.errorCode === 0) {
+      if (data.errorCode === 0 && data.data !== undefined && data.data !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
+
         setDeviceList(data.data);
         setDeviceListFetched(true);
 
@@ -146,7 +148,7 @@ function ListWorkerTask(props) {
     });
   };
 
-  const [categoryList, setCategoryList] = React.useState(["d"]);
+  const [categoryList, setCategoryList] = React.useState(undefined);
   const [categoryListFetched, setCategoryListFetched] =  React.useState(false);
 
   function fetchCategoryList() {
@@ -156,7 +158,7 @@ function ListWorkerTask(props) {
 
       console.log('Success:', data);
 
-      if (data.resultCode === 0) {
+      if (data.resultCode === 0 && data.categoryList !== undefined && data.categoryList !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.categoryList);
         setCategoryList(data.categoryList);
@@ -200,6 +202,8 @@ function ListWorkerTask(props) {
     console.log("STATECHANGE(DENY):");
     console.log(task);
     let reason = document.getElementById('reason').value;
+    console.log("REASON");
+    console.log(reason);
 
     if (task !== undefined && task !== "") {
 
@@ -300,10 +304,9 @@ function ListWorkerTask(props) {
   }
 
   function ownTask(task) {
-    //console.log("selfID:" + user.workerID);
-    //console.log("workerID:" + task.workerID);
-    //if (task.workerID === user.workerID) console.log("HOPPÁ!");
-    return (task.workerID === user.workerID);
+    if (task !== undefined && task !== null && task.workerID !== undefined && user.workerID !== undefined) {
+      return (task.workerID === user.workerID);
+    }
   }
 
   function resolveWorkerNames(id) {
@@ -311,39 +314,44 @@ function ListWorkerTask(props) {
   }
 
   function getTaskDescription(task) {
-    let deviceID = task.deviceID;
-    let category = "";
-    console.log("DEVICE:" + deviceID);
-    console.log("CAT:" + category);
+    if (task !== undefined && task !== null) {
+      let deviceID = task.deviceID;
+      let category = "";
+      console.log("DEVICE:" + deviceID);
+      console.log("CAT:" + category);
 
-    if(deviceID !== undefined && deviceID !== null) {
+      if(deviceID !== undefined && deviceID !== null && deviceList !== undefined && deviceList !== null) {
 
-      for (var i = 0; i < deviceList.length; i++) {
-        if (deviceList[i].deviceID.toString() === deviceID.toString()) {
-          category = deviceList[i].deviceCategoryName;
-          console.log("DEVICE:" + deviceID + deviceList[i].deviceName);
-          console.log("CAT:" + deviceList[i].deviceCategoryName);
-          console.log(" '--> cat:" + category);
-        }
-      }
+        console.log("devicelist");
+        console.log(deviceList);
 
-      if(category !== undefined && category !== null) {
-
-        console.log("categorylist");
-        console.log(categoryList);
-
-        for (var i = 0; i < categoryList.length; i++) {
-          if (categoryList[i].categoryName.toString() === category.toString()) {
-            console.log("FINALLY");
-            console.log("DEVICE:" + deviceID);
-            console.log("CAT:" + category);
-            console.log("DESC:" + categoryList[i].stepsDescription);
-            return categoryList[i].stepsDescription;
+        for (var i = 0; i < deviceList.length; i++) {
+          if (deviceList[i].deviceID.toString() === deviceID.toString()) {
+            category = deviceList[i].deviceCategoryName;
+            console.log("DEVICE:" + deviceID + deviceList[i].deviceName);
+            console.log("CAT:" + deviceList[i].deviceCategoryName);
+            console.log(" '--> cat:" + category);
           }
         }
 
-      }
+        if(category !== undefined && category !== null && categoryList !== undefined && categoryList !== null) {
 
+          console.log("categorylist");
+          console.log(categoryList);
+
+          for (var i = 0; i < categoryList.length; i++) {
+            if (categoryList[i].categoryName.toString() === category.toString()) {
+              console.log("FINALLY");
+              console.log("DEVICE:" + deviceID);
+              console.log("CAT:" + category);
+              console.log("DESC:" + categoryList[i].stepsDescription);
+              return categoryList[i].stepsDescription;
+            }
+          }
+
+        }
+
+      }
     }
   }
 
@@ -414,7 +422,7 @@ return(
             <Typography variant="h5">Saját feladataim</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {taskList.filter(ownTask).map((task, index) => (
+            {taskList !== undefined && taskList.filter(ownTask).map((task, index) => (
             <Accordion key={index} sx={getTaskColor(task.state)}>
               <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
               <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>

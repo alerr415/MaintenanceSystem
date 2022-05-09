@@ -405,7 +405,7 @@ return(
 
                   {task.state === 3 || task.state === "3" &&
                     <Grid item xs={12} sm={12} md={12} lg={12}>
-                      <p><Typography sx={{ fontWeight: "bold" }}>Elutasítás indoklása:</Typography> {task.maintenanceTaskName}</p>
+                      <p><Typography sx={{ fontWeight: "bold" }}>Elutasítás indoklása:</Typography> {task.denialJustification !== undefined && task.denialJustification}</p>
 
                     </Grid>
                   }
