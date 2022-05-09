@@ -39,7 +39,7 @@ function ListMaintenanceWorker(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const [workerList, setWorkerList] = React.useState(["d"]);
+  const [workerList, setWorkerList] = React.useState();
   const [workerListFetched, setWorkerListFetched] =  React.useState(false);
 
   function fetchWorkerList() {

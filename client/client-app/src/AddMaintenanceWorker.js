@@ -38,7 +38,7 @@ function AddMaintenanceWorker(props) {
     setQualSelectValue(event.target.value);
   };
 
-  const [qualificationList, setQualificationList] = React.useState(["d"]);
+  const [qualificationList, setQualificationList] = React.useState();
   const [qualListFetched, setQualListFetched] =  React.useState(false);
 
   function clearForm() {

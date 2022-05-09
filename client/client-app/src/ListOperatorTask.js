@@ -49,7 +49,7 @@ function ListOperatorTask(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const [taskList, setTaskList] = React.useState(["d"]);
+  const [taskList, setTaskList] = React.useState();
   const [taskListFetched, setTaskListFetched] =  React.useState(false);
 
   function fetchTaskList() {
@@ -83,7 +83,7 @@ function ListOperatorTask(props) {
     });
   };
 
-  const [workerList, setWorkerList] = React.useState(["d"]);
+  const [workerList, setWorkerList] = React.useState();
   const [workerListFetched, setWorkerListFetched] =  React.useState(false);
 
   function fetchWorkerList() {
@@ -403,7 +403,7 @@ return(
                     </Grid>
                   }
 
-                  {task.state === 3 || task.state === "3" &&
+                  {(task.state === 3 || task.state === "3") &&
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                       <p><Typography sx={{ fontWeight: "bold" }}>Elutasítás indoklása:</Typography> {task.denialJustification !== undefined && task.denialJustification}</p>
 

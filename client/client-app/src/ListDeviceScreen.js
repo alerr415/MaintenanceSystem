@@ -34,7 +34,7 @@ function ListDeviceScreen(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const [deviceList, setDeviceList] = React.useState(["d"]);
+  const [deviceList, setDeviceList] = React.useState();
   const [deviceListFetched, setDeviceListFetched] =  React.useState(false);
 
   function fetchDeviceList() {

@@ -40,7 +40,7 @@ function AddMaintenanceTask(props) {
     setDeviceID(event.target.value);
   };
 
-  const [deviceList, setDeviceList] = React.useState(["d"]);
+  const [deviceList, setDeviceList] = React.useState();
   const [deviceListFetched, setDeviceListFetched] =  React.useState(false);
 
   function clearForm() {

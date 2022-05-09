@@ -37,7 +37,7 @@ function ListCategoryScreen(props) {
   const [success, hitSuccess] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(false);
 
-  const [categoryList, setCategoryList] = React.useState(["d"]);
+  const [categoryList, setCategoryList] = React.useState();
   const [listFetched, setListFetched] =  React.useState(false);
 
   function fetchList() {

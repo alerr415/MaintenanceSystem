@@ -51,10 +51,10 @@ function AddCategoryScreen(props) {
     setParent(event.target.value);
   };
 
-  const [categoryList, setCategoryList] = React.useState(["d"]);
+  const [categoryList, setCategoryList] = React.useState();
   const [catListFetched, setCatListFetched] =  React.useState(false);
 
-  const [qualificationList, setQualificationList] = React.useState(["d"]);
+  const [qualificationList, setQualificationList] = React.useState();
   const [qualListFetched, setQualListFetched] =  React.useState(false);
 
   function clearForm() {

@@ -230,6 +230,7 @@ function ListWorkerTask(props) {
           setFeedbackText("A feladat elutasítása sikeresen megtörtént!");
           hitSuccess(true);
           setDeclineDialogOpen(false);
+          document.getElementById('reason').value = "";
 
           navigate("/app/scheduleDone");
 

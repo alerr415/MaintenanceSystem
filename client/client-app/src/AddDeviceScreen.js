@@ -38,7 +38,7 @@ function AddDeviceScreen(props) {
     setType(event.target.value);
   };
 
-  const [categoryList, setCategoryList] = React.useState(["d"]);
+  const [categoryList, setCategoryList] = React.useState();
   const [catListFetched, setCatListFetched] =  React.useState(false);
   const [disabledTypeSelect, setDisabledTypeSelect] =  React.useState(false);
 
