@@ -9,6 +9,8 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { UserContext } from "./User.js";
+import { useNavigate } from "react-router-dom";
+
 import {serveraddress} from './Server.js';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
@@ -35,6 +37,7 @@ import AddIcon from '@mui/icons-material/Add';
 function ListWorkerTask(props) {
 
   const { window } = props;
+  let navigate = useNavigate();
 
   const {user, setUser} = useContext(UserContext);
 
@@ -191,10 +194,55 @@ function ListWorkerTask(props) {
     setDeclineDialogOpen(false);
   }
 
-  const reassureDecline = () => {
-    // TODO
-    setDeclineDialogOpen(false);
+  const reassureDecline = (task) => {
+
+    console.log("STATECHANGE(DENY):");
+    console.log(task);
+    let reason = document.getElementById('reason').value;
+
+    if (task !== undefined && task !== "") {
+
+      let toSend  = {"maintenanceID" : task.maintenanceTaskID,
+                     "state" : "3",
+                     "denialJustification" : reason
+                    }
+
+      console.log(toSend);
+
+      fetch(serveraddress + '/state', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(toSend),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        if (data.errorCode === 0) {
+
+          console.log("Sikeres Hozzáadás :D ");
+          setFeedbackText("A feladat elutasítása sikeresen megtörtént!");
+          hitSuccess(true);
+          setDeclineDialogOpen(false);
+
+          navigate("/app/scheduleDone");
+
+        } else {
+          console.log("Sikertelen Hozzáadás! :( ");
+          console.log(data.errorMessage);
+
+          setFeedbackText("A feladat elutasítása sikertelen! " + data.errorMessage);
+          hitError(true);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+        hitError(true);
+      });
   }
+}
 
   function getTaskColor(state) {
     if ( state === "0" || state === 0 ) {
@@ -258,10 +306,6 @@ function ListWorkerTask(props) {
   }
 
   function resolveWorkerNames(id) {
-    //let currentWorker = workerList.find((worker) => {return worker.id == id});
-    //if (currentWorker !== undefined) {
-    //  return currentWorker.lastName.concat(currentWorker.firstName);
-    //}
     return "TODO";
   }
 
@@ -291,6 +335,53 @@ function ListWorkerTask(props) {
     }
 
   }
+
+  const acceptTask = (task) => {
+    console.log("STATECHANGE(ACCEPT):");
+    console.log(task);
+
+    if (task !== undefined && task !== "") {
+
+      let toSend  = {"maintenanceID" : task.maintenanceTaskID,
+                     "state" : "2",
+                     "denialJustification" : null
+                    }
+
+      console.log(toSend);
+
+      fetch(serveraddress + '/state', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(toSend),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        if (data.errorCode === 0) {
+
+          console.log("Sikeres Hozzáadás :D ");
+          setFeedbackText("A feladat elfogadása sikeresen megtörtént!");
+          hitSuccess(true);
+
+          navigate("/app/scheduleDone");
+
+        } else {
+          console.log("Sikertelen Hozzáadás! :( ");
+          console.log(data.errorMessage);
+
+          setFeedbackText("A feladat elfogadása sikertelen! " + data.errorMessage);
+          hitError(true);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+        hitError(true);
+      });
+  }
+}
 
   useEffect(() => {
     if (!taskListFetched) fetchTaskList();
@@ -335,7 +426,7 @@ return(
                   {(task.state === 1 || task.state === "1") &&
                     // ha ütemezett állapotban van
                     <Grid item xs={12} sm={12} md={2} lg={2}>
-                      <Button size="large" variant="contained" color="success" fullWidth>Elfogad</Button>
+                      <Button size="large" variant="contained" color="success" onClick={() => {acceptTask(task)}} fullWidth>Elfogad</Button>
                       <Button size="large" variant="outlined" color="error" onClick={openDeclineReassure} fullWidth>Elutasít</Button>
                     </Grid>
                   }
@@ -359,7 +450,7 @@ return(
                     </DialogContent>
                     <DialogActions>
                       <Button onClick={cancelDecline}>Mégsem</Button>
-                      <Button onClick={reassureDecline}>Elutasítás</Button>
+                      <Button onClick={() => {reassureDecline(task)}}>Elutasítás</Button>
                     </DialogActions>
                   </Dialog>
 

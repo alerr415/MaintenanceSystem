@@ -15,7 +15,7 @@ function ScheduleDone(props) {
   let navigate = useNavigate();
 
   const redirectToTasks = () => {
-    navigate("/app/listOpTasks");
+    navigate(-1);
   }
 
   useEffect(() => {

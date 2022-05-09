@@ -403,6 +403,13 @@ return(
                     </Grid>
                   }
 
+                  {task.state === 3 || task.state === "3" &&
+                    <Grid item xs={12} sm={12} md={12} lg={12}>
+                      <p><Typography sx={{ fontWeight: "bold" }}>Elutasítás indoklása:</Typography> {task.maintenanceTaskName}</p>
+
+                    </Grid>
+                  }
+
                 </Grid>
 
               </AccordionDetails>
