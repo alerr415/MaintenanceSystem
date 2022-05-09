@@ -315,7 +315,7 @@ function ListWorkerTask(props) {
   }
 
   function getTaskDescription(task) {
-    if (task !== undefined && task !== null) {
+    if (task !== undefined && task !== null && task !== "") {
       let deviceID = task.deviceID;
       let category = "";
       console.log("DEVICE:" + deviceID);
@@ -360,7 +360,7 @@ function ListWorkerTask(props) {
     console.log("STATECHANGE(ACCEPT):");
     console.log(task);
 
-    if (task !== undefined && task !== "") {
+    if (task !== undefined && task !== null && task !== "") {
 
       let toSend  = {"maintenanceID" : task.maintenanceTaskID,
                      "state" : "2",
@@ -400,6 +400,53 @@ function ListWorkerTask(props) {
         setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
         hitError(true);
       });
+  }
+}
+
+const startTask = (task) => {
+  console.log("STATECHANGE(START):");
+  console.log(task);
+
+  if (task !== undefined && task !== null && task !== "") {
+
+    let toSend  = {"maintenanceID" : task.maintenanceTaskID,
+                   "state" : "4",
+                   "denialJustification" : null
+                  }
+
+    console.log(toSend);
+
+    fetch(serveraddress + '/state', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(toSend),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      if (data.errorCode === 0) {
+
+        console.log("Sikeres Hozzáadás :D ");
+        setFeedbackText("A feladat megkezdése sikeresen megtörtént!");
+        hitSuccess(true);
+
+        navigate("/app/scheduleDone");
+
+      } else {
+        console.log("Sikertelen Hozzáadás! :( ");
+        console.log(data.errorMessage);
+
+        setFeedbackText("A feladat elfogadása sikertelen! " + data.errorMessage);
+        hitError(true);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+      hitError(true);
+    });
   }
 }
 
@@ -478,7 +525,7 @@ return(
                   {(task.state === 2 || task.state === "2") &&
                     // ha elfogadott állapotban van
                     <Grid item xs={12} sm={12} md={2} lg={2}>
-                      <Button size="large" variant="contained" color="success" fullWidth>Kezdés</Button>
+                      <Button size="large" variant="contained" color="success" onClick={() => {startTask(task)}} fullWidth>Kezdés</Button>
                     </Grid>
                   }
 
