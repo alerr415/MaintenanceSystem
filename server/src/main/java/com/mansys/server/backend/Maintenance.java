@@ -108,5 +108,6 @@ public class Maintenance {
         public String normTime;
         public String specification;
         public int qualificationID;
+        public String denialJustification;
     }
 }
