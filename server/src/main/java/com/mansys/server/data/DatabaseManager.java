@@ -869,7 +869,7 @@ public class DatabaseManager{
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             String call = "UPDATE Feladat SET Karbantarto_ID = NULL WHERE Feladat_ID = ?";
             CallableStatement callableStatement = connection.prepareCall(call);
-            callableStatement.setInt(3,Integer.parseInt(maintenanceID));
+            callableStatement.setInt(1,Integer.parseInt(maintenanceID));
            callableStatement.execute();
            System.out.println("[DATABASE] Resetting worker id for task " + maintenanceID);
         } 
