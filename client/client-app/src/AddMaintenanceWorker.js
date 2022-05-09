@@ -118,7 +118,7 @@ function AddMaintenanceWorker(props) {
 
       console.log('Success:', data);
 
-      if (data.resultCode === 0) {
+      if (data.resultCode === 0 && data.qualificationList !== undefined && data.qualificationList !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.qualificationList);
 
@@ -208,7 +208,7 @@ return (
                 <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="qualSelectControl">
                   <InputLabel id="qualLabel">Képesítés</InputLabel>
                   <Select labelId="qualLabel" id="qualSelect" value={qualSelectValue} onChange={qualChange} label="Képesítés">
-                    {qualificationList.map((qualification, index) => (
+                    {qualificationList !== undefined && qualificationList.map((qualification, index) => (
                       <MenuItem value={qualification.qualificationID} key={index}>{qualification.qualificationName}</MenuItem>
                     ))}
                   </Select>

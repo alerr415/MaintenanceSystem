@@ -345,7 +345,7 @@ return(
             <Typography variant="h5">Karbantartási feladatok</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {taskList.map((task, index) => (
+            {taskList !== undefined && taskList.map((task, index) => (
             <Accordion key={index} sx={getTaskColor(task.state)}>
               <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
                 <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
@@ -383,7 +383,7 @@ return(
 
                                 <InputLabel id="selectWorkerLabel">Karbantartó</InputLabel>
                                 <Select labelId="selectWorkerLabel" id="workerSelect" value={workerToSchedule} onChange={workerSelectChange} label="Karbantartó">
-                                  {workerList.map((worker, index) => (
+                                  {workerList !== undefined && workerList.map((worker, index) => (
                                     <MenuItem value={worker.workerID} sx={ workerGreen(worker.qualificationID, openTask.qualificationID) } key={index}>{worker.lastName} {worker.firstName}</MenuItem>
                                   ))}
                                 </Select>

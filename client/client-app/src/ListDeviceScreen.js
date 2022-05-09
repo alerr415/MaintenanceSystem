@@ -44,9 +44,10 @@ function ListDeviceScreen(props) {
 
       console.log('Success:', data);
 
-      if (data.errorCode === 0) {
+      if (data.errorCode === 0 && data.data !== undefined && data.data !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
+
         setDeviceList(data.data);
         setDeviceListFetched(true);
 
@@ -89,7 +90,7 @@ return(
             <Typography variant="h5">Eszközök</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {deviceList.map((device, index) => (
+            {deviceList !== undefined && deviceList.map((device, index) => (
             <Accordion key={index} sx={{ backgroundColor : "#1976d2" , color : "white"}}>
               <AccordionSummary expandIcon={<ExpandMoreIcon  sx={{ color : "white" }} color="white"/>}>
               <EmojiObjectsIcon sx={{ mr : 2 }}/>

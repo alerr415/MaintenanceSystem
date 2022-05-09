@@ -133,7 +133,7 @@ function AddCategoryScreen(props) {
 
       console.log('Success:', data);
 
-      if (data.resultCode === 0) {
+      if (data.resultCode === 0 && data.categoryList !== undefined && data.categoryList !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.categoryList);
 
@@ -164,7 +164,7 @@ function AddCategoryScreen(props) {
 
       console.log('Success:', data);
 
-      if (data.resultCode === 0) {
+      if (data.resultCode === 0 && data.qualificationList !== undefined && data.qualificationList !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.qualificationList);
 
@@ -234,7 +234,7 @@ return(
                   <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="qualSelectControl">
                     <InputLabel id="qualLabel">* Képesítés</InputLabel>
                     <Select labelId="qualLabel" id="qualSelect" value={qualSelectValue} onChange={qualChange} label="Képesítés">
-                      {qualificationList.map((qualification, index) => (
+                      {qualificationList !== undefined && qualificationList.map((qualification, index) => (
                         <MenuItem value={qualification.qualificationID} key={index}>{qualification.qualificationName}</MenuItem>
                       ))}
                     </Select>
@@ -295,7 +295,7 @@ return(
                 <FormControl sx={{ mx : 'auto' ,  width : 1 }}>
                   <InputLabel id="parentLabel">Szülő kategória</InputLabel>
                   <Select labelId="parentLabel" id="parentSelect" value={parent} onChange={parentChange} label="Szülő kategória">
-                    {categoryList.map((category, index) => (
+                    {categoryList !== undefined && categoryList.map((category, index) => (
                       <MenuItem value={category.categoryName} key={index}>{category.categoryName}</MenuItem>
                     ))}
                   </Select>

@@ -47,7 +47,7 @@ function ListCategoryScreen(props) {
 
       console.log('Success:', data);
 
-      if (data.resultCode === 0) {
+      if (data.resultCode === 0 && data.categoryList !== undefined && data.categoryList !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.categoryList);
 
@@ -92,7 +92,7 @@ return(
             <Typography variant="h5">Kategóriák</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {categoryList.map((category, index) => (
+            {categoryList !== undefined && categoryList.map((category, index) => (
             <Accordion key={index} sx={{ backgroundColor : "#1976d2" , color : "white"}} >
               <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
               <ClassIcon sx={{ mr : 2 }}/>

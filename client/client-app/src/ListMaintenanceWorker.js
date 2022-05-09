@@ -49,9 +49,10 @@ function ListMaintenanceWorker(props) {
 
       console.log('Success:', data);
 
-      if (data.errorCode === 0) {
+      if (data.errorCode === 0 && data.data !== undefined && data.data !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
+
         setWorkerList(data.data);
         setWorkerListFetched(true);
 
@@ -89,7 +90,7 @@ return(
             <Typography variant="h5">Karbantartók</Typography>
             <Divider  sx={{ mb : 2 }}/>
 
-            {workerList.map((worker, index) => (
+            {workerList !== undefined && workerList.map((worker, index) => (
             <Accordion key={index} sx={{ backgroundColor : "#1976d2" , color : "white"}} >
               <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
               <EngineeringIcon sx={{ mr : 2 }}/>

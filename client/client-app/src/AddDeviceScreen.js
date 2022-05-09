@@ -117,7 +117,7 @@ function AddDeviceScreen(props) {
 
       console.log('Success:', data);
 
-      if (data.resultCode === 0) {
+      if (data.resultCode === 0 && data.categoryList !== undefined && data.categoryList !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.categoryList);
 
@@ -187,7 +187,7 @@ return (
                 <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="typeSelectControl" disabled={disabledTypeSelect}>
                   <InputLabel id="typeLabel">Létező kategória</InputLabel>
                   <Select labelId="typeLabel" id="typeSelect" value={type} onChange={typeChange} label="Létező kategória">
-                    {categoryList.map((category, index) => (
+                    {categoryList !== undefined && categoryList.map((category, index) => (
                       <MenuItem value={category.categoryName} key={index}>{category.categoryName}</MenuItem>
                     ))}
                   </Select>

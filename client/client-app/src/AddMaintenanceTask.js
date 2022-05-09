@@ -119,7 +119,7 @@ function AddMaintenanceTask(props) {
 
       console.log('Success:', data);
 
-      if (data.errorCode === 0) {
+      if (data.errorCode === 0 && data.data !== undefined && data.data !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
         setDeviceList(data.data);
@@ -185,7 +185,7 @@ return (
                 <FormControl sx={{ mx : 'auto' ,  width : 1 }} id="deviceSelectControl">
                   <InputLabel id="deviceLabel">Eszköz</InputLabel>
                   <Select labelId="typeLabel" id="typeSelect" value={deviceID} onChange={deviceChange} label="Eszköz">
-                    {deviceList.map((device, index) => (
+                    {deviceList !== undefined && deviceList.map((device, index) => (
                       <MenuItem value={device.deviceID} key={index}>{device.deviceName} - {device.deviceLocation}</MenuItem>
                     ))}
                   </Select>
