@@ -58,6 +58,7 @@ function ListWorkerTask(props) {
       if (data.errorCode === 0) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
+        
         setTaskList(data.data);
         setTaskListFetched(true);
 
@@ -315,25 +316,35 @@ function ListWorkerTask(props) {
     console.log("DEVICE:" + deviceID);
     console.log("CAT:" + category);
 
-    for (var i = 0; i < deviceList.length; i++) {
-      if (deviceList[i].deviceID.toString() === deviceID.toString()) {
-        category = deviceList[i].deviceCategoryName;
-        console.log("DEVICE:" + deviceID + deviceList[i].deviceName);
-        console.log("CAT:" + deviceList[i].deviceCategoryName);
-        console.log(" '--> cat:" + category);
-      }
-    }
+    if(deviceID !== undefined && deviceID !== null) {
 
-    for (var i = 0; i < categoryList.length; i++) {
-      if (categoryList[i].categoryName.toString() === category.toString()) {
-        console.log("FINALLY");
-        console.log("DEVICE:" + deviceID);
-        console.log("CAT:" + category);
-        console.log("DESC:" + categoryList[i].stepsDescription);
-        return categoryList[i].stepsDescription;
+      for (var i = 0; i < deviceList.length; i++) {
+        if (deviceList[i].deviceID.toString() === deviceID.toString()) {
+          category = deviceList[i].deviceCategoryName;
+          console.log("DEVICE:" + deviceID + deviceList[i].deviceName);
+          console.log("CAT:" + deviceList[i].deviceCategoryName);
+          console.log(" '--> cat:" + category);
+        }
       }
-    }
 
+      if(category !== undefined && category !== null) {
+
+        console.log("categorylist");
+        console.log(categoryList);
+
+        for (var i = 0; i < categoryList.length; i++) {
+          if (categoryList[i].categoryName.toString() === category.toString()) {
+            console.log("FINALLY");
+            console.log("DEVICE:" + deviceID);
+            console.log("CAT:" + category);
+            console.log("DESC:" + categoryList[i].stepsDescription);
+            return categoryList[i].stepsDescription;
+          }
+        }
+
+      }
+
+    }
   }
 
   const acceptTask = (task) => {
