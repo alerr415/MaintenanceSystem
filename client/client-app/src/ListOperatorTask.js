@@ -15,7 +15,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { red, blue, teal, orange, lime, grey } from '@mui/material/colors';
+import { red, blue, teal, orange, lime, grey, green } from '@mui/material/colors';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -33,12 +33,15 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 
+import { useNavigate } from "react-router-dom";
+
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
 function ListOperatorTask(props) {
 
   const { window } = props;
+  let navigate = useNavigate();
 
   const {user, setUser} = useContext(UserContext);
 
@@ -56,9 +59,10 @@ function ListOperatorTask(props) {
 
       console.log('Success:', data);
 
-      if (data.errorCode === 0) {
+      if (data.errorCode === 0 && data.data !== undefined && data.data !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
+
         setTaskList(data.data);
         setTaskListFetched(true);
 
@@ -89,9 +93,10 @@ function ListOperatorTask(props) {
 
       console.log('Success:', data);
 
-      if (data.errorCode === 0) {
+      if (data.errorCode === 0 && data.data !== undefined && data.data !== null) {
         console.log("Sikeres lekérdezés :D");
         console.log(data.data);
+
         setWorkerList(data.data);
         setWorkerListFetched(true);
 
@@ -202,12 +207,18 @@ function ListOperatorTask(props) {
   }
 
   const [scheduleDialogOpen, setScheduleDialogOpen] = React.useState(false);
+  const [openTask, setOpenTask] = React.useState('');
 
-  const handleScheduleButton = () => {
-    setScheduleDialogOpen(true);
+  const handleScheduleButton = (task) => {
+    if (openTask === '' && !scheduleDialogOpen) {
+      console.log("PUKK");
+      setOpenTask(task);
+      setScheduleDialogOpen(true);
+    }
   };
 
   const handleScheduleDialogClose = () => {
+    setOpenTask('');
     setScheduleDialogOpen(false);
   };
 
@@ -215,13 +226,73 @@ function ListOperatorTask(props) {
 
   const workerSelectChange = (event) => {
     setWorkerToSchedule(event.target.value);
-    // TODO workerID hiányzik a workerből
   };
 
   useEffect(() => {
     if (!taskListFetched) fetchTaskList();
     if (!workerListFetched) fetchWorkerList();
   });
+
+  function workerGreen(have, needed) {
+    if (have !== undefined && have !== null && needed !== undefined && needed !== null) {
+      if (have.toString() === needed.toString()) {
+        return ( { backgroundColor : green[200]} );
+      }
+    }
+  };
+
+  const schedule = () => {
+
+    console.log("OPENTASK:");
+    console.log(openTask);
+
+    if (openTask !== undefined && workerToSchedule !== undefined && openTask !== "" && workerToSchedule !== "") {
+
+      let toSend  = {"maintenanceID" : openTask.maintenanceTaskID,
+                     "workerID" : workerToSchedule }
+
+      console.log(toSend);
+
+      fetch(serveraddress + '/assign', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(toSend),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        if (data.errorCode === 0) {
+
+          console.log("Sikeres Hozzáadás :D");
+          setFeedbackText("A karbantartás hozzárendelése megtörtént!");
+          hitSuccess(true);
+
+          handleScheduleDialogClose();
+          navigate("/app/listOpTasks");
+
+        } else {
+          console.log("Sikertelen Hozzáadás! :(");
+          console.log(data.errorMessage);
+
+          setFeedbackText("A karbantartás hozzárendelése sikertelen! " + data.errorMessage);
+          hitError(true);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setFeedbackText("Hiba történt a szerverhez való csatlakozásban!");
+        hitError(true);
+      });
+
+    } else { // ha valamelyik adat hiányzik
+      console.log("Sikertelen Hozzáadás! :(");
+      console.log("valamelyik mező üresen maradt");
+      setFeedbackText("Az hozzárendelés sikertelen! Próbálja újra!");
+      hitError(true);
+    }
+  }
 
 return(
   <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - 240px)` }}}>
@@ -239,7 +310,7 @@ return(
             {taskList.map((task, index) => (
             <Accordion key={index} sx={getTaskColor(task.state)}>
               <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color : "white" }} color="white"/>}>
-              <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
+                <Typography>{task.deviceName} - {task.maintenanceTaskName}</Typography>
               </AccordionSummary>
 
               <AccordionDetails sx={{ backgroundColor : "white" , color : "black"}}>
@@ -260,11 +331,11 @@ return(
 
                   {(task.state === 0 || task.state === "0" || task.state === 3 || task.state === "3") &&
                     <Grid item xs={12} sm={12} md={2} lg={2}>
-                      <Button size="large" variant="contained" color="success" onClick={handleScheduleButton} fullWidth>Ütemez</Button>
-
+                      <Button size="large" variant="contained" color="success" onClick={() => {handleScheduleButton(task)}} fullWidth>Ütemez</Button>
                         <div>
-                          <Dialog open={scheduleDialogOpen} onClose={handleScheduleDialogClose}>
-                            <DialogTitle>Ütemezés</DialogTitle>
+                          <Dialog open={scheduleDialogOpen} onClose={handleScheduleDialogClose} >
+
+                            <DialogTitle> Ütemezés </DialogTitle>
                             <DialogContent>
                               <DialogContentText>
                                 A kiválasztott feladat ütemezéséhez válassza ki a hozzárendelni kivánt karbantartót!
@@ -275,26 +346,29 @@ return(
                                 <InputLabel id="selectWorkerLabel">Karbantartó</InputLabel>
                                 <Select labelId="selectWorkerLabel" id="workerSelect" value={workerToSchedule} onChange={workerSelectChange} label="Karbantartó">
                                   {workerList.map((worker, index) => (
-                                    <MenuItem value={worker.workerID} key={index}>{worker.lastName} {worker.firstName}</MenuItem>
+                                    <MenuItem value={worker.workerID} sx={ workerGreen(worker.qualificationID, openTask.qualificationID) } key={index}>{worker.lastName} {worker.firstName}</MenuItem>
                                   ))}
                                 </Select>
+
                               </FormControl>
 
                             </DialogContent>
+
                             <DialogActions>
-                              <Button onClick={handleScheduleDialogClose}>Cancel</Button>
-                              <Button onClick={handleScheduleDialogClose}>Subscribe</Button>
+                              <Button onClick={handleScheduleDialogClose}>Mégse</Button>
+                              <Button onClick={schedule}>Hozzárendelés</Button>
                             </DialogActions>
+
                           </Dialog>
                         </div>
+
                     </Grid>
                   }
-
 
                 </Grid>
 
               </AccordionDetails>
-            </Accordion>))}
+            </Accordion> ))}
 
           </CardContent>
         </Card>
@@ -302,6 +376,9 @@ return(
 
       <Grid item xs={0} sm={0} lg={1}></Grid>
     </Grid>
+
+
+
 
     <Snackbar open={success} autoHideDuration={6000} onClose={() => {hitSuccess(false)}} action={(<IconButton
         size="small"
