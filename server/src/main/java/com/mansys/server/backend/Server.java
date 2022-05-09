@@ -415,8 +415,8 @@ public class Server implements ServerInterface {
             }
             case 1:
             {
-                res.setErrorCode(0);
-                res.setErrorMessage("No workers with qualification");
+                res.setErrorCode(69);
+                res.setErrorMessage("No workers with qualification " + qualificationID);
                 break;
             }
             default:
@@ -506,7 +506,7 @@ public class Server implements ServerInterface {
             }
             case 1:
             {
-                res.setErrorCode(0);
+                res.setErrorCode(69);
                 res.setErrorMessage("Internal error");
                 if (!workerID.equals(""))
                     res.setErrorMessage("No tasks for worker " + workerID);
