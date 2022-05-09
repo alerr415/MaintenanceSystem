@@ -51,7 +51,14 @@ public class Server implements ServerInterface {
      */
     public static final long UPDATE_DELAY = 1000L * 60L * 60L; // 1 hour
 
+    /**
+     * States
+     * 
+     */
     private final String STATE_REJECTED = "3";
+    private final String STATE_STARTED = "4";
+    private final String STATE_FINISHED = "5";
+
 
     /**
      * Container to store the valid sessions.
@@ -564,6 +571,14 @@ public class Server implements ServerInterface {
         // handle reset
         if (req.getState().equals(STATE_REJECTED)) {
             DatabaseManager.getInstance().resetTask(req.getMaintenanceID());
+        }
+
+        if (req.getState().equals(STATE_STARTED)) {
+            DatabaseManager.getInstance().startTask(req.getMaintenanceID());
+        }
+
+        if (req.getState().equals(STATE_FINISHED)) {
+            DatabaseManager.getInstance().finishTask(req.getMaintenanceID());
         }
 
 
